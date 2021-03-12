@@ -17,7 +17,7 @@ namespace Lemon_Bar
 {
     public class Startup
     {
-        string connection = "Server = tcp:wendiserver.database.windows.net,1433;Initial Catalog = Lemon_Bar; Persist Security Info=False;User ID = wendiserveradmin; Password={your_passwor}; MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30";
+        string connection = Secret.connection;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
