@@ -9,18 +9,23 @@ using System.Threading.Tasks;
 
 namespace Lemon_Bar.Controllers
 {
+    
     public class HomeController : Controller
     {
+        private CocktailDAL cocktailDAL = new CocktailDAL();
+   
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
-
+        
         public IActionResult Index()
         {
-            return View();
+
+            Rootobject r = cocktailDAL.GetDataString("manhattan");
+            return View(r);
         }
 
         public IActionResult Privacy()
