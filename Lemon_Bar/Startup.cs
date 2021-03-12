@@ -17,6 +17,9 @@ namespace Lemon_Bar
 {
     public class Startup
     {
+
+        string connection = Secret.connection;
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
