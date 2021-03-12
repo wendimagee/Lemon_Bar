@@ -17,6 +17,7 @@ namespace Lemon_Bar
 {
     public class Startup
     {
+        string connection = "Server = tcp:wendiserver.database.windows.net,1433;Initial Catalog = Lemon_Bar; Persist Security Info=False;User ID = wendiserveradmin; Password={your_passwor}; MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -35,6 +36,8 @@ namespace Lemon_Bar
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -3,6 +3,10 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "DefaultConnection"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "\"Server=(localdb)\\\\mssqllocaldb;Database=aspnet-Lemon_Bar-2C6F5C51-2CC1-4D23-ACF0-94340E77ACC9;Trusted_Connection=True;MultipleActiveResultSets=true\""
     }
   }
 }
