@@ -20,9 +20,11 @@ namespace Lemon_Bar.Controllers
 
         // GET: Items
         public async Task<IActionResult> Index()
+        
         {
-            var lemon_BarContext = _context.Items.Include(i => i.UserNavigation);
-            return View(await lemon_BarContext.ToListAsync());
+            //var lemon_BarContext = _context.Items.Include(i => i.UserNavigation);
+
+            return View(await _context.Items.ToListAsync());
         }
 
         // GET: Items/Details/5
