@@ -316,9 +316,6 @@ namespace Lemon_Bar.Models
             {
                 entity.ToTable("Item");
 
-                entity.HasIndex(e => e.User, "UQ__Item__BD20C6F1341F0DAB")
-                    .IsUnique();
-
                 entity.Property(e => e.ItemName).HasMaxLength(30);
 
                 entity.Property(e => e.TotalCost).HasColumnType("money");
@@ -327,10 +324,12 @@ namespace Lemon_Bar.Models
 
                 entity.Property(e => e.Units).HasMaxLength(25);
 
+                entity.Property(e => e.User).HasMaxLength(450);
+
                 entity.HasOne(d => d.UserNavigation)
-                    .WithOne(p => p.Item)
-                    .HasForeignKey<Item>(d => d.User)
-                    .HasConstraintName("FK__Item__User__7DCDAAA2");
+                    .WithMany(p => p.Items)
+                    .HasForeignKey(d => d.User)
+                    .HasConstraintName("FK__Item__User__00AA174D");
             });
 
             modelBuilder.Entity<Job>(entity =>
