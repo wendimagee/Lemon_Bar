@@ -12,14 +12,7 @@ namespace Lemon_Bar.Controllers
     
     public class HomeController : Controller
     {
-        private CocktailDAL cocktailDAL = new CocktailDAL();
-   
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+       readonly private CocktailDAL cocktailDAL = new CocktailDAL();
         
         public IActionResult Index()
         {

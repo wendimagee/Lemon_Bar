@@ -30,18 +30,18 @@ namespace Lemon_Bar
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Lemon_BarContext>(options => options.UseSqlServer("DefaultConnection"));
+            services.AddDbContext<Lemon_BarContext>(options => options.UseSqlServer(Secret.connection));
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Secret.connection));
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer("DefaultConnection"));
+                options.UseSqlServer(Secret.connection));
         }
 
         //This method gets called by the runtime.Use this method to configure the HTTP request pipeline.
