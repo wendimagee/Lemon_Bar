@@ -13,6 +13,7 @@ namespace Lemon_Bar.Controllers
     public class ItemsController : Controller
     {
         private readonly Lemon_BarContext _context;
+        readonly private CocktailDAL cocktailDAL = new CocktailDAL();
 
         public ItemsController(Lemon_BarContext context)
         {
@@ -61,6 +62,7 @@ namespace Lemon_Bar.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
         {
+            item.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (ModelState.IsValid)
             {
                 _context.Add(item);
@@ -153,6 +155,40 @@ namespace Lemon_Bar.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> RecipeList()
+        {
+            List<Item> inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            string com = "&&";
+            string ing = "";
+            foreach (Item item in inventoryList)
+            {
+                string result = item.ItemName + com;
+                ing += result;
+            }
+            string searchString = ing.Substring(0, ing.Length-1);
+
+            Rootobject recipeList = new Rootobject();
+
+            try
+            {
+               recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            //Rootobject filter = new Rootobject();
+
+            //foreach (Drink drink in recipeList.drinks)
+            //{
+                
+            //}
+
+            return View(recipeList);
+        }
+
 
         private bool ItemExists(int id)
         {

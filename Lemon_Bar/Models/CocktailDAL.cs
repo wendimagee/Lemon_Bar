@@ -59,6 +59,29 @@ namespace Lemon_Bar.Models
 
         }
 
+        public string GetInventoryData(string searchString)
+        {
+            //Searches by ID
+            string url = $"https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i={searchString}";
+
+            HttpWebRequest request = WebRequest.CreateHttp(url);
+            HttpWebResponse response = null;
+
+            response = (HttpWebResponse)request.GetResponse();
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string json = rd.ReadToEnd();
+
+            return json;
+        }
+
+        public Rootobject GetInventory(string searchString)
+        {
+            string json = GetInventoryData(searchString);
+            Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
+            return r;
+
+        }
+
         //this link is for searching by multiple ingredients https://www.thecocktaildb.com/api/json/v2/1/filter.php?i=vodka&&lemon&&lime&&cranberry
 
     }
