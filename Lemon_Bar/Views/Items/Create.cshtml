@@ -15,7 +15,7 @@
             <div class="form-group">
                 <label asp-for="ItemName" class="control-label"></label>
                 @*<input asp-for="ItemName" class="form-control" />*@
-                @Html.DropDownList("strIngredient1", ViewBag.Ingredients as SelectList)
+                <select asp-for="ItemName" class="form-control" asp-items="ViewBag.Ingredients"></select>
                 <span asp-validation-for="ItemName" class="text-danger"></span>
             </div>
             <div class="form-group">
