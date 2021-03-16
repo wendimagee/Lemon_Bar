@@ -7,7 +7,7 @@ namespace Lemon_Bar.Models
 {
         public class Rootobject
         {
-            public Drink[] drinks { get; set; }
+            public List<Drink> drinks { get; set; }
         }
         public class Drink
         {

@@ -172,7 +172,7 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-               recipeList = cocktailDAL.GetDataString("");
+               recipeList = cocktailDAL.GetDataString("old");
             }
             catch
             {
@@ -186,22 +186,24 @@ namespace Lemon_Bar.Controllers
             {
                 filter = FilterRecipes(recipeList);
             }
-            catch
+            catch(Exception e)
             {
-                return NotFound();
+                return NotFound(e);
             }
 
-            return View(filter);
+            return View(filter );
         }
 
         private Rootobject FilterRecipes(Rootobject Drink)
         {
-            int filterIndex = 0;
             int index = 0;
-            bool validDrink = false;
-            Rootobject filtered = new Rootobject();
+
+            Rootobject returnList= new Rootobject();
+            List<Drink> filtered = new List<Drink>();
             foreach (Drink drink in Drink.drinks)
             {
+                bool validDrink = false;
+
 
                 List<string> ingredients= new List<string>();
                 if(!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
@@ -220,10 +222,10 @@ namespace Lemon_Bar.Controllers
                 if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
                 if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
 
-                if(ingredients.Count < 1)
-                {
-                    return filtered;
-                }
+                //if(ingredients.Count < 1)
+                //{
+                //    return filtered;
+                //}
 
                 List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
                 int count = 0;
@@ -248,14 +250,16 @@ namespace Lemon_Bar.Controllers
                 //filter.drinks[index] = await _context.Items.Where(x => x.ItemName.Any();
                 if (validDrink)
                 {
-                    filtered.drinks[filterIndex] = drink;
-                    filterIndex++;
+
+                    filtered.Add(drink);
                 }
 
                 index++;
+                returnList.drinks = filtered;
             }
 
-            return filtered;
+
+            return returnList;
 
         }
 
