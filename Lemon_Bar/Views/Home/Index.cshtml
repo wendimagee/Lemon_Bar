@@ -1,7 +1,17 @@
 ﻿@model Rootobject
 
+
+<form align="center" asp-action="SearchByName" asp-controller="Home">
+    <label>Search for a cocktail by name!</label>
+    <input type="text" name="cocktail" />
+    <input type="submit" />
+</form>
+<br />
+
+
+
 @foreach (Drink d in Model.drinks)
-      {
-        <h2>@d.strDrink</h2>    
-        <h2>@d.strIngredient1</h2>
-      }
+{
+    <h2>@d.strDrink</h2>
+    <h2>@d.strIngredient1</h2>
+}
