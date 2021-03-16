@@ -1,0 +1,28 @@
+﻿@model List<Item>
+
+<form asp-action="SearchByInventoryResults" asp-controller="Items">
+    <label>Choose 3 ingredients from your inventory to search for cocktails</label>
+    <select id="ingredient1" name="ingredient1">
+        @foreach (Item item in Model)
+        {
+            <option value="@item.ItemName">@item.ItemName</option>
+        }
+
+    </select>
+    <select id="ingredient2" name="ingredient2">
+        @foreach (Item item in Model)
+        {
+            <option value="@item.ItemName">@item.ItemName</option>
+        }
+
+    </select>
+    <select id="ingredient3" name="ingredient3">
+        @foreach (Item item in Model)
+        {
+            <option value="@item.ItemName">@item.ItemName</option>
+        }
+
+    </select>
+    <input type="submit" />
+</form>
+
