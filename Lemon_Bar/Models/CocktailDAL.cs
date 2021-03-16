@@ -14,7 +14,7 @@ namespace Lemon_Bar.Models
         public string GetData(string searchName)
         {
             //Searches by Name
-            string url = $"https://www.thecocktaildb.com/api/json/v1/1/search.php?s={searchName}";
+            string url = $"https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/search.php?s={searchName}";
 
             HttpWebRequest request = WebRequest.CreateHttp(url);
             HttpWebResponse response = null;
@@ -62,7 +62,7 @@ namespace Lemon_Bar.Models
         public string GetInventoryData(string searchString)
         {
             //Searches by ID
-            string url = $"https://www.thecocktaildb.com/api/json/v2/9973533/filter.php?i={searchString}";
+            string url = $"https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/filter.php?i={searchString}";
 
             HttpWebRequest request = WebRequest.CreateHttp(url);
             HttpWebResponse response = null;
@@ -82,7 +82,7 @@ namespace Lemon_Bar.Models
 
         }
 
-        //this link is for searching by multiple ingredients https://www.thecocktaildb.com/api/json/v2/1/filter.php?i=vodka&&lemon&&lime&&cranberry
+        //this link is for searching by multiple ingredients https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/filter.php?i=vodka&&lemon&&lime&&cranberry
 
     }
 }
