@@ -1,0 +1,8 @@
+﻿@model Rootobject
+
+
+@foreach (Drink d in Model.drinks)
+{
+    <h2>@d.strDrink</h2>
+    <a asp-route-id="@d.idDrink" asp-action="DrinkDetails" asp-controller="Home">Drink Details</a>
+} 

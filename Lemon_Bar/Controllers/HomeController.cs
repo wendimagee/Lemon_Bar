@@ -9,18 +9,11 @@ using System.Threading.Tasks;
 
 namespace Lemon_Bar.Controllers
 {
-    
+
     public class HomeController : Controller
     {
-        private CocktailDAL cocktailDAL = new CocktailDAL();
-   
-        private readonly ILogger<HomeController> _logger;
+        readonly private CocktailDAL cocktailDAL = new CocktailDAL();
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-        
         public IActionResult Index()
         {
 
@@ -28,9 +21,44 @@ namespace Lemon_Bar.Controllers
             return View(r);
         }
 
-        public IActionResult Privacy()
+        public IActionResult SearchByName(string cocktail)
         {
-            return View();
+            Rootobject c = new Rootobject();
+
+            if (cocktail == null)
+            {
+                TempData["error"] = "Please enter a valid entry";
+                return RedirectToAction("Index");
+            }
+            try
+            {
+                c = cocktailDAL.GetDataString(cocktail);
+            }
+            catch (Exception e)
+            {
+                TempData["error"] = "Please enter a valid entry";
+                return RedirectToAction("Index");
+            }
+
+            TempData.Remove("moveerror");
+            TempData.Remove("error");
+
+            return View(c);
+        }
+
+        public IActionResult DrinkDetails(int id)
+        {
+            Rootobject c = new Rootobject();
+           try
+            {
+                c = cocktailDAL.GetIdDataString(id);
+
+                return View(c.drinks.ToList());
+            }
+            catch
+            {
+                return NotFound();
+            }  
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
