@@ -34,6 +34,8 @@ namespace Lemon_Bar.Models
 
             
         }
-        
+
+        //this link is for searching by multiple ingredients https://www.thecocktaildb.com/api/json/v2/1/filter.php?i=vodka&&lemon&&lime&&cranberry
+
     }
 }

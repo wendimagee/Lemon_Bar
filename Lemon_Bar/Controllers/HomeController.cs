@@ -46,7 +46,17 @@ namespace Lemon_Bar.Controllers
             return View(c);
         }
 
+        public IActionResult DrinkDetails(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+
+            
+            return View(id);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
