@@ -14,6 +14,7 @@ namespace Lemon_Bar.Controllers
     {
         private readonly Lemon_BarContext _context;
         readonly private CocktailDAL cocktailDAL = new CocktailDAL();
+        private readonly IngredientDAL _ingredient = new IngredientDAL();
 
         public ItemsController(Lemon_BarContext context)
         {
@@ -52,6 +53,7 @@ namespace Lemon_Bar.Controllers
         public IActionResult Create()
         {
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            ViewBag.Ingredients = new SelectList(_ingredient.GetAllIngredients(), "strIngredient1", "strIngredient1");
             return View();
         }
 
