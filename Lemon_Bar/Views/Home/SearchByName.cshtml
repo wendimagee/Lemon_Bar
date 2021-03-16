@@ -4,5 +4,14 @@
 @foreach (Drink d in Model.drinks)
 {
     <h2>@d.strDrink</h2>
-    <a asp-route-id="@d.idDrink" asp-action="DrinkDetails" asp-controller="Home">Drink Details</a>
+    <img src="@d.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
+    <br />
+    <div >
+        <form asp-action="DrinkDetails" asp-controller="Home" asp-route-id="@d.idDrink">
+            <button class="buttony">
+                Learn More!
+            </button>
+        </form>
+    </div>
+    <hr />
 } 

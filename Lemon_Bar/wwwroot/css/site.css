@@ -2,19 +2,46 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
+    background-color: darkgray;
   white-space: normal;
   text-align: center;
   word-break: break-all;
 }
 
+.centery {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+
 /* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+  color: mediumpurple;
 }
+
+.buttony {
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: lightblue;
+    color: black;
+    border: 4px solid black;
+}
+
+    .buttony:hover {
+        background-color: brown;
+        color: white;
+    }
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
+  background-color: lightseagreen;
   border-color: #1861ac;
 }
 
