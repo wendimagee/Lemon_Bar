@@ -189,7 +189,28 @@ namespace Lemon_Bar.Controllers
             return View(recipeList);
         }
 
+        public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
+        {
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            return View(inventoryList);
+        }
+        public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
+        {
+            string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
 
+            Rootobject recipeList = new Rootobject();
+
+            try
+            {
+                recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            return View(recipeList);
+        }
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
