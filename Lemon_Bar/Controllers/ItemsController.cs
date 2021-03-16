@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
+using System.Security.Claims;
 
 namespace Lemon_Bar.Controllers
 {
@@ -22,9 +23,9 @@ namespace Lemon_Bar.Controllers
         public async Task<IActionResult> Index()
         
         {
-            var lemon_BarContext = _context.Items.Include(i => i.UserNavigation);
+            //var lemon_BarContext = _context.Items.Include(i => i.UserNavigation);
 
-            return View(await _context.Items.ToListAsync());
+            return View(await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
         }
 
         // GET: Items/Details/5

@@ -48,14 +48,17 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(int id)
         {
-            if (id == null)
+            Rootobject c = new Rootobject();
+           try
+            {
+                c = cocktailDAL.GetIdDataString(id);
+
+                return View(c.drinks.ToList());
+            }
+            catch
             {
                 return NotFound();
-            }
-
-
-            
-            return View(id);
+            }  
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
