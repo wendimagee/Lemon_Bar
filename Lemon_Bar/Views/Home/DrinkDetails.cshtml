@@ -1,12 +1,30 @@
-﻿@model Drink
+﻿@model List<Drink>
 
-<h2>@Model.strDrink</h2>
+<h2>@Model[0].strDrink</h2>
 
-<h3>Ingredients:</h3>
+@{List<string> ing = new List<string>();
+    string ingredient = "strIngredient";
+ }
+@for (int i = 1; i < 15; i++)
+    {
+        string dient = ingredient + $"{i}";
+        ing.Append(Model[0].{ "dient"});
+}
+
+
+@*<h3>Ingredients:</h3>
 <ul>
-    <li>@Model.strIngredient1</li>
-    <li>@Model.strIngredient2</li>
-    <li>@Model.strIngredient3</li>
-    <li>@Model.strIngredient4</li>
+    @for (int i = 0; i < 15; i++)
+    {
+        if(Model.)
+        <li>@Model[0].strIngredient</li>
+
+    }
 </ul>
+<ul>
+    <li>@Model[0].strIngredient1</li>
+    <li>@Model[0].strIngredient2</li>
+    <li>@Model[0].strIngredient3</li>
+    <li>@Model[0].strIngredient4</li>
+</ul>*@
 
