@@ -29,6 +29,7 @@ namespace Lemon_Bar.Models
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual DbSet<Configuration> Configurations { get; set; }
+        public virtual DbSet<DrinkSale> DrinkSales { get; set; }
         public virtual DbSet<EnumType> EnumTypes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
@@ -52,7 +53,8 @@ namespace Lemon_Bar.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Secret.connection);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=tcp:wendiserver.database.windows.net,1433;Initial Catalog = Lemon_Bar; Persist Security Info=False;User ID = wendiserveradmin; Password= Admin123; MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout = 30;");
             }
         }
 
@@ -291,6 +293,28 @@ namespace Lemon_Bar.Models
                     .HasDefaultValueSql("(getutcdate())");
             });
 
+            modelBuilder.Entity<DrinkSale>(entity =>
+            {
+                entity.Property(e => e.DrinkId)
+                    .IsRequired()
+                    .HasMaxLength(5);
+
+                entity.Property(e => e.NetCost).HasColumnType("money");
+
+                entity.Property(e => e.SaleDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.SalePrice).HasColumnType("money");
+
+                entity.Property(e => e.User).HasMaxLength(450);
+
+                entity.HasOne(d => d.UserNavigation)
+                    .WithMany(p => p.DrinkSales)
+                    .HasForeignKey(d => d.User)
+                    .HasConstraintName("FK__DrinkSales__User__0A338187");
+            });
+
             modelBuilder.Entity<EnumType>(entity =>
             {
                 entity.ToTable("EnumType", "dss");
@@ -328,7 +352,7 @@ namespace Lemon_Bar.Models
                 entity.HasOne(d => d.UserNavigation)
                     .WithMany(p => p.Items)
                     .HasForeignKey(d => d.User)
-                    .HasConstraintName("FK__Item__User__00AA174D");
+                    .HasConstraintName("FK__Item__User__0662F0A3");
             });
 
             modelBuilder.Entity<Job>(entity =>
