@@ -148,6 +148,7 @@ body {
 
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
+    background-color: lightsteelblue;
 }
 
     .styled-table tbody tr:nth-of-type(even) {
