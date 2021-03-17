@@ -160,35 +160,106 @@ namespace Lemon_Bar.Controllers
 
         public async Task<IActionResult> RecipeList()
         {
-            List<Item> inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
-            string com = "&&";
-            string ing = "";
-            foreach (Item item in inventoryList)
-            {
-                string result = item.ItemName + com;
-                ing += result;
-            }
-            string searchString = ing.Substring(0, ing.Length-1);
+            //List<Item> inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            //string com = "&&";
+            //string ing = "";
+            //foreach (Item item in inventoryList)
+            //{
+            //    string result = item.ItemName + com;
+            //    ing += result;
+            //}
+            //string searchString = ing.Substring(0, ing.Length-1);
 
             Rootobject recipeList = new Rootobject();
 
             try
             {
-               recipeList = cocktailDAL.GetInventory(searchString);
+               recipeList = cocktailDAL.GetDataString("old");
             }
             catch
             {
                 return NotFound();
             }
 
-            //Rootobject filter = new Rootobject();
 
-            //foreach (Drink drink in recipeList.drinks)
-            //{
+            Rootobject filter = new Rootobject();
+
+            try
+            {
+                filter = FilterRecipes(recipeList);
+            }
+            catch(Exception e)
+            {
+                return NotFound(e);
+            }
+
+            return View(filter );
+        }
+
+        private Rootobject FilterRecipes(Rootobject Drink)
+        {
+            int index = 0;
+
+            Rootobject returnList= new Rootobject();
+            List<Drink> filtered = new List<Drink>();
+            foreach (Drink drink in Drink.drinks)
+            {
+                bool validDrink = false;
+
+
+                List<string> ingredients= new List<string>();
+                if(!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+                if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
+                if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
+                if (drink.strIngredient10 != null) { ingredients.Add(drink.strIngredient10.ToString()); }
+                if (drink.strIngredient11 != null) { ingredients.Add(drink.strIngredient11.ToString()); }
+                if (drink.strIngredient12 != null) { ingredients.Add(drink.strIngredient12.ToString()); }
+                if (drink.strIngredient13 != null) { ingredients.Add(drink.strIngredient13.ToString()); }
+                if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
+                if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
+
+                //if(ingredients.Count < 1)
+                //{
+                //    return filtered;
+                //}
+
+                List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+                int count = 0;
                 
-            //}
+                foreach (string x in ingredients)
+                {
+                    for (int i = 0; i < userInv.Count; i++)
+                    {
+                        if (userInv[i].ItemName.Contains(x))
+                        {
+                            count++;
+                            break;
+                        }
+                    }
+                }
 
-            return View(recipeList);
+                if(count == ingredients.Count)
+                {
+                    validDrink = true;
+                }
+
+                //filter.drinks[index] = await _context.Items.Where(x => x.ItemName.Any();
+                if (validDrink)
+                {
+
+                    filtered.Add(drink);
+                }
+
+                index++;
+                returnList.drinks = filtered;
+            }
+            return returnList;
         }
 
         public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
@@ -196,11 +267,13 @@ namespace Lemon_Bar.Controllers
             inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
             return View(inventoryList);
         }
+        
         public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
         {
             string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
 
             Rootobject recipeList = new Rootobject();
+
 
             try
             {
@@ -213,6 +286,7 @@ namespace Lemon_Bar.Controllers
 
             return View(recipeList);
         }
+        
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
