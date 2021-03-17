@@ -60,6 +60,17 @@ namespace Lemon_Bar.Controllers
                 return NotFound();
             }  
         }
+        //changing this to randomize
+        public IActionResult DrinkByMood(string strCategory)
+        {
+            Rootobject c = cocktailDAL.GetMood(strCategory);
+            Random r = new Random();
+            List<Drink> drinks = c.drinks.ToList();
+            int rInt = r.Next(0, drinks.Count);
+            //Rootobject f = drinks[rInt];
+            //return View("SearchByName", c);
+            return View(c);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
