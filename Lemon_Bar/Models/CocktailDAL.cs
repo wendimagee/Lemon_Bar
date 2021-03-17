@@ -30,9 +30,7 @@ namespace Lemon_Bar.Models
         {
             string json = GetData(searchName);
             Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
-            return r;
-
-            
+            return r;  
         }
 
         public string GetIdData(int id)
@@ -55,8 +53,6 @@ namespace Lemon_Bar.Models
             string json = GetIdData(id);
             Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
             return r;
-
-
         }
 
         public string GetInventoryData(string searchString)
@@ -85,22 +81,20 @@ namespace Lemon_Bar.Models
         {
             string json = GetMoodData(cocktail);
             Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
-            //Deserialize basically does a special paste
             return r;
         }
         public string GetMoodData(string cocktail)
         {
-            string url = $"https://www.thecocktaildb.com/api/json/v1/1/filter.php?c={cocktail}";
-
+            //string url = $"https://www.thecocktaildb.com/api/json/v1/1/filter.php?c={cocktail}";
+            string url = $"https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/filter.php?c={cocktail}";
             HttpWebRequest request = WebRequest.CreateHttp(url);
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             StreamReader rd = new StreamReader(response.GetResponseStream());
             string json = rd.ReadToEnd();
-
             return json;
+
         }
 
         //this link is for searching by multiple ingredients https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/filter.php?i=vodka&&lemon&&lime&&cranberry
-
     }
 }
