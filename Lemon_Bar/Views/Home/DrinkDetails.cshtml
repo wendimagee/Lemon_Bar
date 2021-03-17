@@ -55,5 +55,8 @@
 
 <p>@Model[0].strInstructions</p>
 
-<img src="@Model[0].strDrinkThumb" alt="@Model[0].strImageAttribution" style="height: 250px; width:auto"/>
+<img src="@Model[0].strDrinkThumb" alt="@Model[0].strImageAttribution" style="height: 250px; width:auto" />
 
+@{string url = @Model[0].strVideo;
+    string URL = url.Replace("watch?v=", "embed/");   }
+<iframe width="560" height="315" src=@URL frameborder="0" allowfullscreen></iframe>
