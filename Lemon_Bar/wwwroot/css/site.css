@@ -131,7 +131,7 @@ body {
     /*Add background color to the table header*/
     .styled-table thead tr {
         background-color: #009879;
-        color: #ffffff;
+        color: #f3f3f3;
         text-align: left;
         border-radius: 5px;
     }
