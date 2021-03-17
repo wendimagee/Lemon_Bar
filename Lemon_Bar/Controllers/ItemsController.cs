@@ -14,6 +14,7 @@ namespace Lemon_Bar.Controllers
     {
         private readonly Lemon_BarContext _context;
         readonly private CocktailDAL cocktailDAL = new CocktailDAL();
+        private readonly IngredientDAL _ingredient = new IngredientDAL();
 
         public ItemsController(Lemon_BarContext context)
         {
@@ -52,6 +53,7 @@ namespace Lemon_Bar.Controllers
         public IActionResult Create()
         {
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            ViewBag.Ingredients = new SelectList(_ingredient.GetAllIngredients(), "strIngredient1", "strIngredient1");
             return View();
         }
 
@@ -257,12 +259,34 @@ namespace Lemon_Bar.Controllers
                 index++;
                 returnList.drinks = filtered;
             }
-
-
             return returnList;
-
         }
 
+        public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
+        {
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            return View(inventoryList);
+        }
+        
+        public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
+        {
+            string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
+
+            Rootobject recipeList = new Rootobject();
+
+
+            try
+            {
+                recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            return View(recipeList);
+        }
+        
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);

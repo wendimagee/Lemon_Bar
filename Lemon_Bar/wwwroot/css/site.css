@@ -96,3 +96,61 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.btn1 {
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    outline: 1px;
+    color: white;
+    background-color: darkblue;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 7px #CCCCCC;
+}
+
+    .btn1:hover {
+        background-color: Highlight
+    }
+
+    .btn1:active {
+        background-color: forestgreen;
+        box-shadow: 0 4px #666;
+        transform: translateY(5px);
+    }
+
+/*Create a Table style*/
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+    /*Add background color to the table header*/
+    .styled-table thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+        border-radius: 5px;
+    }
+
+    /*Spacing for the table columns*/
+    .styled-table th,
+    .styled-table td {
+        padding: 12px 15px;
+    }
+
+    /*Bottom border and alternating colors per table row*/
+    .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+    }
+
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid #009879;
+        }
