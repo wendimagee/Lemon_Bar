@@ -52,8 +52,8 @@ namespace Lemon_Bar.Controllers
            try
             {
                 c = cocktailDAL.GetIdDataString(id);
-
-                return View(c.drinks.ToList());
+                Drink drink = c.drinks[0];
+                return View(drink);
             }
             catch
             {

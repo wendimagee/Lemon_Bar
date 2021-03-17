@@ -1,41 +1,41 @@
-﻿@model List<Drink>
+﻿@model Drink
 
-<h2>@Model[0].strDrink</h2>
+<h2>@Model.strDrink</h2>
 
 @{List<string> ing = new List<string>();
-    ing.Add(Model[0].strIngredient1);
-    ing.Add(Model[0].strIngredient2);
-    ing.Add(Model[0].strIngredient3);
-    ing.Add(Model[0].strIngredient4);
-    ing.Add(Model[0].strIngredient5);
-    ing.Add(Model[0].strIngredient6);
-    if (Model[0].strIngredient7 != null) { ing.Add(Model[0].strIngredient7.ToString()); }
-    if (Model[0].strIngredient8 != null) { ing.Add(Model[0].strIngredient8.ToString()); }
-    if (Model[0].strIngredient9 != null) { ing.Add(Model[0].strIngredient9.ToString()); }
-    if (Model[0].strIngredient10 != null) { ing.Add(Model[0].strIngredient10.ToString()); }
-    if (Model[0].strIngredient11 != null) { ing.Add(Model[0].strIngredient11.ToString()); }
-    if (Model[0].strIngredient12 != null) { ing.Add(Model[0].strIngredient12.ToString()); }
-    if (Model[0].strIngredient13 != null) { ing.Add(Model[0].strIngredient13.ToString()); }
-    if (Model[0].strIngredient14 != null) { ing.Add(Model[0].strIngredient14.ToString()); }
-    if (Model[0].strIngredient15 != null) { ing.Add(Model[0].strIngredient15.ToString()); }
+    ing.Add(Model.strIngredient1);
+    ing.Add(Model.strIngredient2);
+    ing.Add(Model.strIngredient3);
+    ing.Add(Model.strIngredient4);
+    ing.Add(Model.strIngredient5);
+    ing.Add(Model.strIngredient6);
+    //if (Model.strIngredient7 != null) { ing.Add(Model[0].strIngredient7.ToString()); }
+    //if (Model[0].strIngredient8 != null) { ing.Add(Model[0].strIngredient8.ToString()); }
+    //if (Model[0].strIngredient9 != null) { ing.Add(Model[0].strIngredient9.ToString()); }
+    //if (Model[0].strIngredient10 != null) { ing.Add(Model[0].strIngredient10.ToString()); }
+    //if (Model[0].strIngredient11 != null) { ing.Add(Model[0].strIngredient11.ToString()); }
+    //if (Model[0].strIngredient12 != null) { ing.Add(Model[0].strIngredient12.ToString()); }
+    //if (Model[0].strIngredient13 != null) { ing.Add(Model[0].strIngredient13.ToString()); }
+    //if (Model[0].strIngredient14 != null) { ing.Add(Model[0].strIngredient14.ToString()); }
+    //if (Model[0].strIngredient15 != null) { ing.Add(Model[0].strIngredient15.ToString()); }
 }
 
 @{List<string> mea = new List<string>();
-    mea.Add(Model[0].strMeasure1);
-    mea.Add(Model[0].strMeasure2);
-    mea.Add(Model[0].strMeasure3);
-    mea.Add(Model[0].strMeasure4);
-    mea.Add(Model[0].strMeasure5);
-    mea.Add(Model[0].strMeasure6);
-    if (Model[0].strMeasure7 != null) { mea.Add(Model[0].strMeasure7.ToString()); }
-    if (Model[0].strMeasure8 != null) { mea.Add(Model[0].strMeasure8.ToString()); }
-    if (Model[0].strMeasure9 != null) { mea.Add(Model[0].strMeasure9.ToString()); }
-    if (Model[0].strMeasure10 != null) { mea.Add(Model[0].strMeasure10.ToString()); }
-    if (Model[0].strMeasure11 != null) { mea.Add(Model[0].strMeasure11.ToString()); }
-    if (Model[0].strMeasure12 != null) { mea.Add(Model[0].strMeasure12.ToString()); }
-    if (Model[0].strMeasure13 != null) { mea.Add(Model[0].strMeasure13.ToString()); }
-    if (Model[0].strMeasure14 != null) { mea.Add(Model[0].strMeasure14.ToString()); }
-    if (Model[0].strMeasure15 != null) { mea.Add(Model[0].strMeasure15.ToString()); }
+    mea.Add(Model.strMeasure1);
+    mea.Add(Model.strMeasure2);
+    mea.Add(Model.strMeasure3);
+    mea.Add(Model.strMeasure4);
+    mea.Add(Model.strMeasure5);
+    mea.Add(Model.strMeasure6);
+    //if (Model[0].strMeasure7 != null) { mea.Add(Model[0].strMeasure7.ToString()); }
+    //if (Model[0].strMeasure8 != null) { mea.Add(Model[0].strMeasure8.ToString()); }
+    //if (Model[0].strMeasure9 != null) { mea.Add(Model[0].strMeasure9.ToString()); }
+    //if (Model[0].strMeasure10 != null) { mea.Add(Model[0].strMeasure10.ToString()); }
+    //if (Model[0].strMeasure11 != null) { mea.Add(Model[0].strMeasure11.ToString()); }
+    //if (Model[0].strMeasure12 != null) { mea.Add(Model[0].strMeasure12.ToString()); }
+    //if (Model[0].strMeasure13 != null) { mea.Add(Model[0].strMeasure13.ToString()); }
+    //if (Model[0].strMeasure14 != null) { mea.Add(Model[0].strMeasure14.ToString()); }
+    //if (Model[0].strMeasure15 != null) { mea.Add(Model[0].strMeasure15.ToString()); }
 }
 
 <h3>Ingredients:</h3>
@@ -53,11 +53,11 @@
     }
 </ul>
 
-<p>@Model[0].strInstructions</p>
+<p>@Model.strInstructions</p>
 
-<img src="@Model[0].strDrinkThumb" alt="@Model[0].strImageAttribution" style="height: 250px; width:auto" />
+<img src="@Model.strDrinkThumb" alt="@Model.strImageAttribution" style="height: 250px; width:auto" />
 
-@{string url = @Model[0].strVideo;
+@{string url = @Model.strVideo;
     if (url != null)
     {
         string URL = url.Replace("watch?v=", "embed/");
