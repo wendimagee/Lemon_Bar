@@ -177,7 +177,7 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-               recipeList = cocktailDAL.GetDataString("old");
+               recipeList =  cocktailDAL.GetDataString("old");
             }
             catch
             {
@@ -195,6 +195,13 @@ namespace Lemon_Bar.Controllers
             {
                 return NotFound(e);
             }
+
+
+            if(filter.drinks.Count < 1)
+            {
+                return RedirectToAction("SearchByInventory");
+            }
+
 
             return View(filter );
         }

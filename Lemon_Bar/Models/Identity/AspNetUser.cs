@@ -14,6 +14,7 @@ namespace Lemon_Bar.Models
             AspNetUserRoles = new HashSet<AspNetUserRole>();
             AspNetUserTokens = new HashSet<AspNetUserToken>();
             Items = new HashSet<Item>();
+            DrinkSales = new HashSet<DrinkSale>();
         }
 
         public string Id { get; set; }
@@ -37,5 +38,6 @@ namespace Lemon_Bar.Models
         public virtual ICollection<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual ICollection<Item> Items { get; set; }
+        public virtual ICollection<DrinkSale> DrinkSales { get; set; }
     }
 }
