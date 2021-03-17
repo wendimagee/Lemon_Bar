@@ -52,7 +52,6 @@ namespace Lemon_Bar.Controllers
            try
             {
                 c = cocktailDAL.GetIdDataString(id);
-
                 return View(c.drinks.ToList());
             }
             catch
@@ -60,16 +59,27 @@ namespace Lemon_Bar.Controllers
                 return NotFound();
             }  
         }
-        //changing this to randomize
+
+        public IActionResult ShowMoodDrink(Drink drink)
+        {// take in and show rootobject
+                return View(drink);
+        }
+
         public IActionResult DrinkByMood(string strCategory)
         {
-            Rootobject c = cocktailDAL.GetMood(strCategory);
+            Rootobject c = new Rootobject();
             Random r = new Random();
-            List<Drink> drinks = c.drinks.ToList();
-            int rInt = r.Next(0, drinks.Count);
-            //Rootobject f = drinks[rInt];
-            //return View("SearchByName", c);
-            return View(c);
+            c = cocktailDAL.GetMood(strCategory);
+            int rInt = r.Next(0, 10);
+            //This gives us the id of cocktail at a random index on the list of category results
+            int id = Int32.Parse(c.drinks[0].idDrink);
+            Rootobject d = cocktailDAL.GetIdDataString(id);
+            Drink drink = d.drinks[0];
+            return RedirectToAction("ShowMoodDrink", drink );
+        }
+        public IActionResult GetMood()
+        {
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
