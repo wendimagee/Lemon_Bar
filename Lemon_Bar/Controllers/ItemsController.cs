@@ -53,7 +53,10 @@ namespace Lemon_Bar.Controllers
         public IActionResult Create()
         {
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
-            ViewBag.Ingredients = new SelectList(_ingredient.GetAllIngredients(), "strIngredient1", "strIngredient1");
+            List<Item> userItems = _context.Items.Where(u => u.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            List<Ingredient> ingredients = _ingredient.GetAllIngredients().Where(x => !userItems.Any(y => y.ItemName == x.strIngredient1)).ToList();
+            //ViewBag.Ingredients = new SelectList(_ingredient.GetAllIngredients(), "strIngredient1", "strIngredient1");
+            ViewBag.Ingredients = new SelectList(ingredients, "strIngredient1", "strIngredient1");
             return View();
         }
 
