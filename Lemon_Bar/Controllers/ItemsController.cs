@@ -205,6 +205,30 @@ namespace Lemon_Bar.Controllers
 
             return View(filter );
         }
+        public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
+        {
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            return View(inventoryList);
+        }
+        
+        public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
+        {
+            string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
+
+            Rootobject recipeList = new Rootobject();
+
+
+            try
+            {
+                recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            return View(recipeList);
+        }
 
         private Rootobject FilterRecipes(Rootobject Drink)
         {
@@ -224,15 +248,15 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
                 if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
                 if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
-                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
-                if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
-                if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
-                if (drink.strIngredient10 != null) { ingredients.Add(drink.strIngredient10.ToString()); }
-                if (drink.strIngredient11 != null) { ingredients.Add(drink.strIngredient11.ToString()); }
-                if (drink.strIngredient12 != null) { ingredients.Add(drink.strIngredient12.ToString()); }
-                if (drink.strIngredient13 != null) { ingredients.Add(drink.strIngredient13.ToString()); }
-                if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
-                if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
+                //if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+                //if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
+                //if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
+                //if (drink.strIngredient10 != null) { ingredients.Add(drink.strIngredient10.ToString()); }
+                //if (drink.strIngredient11 != null) { ingredients.Add(drink.strIngredient11.ToString()); }
+                //if (drink.strIngredient12 != null) { ingredients.Add(drink.strIngredient12.ToString()); }
+                //if (drink.strIngredient13 != null) { ingredients.Add(drink.strIngredient13.ToString()); }
+                //if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
+                //if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
 
                 //if(ingredients.Count < 1)
                 //{
@@ -272,30 +296,7 @@ namespace Lemon_Bar.Controllers
             return returnList;
         }
 
-        public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
-        {
-            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
-            return View(inventoryList);
-        }
-        
-        public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
-        {
-            string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
 
-            Rootobject recipeList = new Rootobject();
-
-
-            try
-            {
-                recipeList = cocktailDAL.GetInventory(searchString);
-            }
-            catch
-            {
-                return NotFound();
-            }
-
-            return View(recipeList);
-        }
         
         private bool ItemExists(int id)
         {
