@@ -1,0 +1,46 @@
+﻿@model Drink
+
+<h2>@Model.strDrink</h2>
+
+@{List<string> ing = new List<string>();
+    ing.Add(Model.strIngredient1);
+    ing.Add(Model.strIngredient2);
+    ing.Add(Model.strIngredient3);
+    ing.Add(Model.strIngredient4);
+    ing.Add(Model.strIngredient5);
+    ing.Add(Model.strIngredient6);
+
+}
+
+@{List<string> mea = new List<string>();
+    mea.Add(Model.strMeasure1);
+    mea.Add(Model.strMeasure2);
+    mea.Add(Model.strMeasure3);
+    mea.Add(Model.strMeasure4);
+    mea.Add(Model.strMeasure5);
+    mea.Add(Model.strMeasure6);
+
+}
+<h3>Ingredients:</h3>
+<ul>
+    @{ int index = 0;
+        foreach (string i in ing)
+        {
+            if (i != null)
+            {
+                <li>@i: @mea[index]</li>
+                index++;
+            }
+
+        }
+    }
+</ul>
+
+<p>@Model.strInstructions</p>
+
+<img src="@Model.strDrinkThumb" alt="@Model.strImageAttribution" style="height: 250px; width:auto" />
+
+
+
+<p>@Model.strInstructions</p>
+

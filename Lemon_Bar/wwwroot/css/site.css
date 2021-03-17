@@ -128,29 +128,35 @@ body {
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
+
     /*Add background color to the table header*/
-    .styled-table thead tr {
-        background-color: #009879;
-        color: #f3f3f3;
-        text-align: left;
-        border-radius: 5px;
-    }
+.styled-table thead tr {
+    background-color: goldenrod;
+    color: darkblue;
+    text-align: left;
+}
 
     /*Spacing for the table columns*/
-    .styled-table th,
-    .styled-table td {
-        padding: 12px 15px;
-    }
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
 
     /*Bottom border and alternating colors per table row*/
-    .styled-table tbody tr {
-        border-bottom: 1px solid #dddddd;
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+    .styled-table tbody tr:nth-of-type(even) {
+        background-color: #f3f3f3;
     }
 
-        .styled-table tbody tr:nth-of-type(even) {
-            background-color: #f3f3f3;
-        }
+    .styled-table tbody tr:last-of-type {
+        border-bottom: 2px solid #009879;
+    }
 
-        .styled-table tbody tr:last-of-type {
-            border-bottom: 2px solid #009879;
-        }
+    .styled-table tbody tr:hover {
+        font-weight: bold;
+        color: #009879;
+    }

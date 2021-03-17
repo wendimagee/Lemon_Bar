@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Current Inventory List</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -31,10 +31,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.Garnish)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.UserNavigation)
-            </th>
-            <th></th>
+            </th>*@
+            <th>***   Actions   ***</th>
         </tr>
     </thead>
     <tbody>
@@ -59,9 +59,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Garnish)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.UserNavigation.Id)
-                </td>
+                </td>*@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
