@@ -40,7 +40,9 @@
 
 <img src="@Model.strDrinkThumb" alt="@Model.strImageAttribution" style="height: 250px; width:auto" />
 
+<button>
+    <a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">Make This Drink!</a>
+</button>
 
 
-<p>@Model.strInstructions</p>
 

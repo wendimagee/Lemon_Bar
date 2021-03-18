@@ -3,12 +3,12 @@
 <h2>@Model.strDrink</h2>
 
 @{List<string> ing = new List<string>();
-    ing.Add(Model.strIngredient1);
-    ing.Add(Model.strIngredient2);
-    ing.Add(Model.strIngredient3);
-    ing.Add(Model.strIngredient4);
-    ing.Add(Model.strIngredient5);
-    ing.Add(Model.strIngredient6);
+    if (!String.IsNullOrEmpty(Model.strIngredient1)) { ing.Add(Model.strIngredient1); }
+    if (!String.IsNullOrEmpty(Model.strIngredient2)) { ing.Add(Model.strIngredient2); }
+    if (!String.IsNullOrEmpty(Model.strIngredient3)) { ing.Add(Model.strIngredient3); }
+    if (!String.IsNullOrEmpty(Model.strIngredient4)) { ing.Add(Model.strIngredient4); }
+    if (!String.IsNullOrEmpty(Model.strIngredient5)) { ing.Add(Model.strIngredient5); }
+    if (!String.IsNullOrEmpty(Model.strIngredient6)) { ing.Add(Model.strIngredient6); }
     //if (Model.strIngredient7 != null) { ing.Add(Model[0].strIngredient7.ToString()); }
     //if (Model[0].strIngredient8 != null) { ing.Add(Model[0].strIngredient8.ToString()); }
     //if (Model[0].strIngredient9 != null) { ing.Add(Model[0].strIngredient9.ToString()); }
@@ -21,12 +21,12 @@
 }
 
 @{List<string> mea = new List<string>();
-    mea.Add(Model.strMeasure1);
-    mea.Add(Model.strMeasure2);
-    mea.Add(Model.strMeasure3);
-    mea.Add(Model.strMeasure4);
-    mea.Add(Model.strMeasure5);
-    mea.Add(Model.strMeasure6);
+    if (!String.IsNullOrEmpty(Model.strMeasure1)) { mea.Add(Model.strMeasure1); }
+    if (!String.IsNullOrEmpty(Model.strMeasure2)) { mea.Add(Model.strMeasure2); }
+    if (!String.IsNullOrEmpty(Model.strMeasure3)) { mea.Add(Model.strMeasure3); }
+    if (!String.IsNullOrEmpty(Model.strMeasure4)) { mea.Add(Model.strMeasure4); }
+    if (!String.IsNullOrEmpty(Model.strMeasure5)) { mea.Add(Model.strMeasure5); }
+    if (!String.IsNullOrEmpty(Model.strMeasure6)) { mea.Add(Model.strMeasure6); }
     //if (Model[0].strMeasure7 != null) { mea.Add(Model[0].strMeasure7.ToString()); }
     //if (Model[0].strMeasure8 != null) { mea.Add(Model[0].strMeasure8.ToString()); }
     //if (Model[0].strMeasure9 != null) { mea.Add(Model[0].strMeasure9.ToString()); }
@@ -43,12 +43,8 @@
     @{ int index = 0;
         foreach (string i in ing)
         {
-            if (i != null)
-            {
                 <li>@i: @mea[index]</li>
                 index++;
-            }
-
         }
     }
 </ul>
@@ -65,4 +61,6 @@
     }
 }
 
-<a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">Make Drink!</a>
+<button>
+    <a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">Make This Drink!</a>
+</button>
