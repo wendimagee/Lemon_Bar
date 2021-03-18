@@ -55,7 +55,7 @@ namespace Lemon_Bar.Controllers
             drinkSale.DrinkId = id.ToString();
             drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             drinkSale.NetCost = GetNetCost(drink);
-            drinkSale.SalePrice = drinkSale.NetCost * 3;
+            drinkSale.SalePrice = drinkSale.NetCost * 5;
             if (ModelState.IsValid)
             {
                 _context.Add(drinkSale);
@@ -154,14 +154,88 @@ namespace Lemon_Bar.Controllers
             return _context.DrinkSales.Any(e => e.Id == id);
         }
 
-        public static decimal GetNetCost(Drink drink)
+        public decimal? GetNetCost(Drink drink)
         {
-            //calculate if(strIngredient1 = Item.Itemname)
-            //{
-            //      ConvertFromOz(strMeasure1)
-            //net cost = each ingredient.UnitCost * quantity of units needed for drink(30ml vodka)
-            decimal netCost = 0;
+            List<Item> userItems = _context.Items.Where(u => u.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            decimal? netCost = 0;
+            foreach (Item item in userItems)
+            {
+                if (drink.strIngredient1 == item.ItemName)
+                {
+                    if (drink.strMeasure1.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure1);
+                    }
+                    else if (drink.strMeasure1.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
+                    }
+                    //net cost = each ingredient.UnitCost * quantity of units needed for drink(30ml vodka)
+                }
+                else if (drink.strIngredient2 == item.ItemName)
+                {
+                    if (drink.strMeasure2.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure2);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
+                    }
+                }
+                else if (drink.strIngredient3 == item.ItemName)
+                {
+                    if (drink.strMeasure3.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure3);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure3);
+                    }
+                }
+            }
             return netCost;
+        }
+        public decimal? ConvertFromOz(string measurement)
+        {
+            decimal measure1 = 0;
+            string[] measures = measurement.Split(" ");
+            foreach(string measure in measures)
+            {
+                if (measure.Contains("/"))
+                {
+                    //code from Nate
+                    decimal fraction = 0.5m;
+                    measure1 = (fraction + Int32.Parse(measures[0]));
+                }
+                else
+                {
+                    measure1 = Int32.Parse(measures[0]);
+                }
+            }
+            
+            return measure1;
+        }
+        public decimal? ConvertFromMl(string measurement)
+        {
+            decimal measure1 = 0;
+            string[] measures = measurement.Split(" ");
+            foreach (string measure in measures)
+            {
+                if (measure.Contains("/"))
+                {
+                    //code from Nate
+                    decimal fraction = 0.5m;
+                    measure1 = (fraction + Int32.Parse(measures[0]));
+                }
+                else
+                {
+                    measure1 = Int32.Parse(measures[0]);
+                }
+            }
+
+            return measure1;
         }
     }
 }
