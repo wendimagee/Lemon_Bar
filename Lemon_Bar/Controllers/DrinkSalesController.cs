@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
+using System.Security.Claims;
 
 namespace Lemon_Bar.Controllers
 {
     public class DrinkSalesController : Controller
     {
         private readonly Lemon_BarContext _context;
+        private readonly CocktailDAL cocktailDAL = new CocktailDAL();
 
         public DrinkSalesController(Lemon_BarContext context)
         {
@@ -44,20 +46,16 @@ namespace Lemon_Bar.Controllers
             return View(drinkSale);
         }
 
-        // GET: DrinkSales/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
-            ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
-            return View();
-        }
-
-        // POST: DrinkSales/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DrinkId,NetCost,SalePrice,SaleDate,User")] DrinkSale drinkSale)
-        {
+            DrinkSale drinkSale = new DrinkSale();
+            //this is where we can take in cocktailDAL.drink and convert it to a DrinkSales object
+            Rootobject d = cocktailDAL.GetIdDataString(id);
+            Drink drink = d.drinks[0];
+            drinkSale.DrinkId = id.ToString();
+            drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            drinkSale.NetCost = GetNetCost(drink);
+            drinkSale.SalePrice = drinkSale.NetCost * 3;
             if (ModelState.IsValid)
             {
                 _context.Add(drinkSale);
@@ -65,7 +63,7 @@ namespace Lemon_Bar.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
-            return View(drinkSale);
+            return RedirectToAction("Index");
         }
 
         // GET: DrinkSales/Edit/5
@@ -154,6 +152,16 @@ namespace Lemon_Bar.Controllers
         private bool DrinkSaleExists(int id)
         {
             return _context.DrinkSales.Any(e => e.Id == id);
+        }
+
+        public static decimal GetNetCost(Drink drink)
+        {
+            //calculate if(strIngredient1 = Item.Itemname)
+            //{
+            //      ConvertFromOz(strMeasure1)
+            //net cost = each ingredient.UnitCost * quantity of units needed for drink(30ml vodka)
+            decimal netCost = 0;
+            return netCost;
         }
     }
 }
