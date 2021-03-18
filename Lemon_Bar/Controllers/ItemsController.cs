@@ -249,20 +249,19 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
                 if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
                 if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
-                //if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
-                //if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
-                //if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
-                //if (drink.strIngredient10 != null) { ingredients.Add(drink.strIngredient10.ToString()); }
-                //if (drink.strIngredient11 != null) { ingredients.Add(drink.strIngredient11.ToString()); }
-                //if (drink.strIngredient12 != null) { ingredients.Add(drink.strIngredient12.ToString()); }
-                //if (drink.strIngredient13 != null) { ingredients.Add(drink.strIngredient13.ToString()); }
-                //if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
-                //if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
 
-                //if(ingredients.Count < 1)
-                //{
-                //    return filtered;
-                //}
+                List<string> measurement = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+                if (ingredients.Count != measurement.Count)
+                {
+                    continue;
+                }
 
                 List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
                 int count = 0;
@@ -326,6 +325,11 @@ namespace Lemon_Bar.Controllers
 
                 output[1] = unit;
                 return output;
+            }
+
+            if (measure.Contains("."))
+            {
+
             }
 
 
