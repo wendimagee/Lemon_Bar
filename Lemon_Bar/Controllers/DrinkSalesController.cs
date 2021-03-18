@@ -328,16 +328,16 @@ namespace Lemon_Bar.Controllers
                         decimal firstDigit = decimal.Parse(measure[0].ToString());
                         decimal secondDigit = decimal.Parse(measure[2].ToString());
                         decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction);
-                        return measure1;
+                        return fraction;
                     }
                     else
                     {
                         decimal firstDigit = decimal.Parse(measure[0].ToString());
                         decimal secondDigit = decimal.Parse(measure[2].ToString());
                         decimal fraction = firstDigit / secondDigit;
-                        return fraction;
+                        decimal notFraction = decimal.Parse(measures[0]);
+                        measure1 = (fraction + notFraction);
+                        return measure1;
                     }
 
                 }
@@ -356,21 +356,30 @@ namespace Lemon_Bar.Controllers
             string[] measures = measurement.Split(" ");
             foreach (string measure in measures)
             {
-                if (measures[0].Length > 2)
+                if (measure.Contains("/"))
                 {
-                    decimal firstDigit = decimal.Parse(measure[0].ToString());
-                    decimal secondDigit = decimal.Parse(measure[2].ToString());
-                    decimal fraction = firstDigit / secondDigit;
-                    decimal notFraction = decimal.Parse(measures[0]);
-                    measure1 = (fraction + notFraction) * 0.03m;
-                    return measure1;
+                    if (measures[0].Length > 2)
+                    {
+                        decimal firstDigit = decimal.Parse(measure[0].ToString());
+                        decimal secondDigit = decimal.Parse(measure[2].ToString());
+                        decimal fraction = (firstDigit / secondDigit) * 0.03m;
+                        return fraction;
+                    }
+                    else
+                    {
+                        decimal firstDigit = decimal.Parse(measure[0].ToString());
+                        decimal secondDigit = decimal.Parse(measure[2].ToString());
+                        decimal fraction = firstDigit / secondDigit;
+                        decimal notFraction = decimal.Parse(measures[0]);
+                        measure1 = (fraction + notFraction) * 0.03m;
+                        return measure1;
+                    }
                 }
+
                 else
                 {
-                    decimal firstDigit = decimal.Parse(measure[0].ToString());
-                    decimal secondDigit = decimal.Parse(measure[2].ToString());
-                    decimal fraction = (firstDigit / secondDigit) * 0.03m;
-                    return fraction;
+                    measure1 = decimal.Parse(measures[0]) * 0.03m;
+                    return measure1;
                 }
             }
 
@@ -403,26 +412,34 @@ namespace Lemon_Bar.Controllers
             string[] measures = measurement.Split(" ");
             foreach (string measure in measures)
             {
-                if (measures[0].Length > 2)
+                if (measure.Contains("/"))
                 {
-                    decimal firstDigit = decimal.Parse(measure[0].ToString());
-                    decimal secondDigit = decimal.Parse(measure[2].ToString());
-                    decimal fraction = firstDigit / secondDigit;
-                    decimal notFraction = decimal.Parse(measures[0]);
-                    measure1 = (fraction + notFraction) * 1.5m;
-                    return measure1;
+                    if (measures[0].Length > 2)
+                    {
+                        decimal firstDigit = decimal.Parse(measure[0].ToString());
+                        decimal secondDigit = decimal.Parse(measure[2].ToString());
+                        decimal fraction = (firstDigit / secondDigit) * 0.03m;
+                        return fraction;
+                    }
+                    else
+                    {
+                        decimal firstDigit = decimal.Parse(measure[0].ToString());
+                        decimal secondDigit = decimal.Parse(measure[2].ToString());
+                        decimal fraction = firstDigit / secondDigit;
+                        decimal notFraction = decimal.Parse(measures[0]);
+                        measure1 = (fraction + notFraction) * 1.5m;
+                        return measure1;
+                    }
                 }
+
                 else
                 {
-                    decimal firstDigit = decimal.Parse(measure[0].ToString());
-                    decimal secondDigit = decimal.Parse(measure[2].ToString());
-                    decimal fraction = (firstDigit / secondDigit) * 1.5m;
-                    return fraction;
+                    measure1 = decimal.Parse(measures[0]) * 1.5m;
+                    return measure1;
                 }
             }
 
             return measure1;
         }
-
     }
 }
