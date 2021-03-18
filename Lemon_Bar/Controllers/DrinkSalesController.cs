@@ -165,90 +165,144 @@ namespace Lemon_Bar.Controllers
                 {
                     if (drink.strMeasure1.ToLower().Contains("oz"))
                     {
-                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure1);
+                        decimal? measurement = ConvertFromOz(drink.strMeasure1);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (drink.strMeasure1.ToLower().Contains("ml"))
                     {
-                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
+                        decimal? measurement = ConvertFromMl(drink.strMeasure1);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (item.Garnish == true)
                     {
-                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure1);
+                        decimal? measurement = ConvertFromGarnish(drink.strMeasure1);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                 }
                 else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure2.ToLower().Contains("oz"))
                     {
-                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure2);
+                        decimal? measurement = ConvertFromOz(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure3.ToLower().Contains("ml"))
+                    else if (drink.strMeasure2.ToLower().Contains("ml"))
                     {
-                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
+                        decimal? measurement = ConvertFromMl(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (item.Garnish == true)
                     {
-                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure2);
+                        decimal? measurement = ConvertFromGarnish(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                 }
                 else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure3.ToLower().Contains("oz"))
                     {
-                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure3);
+                        decimal? measurement = ConvertFromOz(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (drink.strMeasure3.ToLower().Contains("ml"))
                     {
-                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure3);
+                        decimal? measurement = ConvertFromMl(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (item.Garnish == true)
                     {
-                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure3);
+                        decimal? measurement = ConvertFromGarnish(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                 }
                 else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure4.ToLower().Contains("oz"))
                     {
-                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure4);
+                        decimal? measurement = ConvertFromOz(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (drink.strMeasure4.ToLower().Contains("ml"))
                     {
-                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure4);
+                        decimal? measurement = ConvertFromMl(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (item.Garnish == true)
                     {
-                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure4);
+                        decimal? measurement = ConvertFromGarnish(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                 }
                 else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure5.ToLower().Contains("oz"))
                     {
-                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure5);
+                        decimal? measurement = ConvertFromOz(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (drink.strMeasure5.ToLower().Contains("ml"))
                     {
-                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure5);
+                        decimal? measurement = ConvertFromMl(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (item.Garnish == true)
                     {
-                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure5);
+                        decimal? measurement = ConvertFromGarnish(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                 }
                 else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure6.ToLower().Contains("oz"))
                     {
-                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure6);
+                        decimal? measurement = ConvertFromOz(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (drink.strMeasure6.ToLower().Contains("ml"))
                     {
-                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure6);
+                        decimal? measurement = ConvertFromMl(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                     else if (item.Garnish == true)
                     {
-                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure6);
+                        decimal? measurement = ConvertFromGarnish(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
                     }
                 }
             }
