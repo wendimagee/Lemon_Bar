@@ -40,10 +40,12 @@ namespace Lemon_Bar.Controllers
                 return RedirectToAction("Index");
             }
 
+            Rootobject d = FilterRecipes(c);
+
             TempData.Remove("moveerror");
             TempData.Remove("error");
 
-            return View(c);
+            return View(d);
         }
 
         public IActionResult DrinkDetails(int id)
@@ -87,6 +89,48 @@ namespace Lemon_Bar.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private Rootobject FilterRecipes(Rootobject Drink)
+        {
+
+            Rootobject returnList = new Rootobject();
+            List<Drink> filtered = new List<Drink>();
+            foreach (Drink drink in Drink.drinks)
+            {
+                bool validDrink = true;
+
+
+                List<string> ingredients = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+
+                List<string> measurement = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+                if (ingredients.Count != measurement.Count)
+                {
+                    validDrink = false;
+                }
+
+                if (validDrink)
+                {
+
+                    filtered.Add(drink);
+                }
+
+                returnList.drinks = filtered;
+            }
+            return returnList;
         }
 
     }
