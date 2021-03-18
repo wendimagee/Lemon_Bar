@@ -1,7 +1,7 @@
 ﻿@model List<Item>
 
 <form asp-action="SearchByInventoryResults" asp-controller="Items">
-    <label>Choose 3 ingredients from your inventory to search for cocktails</label>
+    <label><b>Choose 3 ingredients from your inventory to search for cocktails</b></label>
     <select id="ingredient1" name="ingredient1">
         @foreach (Item item in Model)
         {

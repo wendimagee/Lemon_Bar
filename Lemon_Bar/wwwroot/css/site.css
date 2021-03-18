@@ -86,8 +86,10 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    background: url(../LemonBar.jpg) no-repeat center center fixed;
+    background-size: cover;
 }
 .footer {
   position: absolute;
@@ -102,19 +104,20 @@ body {
     cursor: pointer;
     text-align: center;
     outline: 1px;
-    color: white;
-    background-color: darkblue;
+    color: black;
+    background-color: gold;
     border: none;
     border-radius: 10px;
     box-shadow: 0 7px #CCCCCC;
 }
 
     .btn1:hover {
-        background-color: Highlight
+        background-color: darkgreen;
+        color: white;
     }
 
     .btn1:active {
-        background-color: forestgreen;
+        background-color: black;
         box-shadow: 0 4px #666;
         transform: translateY(5px);
     }
@@ -146,6 +149,7 @@ body {
 
 .styled-table tbody tr {
     border-bottom: 1px solid #dddddd;
+    background-color: lightsteelblue;
 }
 
     .styled-table tbody tr:nth-of-type(even) {
