@@ -88,8 +88,8 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background: url(../LemonBar.jpg) no-repeat center center fixed;
-    background-size: cover;
+/*    background: url(../LemonBar.jpg) no-repeat center center fixed;
+    background-size: cover;*/
 }
 .footer {
   position: absolute;
