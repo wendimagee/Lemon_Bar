@@ -154,29 +154,50 @@ namespace Lemon_Bar.Controllers
             return _context.DrinkSales.Any(e => e.Id == id);
         }
 
-        public decimal GetNetCost(Drink drink)
+        public decimal? GetNetCost(Drink drink)
         {
             List<Item> userItems = _context.Items.Where(u => u.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            decimal? netCost = 0;
             foreach (Item item in userItems)
             {
                 if (drink.strIngredient1 == item.ItemName)
                 {
                     if (drink.strMeasure1.ToLower().Contains("oz"))
                     {
-                        decimal? ingredient1cost = item.UnitCost * ConvertFromOz(drink.strMeasure1);
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure1);
                     }
                     else if (drink.strMeasure1.ToLower().Contains("ml"))
                     {
-                        decimal? ingredient1cost = item.UnitCost * ConvertFromMl(drink.strMeasure1);
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
                     }
                     //net cost = each ingredient.UnitCost * quantity of units needed for drink(30ml vodka)
                 }
-
+                else if (drink.strIngredient2 == item.ItemName)
+                {
+                    if (drink.strMeasure2.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure2);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
+                    }
+                }
+                else if (drink.strIngredient3 == item.ItemName)
+                {
+                    if (drink.strMeasure3.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure3);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure3);
+                    }
+                }
             }
-            decimal netCost = 0;
             return netCost;
         }
-        public decimal ConvertFromOz(string measurement)
+        public decimal? ConvertFromOz(string measurement)
         {
             decimal measure1 = 0;
             string[] measures = measurement.Split(" ");
@@ -186,17 +207,17 @@ namespace Lemon_Bar.Controllers
                 {
                     //code from Nate
                     decimal fraction = 0.5m;
-                    measure1 = (fraction + Int32.Parse(measures[0])) * 30;
+                    measure1 = (fraction + Int32.Parse(measures[0]));
                 }
                 else
                 {
-                    measure1 = Int32.Parse(measures[0]) * 30;
+                    measure1 = Int32.Parse(measures[0]);
                 }
             }
             
             return measure1;
         }
-        public decimal ConvertFromMl(string measurement)
+        public decimal? ConvertFromMl(string measurement)
         {
             decimal measure1 = 0;
             string[] measures = measurement.Split(" ");
@@ -206,11 +227,11 @@ namespace Lemon_Bar.Controllers
                 {
                     //code from Nate
                     decimal fraction = 0.5m;
-                    measure1 = (fraction + Int32.Parse(measures[0])) * 30;
+                    measure1 = (fraction + Int32.Parse(measures[0]));
                 }
                 else
                 {
-                    measure1 = Int32.Parse(measures[0]) * 30;
+                    measure1 = Int32.Parse(measures[0]);
                 }
             }
 
