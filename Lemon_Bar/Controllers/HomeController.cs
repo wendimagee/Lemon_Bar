@@ -47,7 +47,7 @@ namespace Lemon_Bar.Controllers
             return View(d);
         }
 
-        public IActionResult DrinkDetails(int id)
+        public IActionResult DrinkDetails(string id)
         {
             Rootobject c = new Rootobject();
            try
@@ -62,32 +62,18 @@ namespace Lemon_Bar.Controllers
             }  
         }
 
-        public IActionResult ShowMoodDrink(Drink drink)
-        {// take in and show rootobject
-                return View(drink);
-        }
-
         public IActionResult DrinkByMood(string strCategory)
         {
             Rootobject c = new Rootobject();
             Random r = new Random();
             c = cocktailDAL.GetMood(strCategory);
-            int rInt = r.Next(0, 10);
+            int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
-            int iddy = Int32.Parse(c.drinks[0].idDrink);
+            string iddy = c.drinks[rInt].idDrink;
             Rootobject d = cocktailDAL.GetIdDataString(iddy);
             Drink drink = d.drinks[0];
 
-            try
-            {
-                 int id = Int32.Parse(drink.idDrink);
-                return RedirectToAction("DrinkDetails", id);
-            }
-            catch
-            {
-                return RedirectToAction("ShowMoodDrink", drink);
-            }
-
+            return RedirectToAction("DrinkDetails", new {id = drink.idDrink });
 
         }
         public IActionResult GetMood()

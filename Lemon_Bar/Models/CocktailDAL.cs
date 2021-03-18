@@ -33,7 +33,7 @@ namespace Lemon_Bar.Models
             return r;  
         }
 
-        public string GetIdData(int id)
+        public string GetIdData(string id)
         {
             //Searches by ID
             string url = $"https://www.thecocktaildb.com/api/json/v2/1/lookup.php?i={id}";
@@ -48,7 +48,7 @@ namespace Lemon_Bar.Models
             return json;
         }
 
-        public Rootobject GetIdDataString(int id)
+        public Rootobject GetIdDataString(string id)
         {
             string json = GetIdData(id);
             Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
