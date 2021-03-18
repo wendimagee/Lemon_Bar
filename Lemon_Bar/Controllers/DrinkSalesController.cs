@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
 using System.Security.Claims;
+using System.Globalization;
 
 namespace Lemon_Bar.Controllers
 {
@@ -255,23 +256,37 @@ namespace Lemon_Bar.Controllers
         }
         public decimal? ConvertFromOz(string measurement)
         {
-            decimal measure1 = 0;
+            decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
             foreach(string measure in measures)
             {
                 if (measure.Contains("/"))
                 {
-                    decimal firstDigit = decimal.Parse(measure[0].ToString());
-                    decimal secondDigit = decimal.Parse(measure[2].ToString());
-                    decimal fraction = firstDigit / secondDigit;
-                    measure1 = (fraction + decimal.Parse(measures[0]));
+                    if (measures[0].Length > 2)
+                    {
+                        decimal firstDigit = decimal.Parse(measure[0].ToString());
+                        decimal secondDigit = decimal.Parse(measure[2].ToString());
+                        decimal fraction = firstDigit / secondDigit;
+                        decimal notFraction = decimal.Parse(measures[0]);
+                        measure1 = (fraction + notFraction);
+                        return measure1;
+                    }
+                    else
+                    {
+                        decimal firstDigit = decimal.Parse(measure[0].ToString());
+                        decimal secondDigit = decimal.Parse(measure[2].ToString());
+                        decimal fraction = firstDigit / secondDigit;
+                        return fraction;
+                    }
+
                 }
                 else
                 {
                     measure1 = decimal.Parse(measures[0]);
+                    return measure1;
                 }
             }
-            
+
             return measure1;
         }
         public decimal? ConvertFromMl(string measurement)
@@ -285,7 +300,7 @@ namespace Lemon_Bar.Controllers
                     decimal firstDigit = decimal.Parse(measure[0].ToString());
                     decimal secondDigit = decimal.Parse(measure[2].ToString());
                     decimal fraction = firstDigit / secondDigit;
-                    measure1 = (fraction + decimal.Parse(measures[0].ToString()) * 0.03m;
+                    measure1 = (fraction + decimal.Parse(measures[0].ToString())) * 0.03m;
                 }
                 else
                 {
