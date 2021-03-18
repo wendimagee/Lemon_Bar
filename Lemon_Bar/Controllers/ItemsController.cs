@@ -71,6 +71,34 @@ namespace Lemon_Bar.Controllers
             item.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (ModelState.IsValid)
             {
+                double factor = 1;
+                if(!item.Garnish)
+                {
+                    switch (item.Units)
+                    {
+                        case "Gallon":
+                            factor = 3785;
+                            break;
+                        case "1/2Gallon":
+                            factor = 1892;
+                            break;
+                        case "Liter":
+                            factor = 100;
+                            break;
+                        case "fifth":
+                            factor = 750;
+                            break;
+                        
+                        default:
+                            break;
+                    }
+
+                    item.Quantity *= factor;
+                    item.Units = "ml";
+                }
+
+                item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 2);
+
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

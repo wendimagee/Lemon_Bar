@@ -25,17 +25,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" />
+                <input asp-for="Quantity" class="form-control" min=".5"/>
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UnitCost" class="control-label"></label>
-                <input asp-for="UnitCost" class="form-control" />
-                <span asp-validation-for="UnitCost" class="text-danger"></span>
+                @*<label asp-for="UnitCost" class="control-label"></label>*@
+                <input asp-for="UnitCost" class="form-control" hidden/>
+                @*<span asp-validation-for="UnitCost" class="text-danger"></span>*@
             </div>
             <div class="form-group">
                 <label asp-for="Units" class="control-label"></label>
-                <input asp-for="Units" class="form-control" />
+                @*<input asp-for="Units" class="form-control" />*@
+                <select asp-for="Units" class="form-control">
+                    <option value="each">each</option>
+                    <option value="fifth">fifth</option>
+                    <option value="Liter">Liter</option>
+                    <option value="1/2Gallon">1/2Gallon</option>
+                    <option value="Gallon">Gallon</option>
+                </select>
                 <span asp-validation-for="Units" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
