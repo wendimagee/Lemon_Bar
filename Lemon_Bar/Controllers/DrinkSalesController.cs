@@ -160,7 +160,7 @@ namespace Lemon_Bar.Controllers
             decimal? netCost = 0;
             foreach (Item item in userItems)
             {
-                if (drink.strIngredient1 == item.ItemName)
+                if (drink.strIngredient1.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure1.ToLower().Contains("oz"))
                     {
@@ -172,7 +172,7 @@ namespace Lemon_Bar.Controllers
                     }
                     //net cost = each ingredient.UnitCost * quantity of units needed for drink(30ml vodka)
                 }
-                else if (drink.strIngredient2 == item.ItemName)
+                else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure2.ToLower().Contains("oz"))
                     {
@@ -183,7 +183,7 @@ namespace Lemon_Bar.Controllers
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
                     }
                 }
-                else if (drink.strIngredient3 == item.ItemName)
+                else if (drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure3.ToLower().Contains("oz"))
                     {
@@ -192,6 +192,39 @@ namespace Lemon_Bar.Controllers
                     else if (drink.strMeasure3.ToLower().Contains("ml"))
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure3);
+                    }
+                }
+                else if (drink.strIngredient4.ToLower() == item.ItemName.ToLower())
+                {
+                    if (drink.strMeasure4.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure4);
+                    }
+                    else if (drink.strMeasure4.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure4);
+                    }
+                }
+                else if (drink.strIngredient5.ToLower() == item.ItemName.ToLower())
+                {
+                    if (drink.strMeasure5.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure5);
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure5);
+                    }
+                }
+                else if (drink.strIngredient6.ToLower() == item.ItemName.ToLower())
+                {
+                    if (drink.strMeasure6.ToLower().Contains("oz"))
+                    {
+                        netCost += item.UnitCost * ConvertFromOz(drink.strMeasure6);
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("ml"))
+                    {
+                        netCost += item.UnitCost * ConvertFromMl(drink.strMeasure6);
                     }
                 }
             }
@@ -207,11 +240,11 @@ namespace Lemon_Bar.Controllers
                 {
                     //code from Nate
                     decimal fraction = 0.5m;
-                    measure1 = (fraction + Int32.Parse(measures[0]));
+                    measure1 = (fraction + decimal.Parse(measures[0]));
                 }
                 else
                 {
-                    measure1 = Int32.Parse(measures[0]);
+                    measure1 = decimal.Parse(measures[0]);
                 }
             }
             
