@@ -170,7 +170,10 @@ namespace Lemon_Bar.Controllers
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
                     }
-                    //net cost = each ingredient.UnitCost * quantity of units needed for drink(30ml vodka)
+                    else if (item.Garnish == true)
+                    {
+                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure1);
+                    }
                 }
                 else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
                 {
@@ -182,8 +185,12 @@ namespace Lemon_Bar.Controllers
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure1);
                     }
+                    else if (item.Garnish == true)
+                    {
+                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure2);
+                    }
                 }
-                else if (drink.strIngredient3.ToLower() == item.ItemName.ToLower())
+                else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure3.ToLower().Contains("oz"))
                     {
@@ -193,8 +200,12 @@ namespace Lemon_Bar.Controllers
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure3);
                     }
+                    else if (item.Garnish == true)
+                    {
+                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure3);
+                    }
                 }
-                else if (drink.strIngredient4.ToLower() == item.ItemName.ToLower())
+                else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure4.ToLower().Contains("oz"))
                     {
@@ -204,8 +215,12 @@ namespace Lemon_Bar.Controllers
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure4);
                     }
+                    else if (item.Garnish == true)
+                    {
+                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure4);
+                    }
                 }
-                else if (drink.strIngredient5.ToLower() == item.ItemName.ToLower())
+                else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure5.ToLower().Contains("oz"))
                     {
@@ -215,8 +230,12 @@ namespace Lemon_Bar.Controllers
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure5);
                     }
+                    else if (item.Garnish == true)
+                    {
+                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure5);
+                    }
                 }
-                else if (drink.strIngredient6.ToLower() == item.ItemName.ToLower())
+                else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
                 {
                     if (drink.strMeasure6.ToLower().Contains("oz"))
                     {
@@ -225,6 +244,10 @@ namespace Lemon_Bar.Controllers
                     else if (drink.strMeasure6.ToLower().Contains("ml"))
                     {
                         netCost += item.UnitCost * ConvertFromMl(drink.strMeasure6);
+                    }
+                    else if (item.Garnish == true)
+                    {
+                        netCost += item.UnitCost * ConvertFromGarnish(drink.strMeasure6);
                     }
                 }
             }
@@ -238,8 +261,9 @@ namespace Lemon_Bar.Controllers
             {
                 if (measure.Contains("/"))
                 {
-                    //code from Nate
-                    decimal fraction = 0.5m;
+                    decimal firstDigit = decimal.Parse(measure[0].ToString());
+                    decimal secondDigit = decimal.Parse(measure[2].ToString());
+                    decimal fraction = firstDigit / secondDigit;
                     measure1 = (fraction + decimal.Parse(measures[0]));
                 }
                 else
@@ -258,17 +282,40 @@ namespace Lemon_Bar.Controllers
             {
                 if (measure.Contains("/"))
                 {
-                    //code from Nate
-                    decimal fraction = 0.5m;
-                    measure1 = (fraction + Int32.Parse(measures[0]));
+                    decimal firstDigit = decimal.Parse(measure[0].ToString());
+                    decimal secondDigit = decimal.Parse(measure[2].ToString());
+                    decimal fraction = firstDigit / secondDigit;
+                    measure1 = (fraction + decimal.Parse(measures[0].ToString()) * 0.03m;
                 }
                 else
                 {
-                    measure1 = Int32.Parse(measures[0]);
+                    measure1 = decimal.Parse(measures[0].ToString()) * 0.03m;
+                }
+            }
+
+            return measure1;
+        }
+        public decimal? ConvertFromGarnish(string measurement)
+        {
+            decimal measure1 = 0;
+            string[] measures = measurement.Split(" ");
+            foreach (string measure in measures)
+            {
+                if (measure.Contains("/"))
+                {
+                    decimal firstDigit = decimal.Parse(measure[0].ToString());
+                    decimal secondDigit = decimal.Parse(measure[2].ToString());
+                    decimal fraction = firstDigit/secondDigit;
+                    measure1 = (fraction + decimal.Parse(measures[0]));
+                }
+                else
+                {
+                    measure1 = decimal.Parse(measures[0]);
                 }
             }
 
             return measure1;
         }
     }
+
 }
