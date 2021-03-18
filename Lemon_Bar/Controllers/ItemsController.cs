@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
 using System.Security.Claims;
+using System.Data.Entity.SqlServer;
 
 namespace Lemon_Bar.Controllers
 {
@@ -283,7 +284,7 @@ namespace Lemon_Bar.Controllers
                     validDrink = true;
                 }
 
-                //filter.drinks[index] = await _context.Items.Where(x => x.ItemName.Any();
+
                 if (validDrink)
                 {
 
@@ -297,6 +298,87 @@ namespace Lemon_Bar.Controllers
         }
 
 
+        public List<string> GrabUnits(string measure)
+        {
+            List<string> output = new List<string>();
+            string unit = "";
+
+            if (measure.Contains("/"))
+            {
+                string[] sent = measure.Split(" ");
+                string num1 = sent[0];
+                string fraction = sent[1];
+
+                output[0] = num1 + " " + fraction;
+
+                
+                if (sent.Length > 3)
+                {
+                    for (int i = 2; i < sent.Length; i++)
+                    {
+                        unit += sent[i];
+                    }
+                }
+                else
+                {
+                    unit = sent[2];
+                }
+
+                output[1] = unit;
+                return output;
+            }
+
+
+            char[] numsChar = measure.Where(Char.IsDigit).ToArray();
+            string nums = numsChar.ToString();
+
+            string[] sentence = measure.Split(" ");
+
+            List<string> nonNum = sentence.Where(t => SqlFunctions.IsNumeric(t) == 0).ToList();
+
+            unit = nonNum[0];
+
+            if(nonNum.Count > 1)
+            {
+                for (int i = 1; i < nonNum.Count; i++)
+                {
+                    unit += " " + nonNum[i];
+                }
+            }
+
+
+            output[0] = nums;
+            output[1] = unit;
+
+            return output;
+        }
+
+        public double FractionConverter(string fraction)
+        {
+            double integer = 0;
+            double fracNum = 0;
+            if (fraction.Length > 3)
+            {
+                integer = double.Parse(fraction.Substring(0));
+                string frac = fraction.Substring(2);
+                string nom = frac.Substring(0);
+                string denom = frac.Last().ToString();
+                double nomNum = double.Parse(nom);
+                double denomNum = double.Parse(denom);
+            }
+            else
+            {
+                string nom = fraction.Substring(0);
+                string denom = fraction.Last().ToString();
+                double nomNum = double.Parse(nom);
+                double denomNum = double.Parse(denom);
+                fracNum = nomNum / denomNum;
+            }
+
+            double output = integer + fracNum;
+            return output;
+
+        }
         
         private bool ItemExists(int id)
         {
