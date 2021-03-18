@@ -77,16 +77,16 @@ namespace Lemon_Bar.Controllers
                     switch (item.Units)
                     {
                         case "Gallon":
-                            factor = 3785;
+                            factor = 128;
                             break;
                         case "1/2Gallon":
-                            factor = 1892;
+                            factor = 64;
                             break;
                         case "Liter":
-                            factor = 100;
+                            factor = 33.8;
                             break;
                         case "fifth":
-                            factor = 750;
+                            factor = 25.4;
                             break;
                         
                         default:
@@ -94,7 +94,11 @@ namespace Lemon_Bar.Controllers
                     }
 
                     item.Quantity *= factor;
-                    item.Units = "ml";
+                    item.Units = "oz";
+                }
+                else
+                {
+                    item.Units = "each";
                 }
 
                 item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 2);
