@@ -55,7 +55,7 @@ namespace Lemon_Bar.Controllers
             drinkSale.DrinkId = id.ToString();
             drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             drinkSale.NetCost = GetNetCost(drink);
-            drinkSale.SalePrice = drinkSale.NetCost * 3;
+            drinkSale.SalePrice = drinkSale.NetCost * 5;
             if (ModelState.IsValid)
             {
                 _context.Add(drinkSale);
