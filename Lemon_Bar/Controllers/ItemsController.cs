@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
 using System.Security.Claims;
+using System.Data.Entity.SqlServer;
 
 namespace Lemon_Bar.Controllers
 {
@@ -205,6 +206,30 @@ namespace Lemon_Bar.Controllers
 
             return View(filter );
         }
+        public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
+        {
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            return View(inventoryList);
+        }
+        
+        public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
+        {
+            string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
+
+            Rootobject recipeList = new Rootobject();
+
+
+            try
+            {
+                recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            return View(recipeList);
+        }
 
         private Rootobject FilterRecipes(Rootobject Drink)
         {
@@ -224,15 +249,15 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
                 if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
                 if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
-                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
-                if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
-                if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
-                if (drink.strIngredient10 != null) { ingredients.Add(drink.strIngredient10.ToString()); }
-                if (drink.strIngredient11 != null) { ingredients.Add(drink.strIngredient11.ToString()); }
-                if (drink.strIngredient12 != null) { ingredients.Add(drink.strIngredient12.ToString()); }
-                if (drink.strIngredient13 != null) { ingredients.Add(drink.strIngredient13.ToString()); }
-                if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
-                if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
+                //if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+                //if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
+                //if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
+                //if (drink.strIngredient10 != null) { ingredients.Add(drink.strIngredient10.ToString()); }
+                //if (drink.strIngredient11 != null) { ingredients.Add(drink.strIngredient11.ToString()); }
+                //if (drink.strIngredient12 != null) { ingredients.Add(drink.strIngredient12.ToString()); }
+                //if (drink.strIngredient13 != null) { ingredients.Add(drink.strIngredient13.ToString()); }
+                //if (drink.strIngredient14 != null) { ingredients.Add(drink.strIngredient14.ToString()); }
+                //if (drink.strIngredient15 != null) { ingredients.Add(drink.strIngredient15.ToString()); }
 
                 //if(ingredients.Count < 1)
                 //{
@@ -259,7 +284,7 @@ namespace Lemon_Bar.Controllers
                     validDrink = true;
                 }
 
-                //filter.drinks[index] = await _context.Items.Where(x => x.ItemName.Any();
+
                 if (validDrink)
                 {
 
@@ -272,29 +297,87 @@ namespace Lemon_Bar.Controllers
             return returnList;
         }
 
-        public async Task<IActionResult> SearchByInventory(List<Item> inventoryList)
+
+        public List<string> GrabUnits(string measure)
         {
-            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
-            return View(inventoryList);
+            List<string> output = new List<string>();
+            string unit = "";
+
+            if (measure.Contains("/"))
+            {
+                string[] sent = measure.Split(" ");
+                string num1 = sent[0];
+                string fraction = sent[1];
+
+                output[0] = num1 + " " + fraction;
+
+                
+                if (sent.Length > 3)
+                {
+                    for (int i = 2; i < sent.Length; i++)
+                    {
+                        unit += sent[i];
+                    }
+                }
+                else
+                {
+                    unit = sent[2];
+                }
+
+                output[1] = unit;
+                return output;
+            }
+
+
+            char[] numsChar = measure.Where(Char.IsDigit).ToArray();
+            string nums = numsChar.ToString();
+
+            string[] sentence = measure.Split(" ");
+
+            List<string> nonNum = sentence.Where(t => SqlFunctions.IsNumeric(t) == 0).ToList();
+
+            unit = nonNum[0];
+
+            if(nonNum.Count > 1)
+            {
+                for (int i = 1; i < nonNum.Count; i++)
+                {
+                    unit += " " + nonNum[i];
+                }
+            }
+
+
+            output[0] = nums;
+            output[1] = unit;
+
+            return output;
         }
-        
-        public IActionResult SearchByInventoryResults(string ingredient1, string ingredient2, string ingredient3)
+
+        public double FractionConverter(string fraction)
         {
-            string searchString = $"{ingredient1}" + "," + $"{ingredient2}" + "," + $"{ingredient3}";
-
-            Rootobject recipeList = new Rootobject();
-
-
-            try
+            double integer = 0;
+            double fracNum = 0;
+            if (fraction.Length > 3)
             {
-                recipeList = cocktailDAL.GetInventory(searchString);
+                integer = double.Parse(fraction.Substring(0));
+                string frac = fraction.Substring(2);
+                string nom = frac.Substring(0);
+                string denom = frac.Last().ToString();
+                double nomNum = double.Parse(nom);
+                double denomNum = double.Parse(denom);
             }
-            catch
+            else
             {
-                return NotFound();
+                string nom = fraction.Substring(0);
+                string denom = fraction.Last().ToString();
+                double nomNum = double.Parse(nom);
+                double denomNum = double.Parse(denom);
+                fracNum = nomNum / denomNum;
             }
 
-            return View(recipeList);
+            double output = integer + fracNum;
+            return output;
+
         }
         
         private bool ItemExists(int id)
