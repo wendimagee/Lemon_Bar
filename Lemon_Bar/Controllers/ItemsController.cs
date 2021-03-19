@@ -210,7 +210,7 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-               recipeList =  cocktailDAL.GetDataString("old");
+               recipeList =  cocktailDAL.GetPopularString();
             }
             catch
             {
@@ -269,6 +269,7 @@ namespace Lemon_Bar.Controllers
 
             Rootobject returnList= new Rootobject();
             List<Drink> filtered = new List<Drink>();
+            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             foreach (Drink drink in Drink.drinks)
             {
                 bool validDrink = false;
@@ -295,7 +296,7 @@ namespace Lemon_Bar.Controllers
                     continue;
                 }
 
-                List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            
                 int count = 0;
                 
                 foreach (string x in ingredients)
