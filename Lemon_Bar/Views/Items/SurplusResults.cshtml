@@ -1,0 +1,20 @@
+﻿
+@model Rootobject
+@*<h4>@Model.drinks.Count Drinks Found</h4>
+    <br />*@
+
+@foreach (Drink r in Model.drinks)
+{
+    <h2>@r.strDrink</h2>
+    <img src="@r.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
+        <br />
+    <br />
+    <div>
+        <form asp-action="DrinkDetails" asp-controller="Home">
+            <button class="btn1">
+                Learn More!
+            </button>
+        </form>
+    </div>
+    <hr />
+} @*asp-route-id="@i.Id"*@

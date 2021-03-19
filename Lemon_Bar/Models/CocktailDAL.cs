@@ -10,7 +10,27 @@ namespace Lemon_Bar.Models
 {
     public class CocktailDAL
     {
+        public string GetPopular()
+        {
+            //Searches by Name
+            string url = $"https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/popular.php";
 
+            HttpWebRequest request = WebRequest.CreateHttp(url);
+            HttpWebResponse response = null;
+
+            response = (HttpWebResponse)request.GetResponse();
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string json = rd.ReadToEnd();
+
+            return json;
+        }
+
+        public Rootobject GetPopularString()
+        {
+            string json = GetPopular();
+            Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
+            return r;
+        }
         public string GetData(string searchName)
         {
             //Searches by Name
@@ -33,7 +53,7 @@ namespace Lemon_Bar.Models
             return r;  
         }
 
-        public string GetIdData(int id)
+        public string GetIdData(string id)
         {
             //Searches by ID
             string url = $"https://www.thecocktaildb.com/api/json/v2/1/lookup.php?i={id}";
@@ -48,7 +68,7 @@ namespace Lemon_Bar.Models
             return json;
         }
 
-        public Rootobject GetIdDataString(int id)
+        public Rootobject GetIdDataString(string id)
         {
             string json = GetIdData(id);
             Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);

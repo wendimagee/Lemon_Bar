@@ -210,7 +210,7 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-               recipeList =  cocktailDAL.GetDataString("old");
+               recipeList =  cocktailDAL.GetPopularString();
             }
             catch
             {
@@ -269,6 +269,7 @@ namespace Lemon_Bar.Controllers
 
             Rootobject returnList= new Rootobject();
             List<Drink> filtered = new List<Drink>();
+            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             foreach (Drink drink in Drink.drinks)
             {
                 bool validDrink = false;
@@ -295,7 +296,7 @@ namespace Lemon_Bar.Controllers
                     continue;
                 }
 
-                List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            
                 int count = 0;
                 
                 foreach (string x in ingredients)
@@ -415,10 +416,39 @@ namespace Lemon_Bar.Controllers
             return output;
 
         }
-        
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
         }
+       
+        public async Task<IActionResult> SurplusResults()
+        {
+            List<Item> inventoryList = new List<Item>();
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+
+            List<Item> ordered = inventoryList.OrderByDescending(x => x.Quantity).ToList();
+
+            Item ingredient1 = ordered[0];
+            //Item ingredient2 = ordered[1];
+            //Item ingredient3 = ordered[2];
+
+
+            string searchString = $"{ingredient1.ItemName}";// + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
+
+           Rootobject recipeList = new Rootobject();
+
+            try
+            {
+                recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            return View(recipeList);
+
+        }
+
     }
 }
