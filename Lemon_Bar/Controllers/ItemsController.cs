@@ -428,11 +428,11 @@ namespace Lemon_Bar.Controllers
             List<Item> ordered = inventoryList.OrderByDescending(x => x.Quantity).ToList();
 
             Item ingredient1 = ordered[0];
-            Item ingredient2 = ordered[1];
-            Item ingredient3 = ordered[2];
+            //Item ingredient2 = ordered[1];
+            //Item ingredient3 = ordered[2];
 
 
-            string searchString = $"{ingredient1.ItemName}" + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
+            string searchString = $"{ingredient1.ItemName}";// + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
 
            Rootobject recipeList = new Rootobject();
 
