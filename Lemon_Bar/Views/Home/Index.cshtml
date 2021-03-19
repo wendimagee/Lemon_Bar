@@ -3,36 +3,45 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-
-<br />
-<h2 align="center">Welcome to Lemon Bar!</h2>
-<br />
-<h3 align="center">Lemon Bar is here to help you keep track of your bar's inventory </h3>
-<br />
-<h2 align="center">AND</h2>
-<br />
-<h3 align="center">Help you to pick new cocktails to serve based upon what you have in stock!</h3>
-<br />
-<br />
-<form align="center" asp-action="SearchByName" asp-controller="Home">
-    <label>Search for a cocktail by name!</label>
-    <input type="text" name="cocktail" />
-    <input type="submit" class="btn1" />
-</form>
-@*<form align="center" asp-action="DrinkByMood" asp-controller="Home">
-    <label>Search for a cocktail by mood!</label>
-    <input type="text" name="strCategory" />
-    <input type="submit" class="btn1" />
-</form>*@
-<br />
-@if (SignInManager.IsSignedIn(User))
-{
-    <h4 align="center"> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
-    <h4 align="center"> <a asp-action="GetMood" asp-controller="Home" >Make a random drink based on your mood!</a> </h4>
-}
-else
-{
-    <h4 align="center">If you would like to start tracking your inventory please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a> an account with us! </h4>
-}
-
-
+<html>
+<body>
+    <style>
+        body {
+            background-image: url(../LemonBar.jpg);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+        }
+    </style>
+    <br />
+    <h2 align="center">Welcome to Lemon Bar!</h2>
+    <br />
+    <h3 align="center">Lemon Bar is here to help you keep track of your bar's inventory </h3>
+    <br />
+    <h2 align="center">AND</h2>
+    <br />
+    <h3 align="center">Help you to pick new cocktails to serve based upon what you have in stock!</h3>
+    <br />
+    <br />
+    <form align="center" asp-action="SearchByName" asp-controller="Home">
+        <label>Search for a cocktail by name!</label>
+        <input type="text" name="cocktail" />
+        <input type="submit" class="btn1" />
+    </form>
+    @*<form align="center" asp-action="DrinkByMood" asp-controller="Home">
+            <label>Search for a cocktail by mood!</label>
+            <input type="text" name="strCategory" />
+            <input type="submit" class="btn1" />
+        </form>*@
+    <br />
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <h4 align="center"> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
+        <h4 align="center"> <a asp-action="GetMood" asp-controller="Home">Make a random drink based on your mood!</a> </h4>
+    }
+    else
+    {
+        <h4 align="center">If you would like to start tracking your inventory please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a> an account with us! </h4>
+    }
+</body>
+</html>
