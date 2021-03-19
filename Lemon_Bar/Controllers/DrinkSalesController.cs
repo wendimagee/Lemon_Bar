@@ -47,11 +47,15 @@ namespace Lemon_Bar.Controllers
             return View(drinkSale);
         }
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(string id)
         {
             DrinkSale drinkSale = new DrinkSale();
             //this is where we can take in cocktailDAL.drink and convert it to a DrinkSales object
             Rootobject d = cocktailDAL.GetIdDataString(id);
+
+            //Check to see if we have ingredients, store needed ingredients as list then reroute to Inventory Create
+
+
             Drink drink = d.drinks[0];
             drinkSale.DrinkId = id.ToString();
             drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -438,71 +442,59 @@ namespace Lemon_Bar.Controllers
         {
             decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
-            foreach (string measure in measures)
+
+            if (measures[0].Contains("/") && measures[0].Length > 2)
             {
-                if (measure.Contains("/"))
-                {
-                    if (measures[0].Length > 2)
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        return fraction;
-                    }
-                    else
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction);
-                        return measure1;
-                    }
-
-                }
-                else
-                {
-                    measure1 = decimal.Parse(measures[0]);
-                    return measure1;
-                }
+                string fractionFirst = measures[0];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                return fraction;
             }
-
-            return measure1;
+            else if (measures[1].Contains("/"))
+            {
+                string fractionFirst = measures[1];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                decimal notFraction = decimal.Parse(measures[0]);
+                measure1 = (fraction + notFraction);
+                return measure1;
+            }
+            else
+            {
+                measure1 = decimal.Parse(measures[0]);
+                return measure1;
+            }
         }
         public decimal? ConvertFromMl(string measurement)
         {
-            decimal measure1 = 0;
+            decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
-            foreach (string measure in measures)
+
+            if (measures[0].Contains("/") && measures[0].Length > 2)
             {
-                if (measure.Contains("/"))
-                {
-                    if (measures[0].Length > 2)
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = (firstDigit / secondDigit) * 0.03m;
-                        return fraction;
-                    }
-                    else
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction) * 0.03m;
-                        return measure1;
-                    }
-                }
-
-                else
-                {
-                    measure1 = decimal.Parse(measures[0]) * 0.03m;
-                    return measure1;
-                }
+                string fractionFirst = measures[0];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                return fraction * 0.03m;
             }
-
-            return measure1;
+            else if (measures[1].Contains("/"))
+            {
+                string fractionFirst = measures[1];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                decimal notFraction = decimal.Parse(measures[0]);
+                measure1 = (fraction + notFraction);
+                return measure1 * 0.03m;
+            }
+            else
+            {
+                measure1 = decimal.Parse(measures[0]);
+                return measure1 * 0.03m;
+            }
         }
         public decimal? ConvertFromGarnish(string measurement)
         {
@@ -517,6 +509,10 @@ namespace Lemon_Bar.Controllers
                     decimal fraction = firstDigit / secondDigit;
                     measure1 = (fraction + decimal.Parse(measures[0]));
                 }
+                else if (measure.Contains("whole") || measure.Contains("sprig"))
+                {
+                    measure1 = 1.0m;
+                }
                 else
                 {
                     measure1 = decimal.Parse(measures[0]);
@@ -527,38 +523,97 @@ namespace Lemon_Bar.Controllers
         }
         public decimal? ConvertFromShot(string measurement)
         {
-            decimal measure1 = 0;
+            decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
-            foreach (string measure in measures)
+
+            if (measures[0].Contains("/") && measures[0].Length > 2)
             {
-                if (measure.Contains("/"))
-                {
-                    if (measures[0].Length > 2)
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = (firstDigit / secondDigit) * 0.03m;
-                        return fraction;
-                    }
-                    else
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction) * 1.5m;
-                        return measure1;
-                    }
-                }
-
-                else
-                {
-                    measure1 = decimal.Parse(measures[0]) * 1.5m;
-                    return measure1;
-                }
+                string fractionFirst = measures[0];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                return fraction * 1.5m;
             }
-
-            return measure1;
+            else if (measures[1].Contains("/"))
+            {
+                string fractionFirst = measures[1];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                decimal notFraction = decimal.Parse(measures[0]);
+                measure1 = (fraction + notFraction);
+                return measure1 * 1.5m;
+            }
+            else
+            {
+                measure1 = decimal.Parse(measures[0]);
+                return measure1 * 1.5m;
+            }
         }
+        
+        //public bool MissingIng(Drink drink)
+        //{
+        //    int index = 0;
+
+
+
+        //    List<string> ingredients = new List<string>();
+        //    if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+        //    if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+        //    if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+        //    if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+        //    if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+        //    if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+
+        //    List<string> measurement = new List<string>();
+        //    if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+        //    if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+        //    if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+        //    if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+        //    if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+        //    if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+        //    //if counts don't match do validation on whereever the list with the current drink is coming from
+
+        //    List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+        //    int count = 0;
+        //    List<string> temp = new List<string>();
+
+
+        //    foreach (string x in ingredients)
+        //    {
+        //        for (int i = 0; i < userInv.Count; i++)
+        //        {
+        //            if (userInv[i].ItemName.Contains(x))
+        //            {
+        //                count++;
+        //                break;
+        //            }
+        //            else
+        //            {
+        //                temp.Add(x);
+        //            }
+        //        }
+        //    }
+
+        //    if (count == ingredients.Count)
+        //    {
+        //        validDrink = true;
+        //    }
+
+
+        //    if (validDrink)
+        //    {
+
+        //        filtered.Add(drink);
+        //    }
+
+        //    index++;
+        //    returnList.drinks = filtered;
+            
+        //return returnList;
+        //}
+
     }
+
 }
