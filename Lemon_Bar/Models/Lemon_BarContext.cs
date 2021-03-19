@@ -53,7 +53,6 @@ namespace Lemon_Bar.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-
                 optionsBuilder.UseSqlServer(Secret.connection);
             }
         }
@@ -297,7 +296,7 @@ namespace Lemon_Bar.Models
             {
                 entity.Property(e => e.DrinkId)
                     .IsRequired()
-                    .HasMaxLength(5);
+                    .HasMaxLength(6);
 
                 entity.Property(e => e.NetCost).HasColumnType("money");
 
