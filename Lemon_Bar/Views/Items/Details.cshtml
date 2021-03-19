@@ -3,9 +3,11 @@
 
 @{
     ViewData["Title"] = "Details";
+    string url = $"https://www.thecocktaildb.com/images/ingredients/{Model.ItemName}-Medium.png";
 }
 
 <h1>Details</h1>
+<img src="@url" class="floatRight" />
 
 <div>
 

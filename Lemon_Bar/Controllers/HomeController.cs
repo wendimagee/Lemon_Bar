@@ -17,8 +17,7 @@ namespace Lemon_Bar.Controllers
         public IActionResult Index()
         {
 
-            Rootobject r = cocktailDAL.GetDataString("manhattan");
-            return View(r);
+            return View();
         }
 
         public IActionResult SearchByName(string cocktail)
@@ -67,16 +66,29 @@ namespace Lemon_Bar.Controllers
         {// take in and show rootobject
                 return View(drink);
         }
- 
+
         public IActionResult DrinkByMood(string strCategory)
         {
+            Rootobject c = new Rootobject();
             Random r = new Random();
-            Rootobject c = cocktailDAL.GetMood(strCategory);
-            int rInt = r.Next(0, c.drinks.Count);
-            int id = Int32.Parse(c.drinks[rInt].idDrink);
-            Rootobject d = cocktailDAL.GetIdDataString(id);
+            c = cocktailDAL.GetMood(strCategory);
+            int rInt = r.Next(0, 10);
+            //This gives us the id of cocktail at a random index on the list of category results
+            int iddy = Int32.Parse(c.drinks[0].idDrink);
+            Rootobject d = cocktailDAL.GetIdDataString(iddy);
             Drink drink = d.drinks[0];
-            return RedirectToAction("ShowMoodDrink", drink);
+
+            try
+            {
+                 int id = Int32.Parse(drink.idDrink);
+                return RedirectToAction("DrinkDetails", id);
+            }
+            catch
+            {
+                return RedirectToAction("ShowMoodDrink", drink);
+            }
+
+
         }
         public IActionResult GetMood()
         {
@@ -115,6 +127,7 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
                 if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
 
+                //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
                 if (ingredients.Count != measurement.Count)
                 {
                     validDrink = false;
