@@ -337,7 +337,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure4.ToLower().Contains("Top") || drink.strMeasure4.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure4.ToLower().Contains("top") || drink.strMeasure4.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
