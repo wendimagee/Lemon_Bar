@@ -415,10 +415,39 @@ namespace Lemon_Bar.Controllers
             return output;
 
         }
-        
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
         }
+       
+        public async Task<IActionResult> SurplusResults()
+        {
+            List<Item> inventoryList = new List<Item>();
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+
+            List<Item> ordered = inventoryList.OrderByDescending(x => x.Quantity).ToList();
+
+            Item ingredient1 = ordered[0];
+            //Item ingredient2 = ordered[1];
+            //Item ingredient3 = ordered[2];
+
+
+            string searchString = $"{ingredient1.ItemName}";// + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
+
+           Rootobject recipeList = new Rootobject();
+
+            try
+            {
+                recipeList = cocktailDAL.GetInventory(searchString);
+            }
+            catch
+            {
+                return NotFound();
+            }
+
+            return View(recipeList);
+
+        }
+
     }
 }
