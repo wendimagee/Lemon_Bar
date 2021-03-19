@@ -101,7 +101,7 @@ namespace Lemon_Bar.Controllers
                     item.Units = "each";
                 }
 
-                item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 2);
+                item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 5);
 
                 _context.Add(item);
                 await _context.SaveChangesAsync();
@@ -142,6 +142,7 @@ namespace Lemon_Bar.Controllers
 
             if (ModelState.IsValid)
             {
+                double addQty = addQuantity;
                 double factor = 1;
                 if (!item.Garnish)
                 {
@@ -164,9 +165,11 @@ namespace Lemon_Bar.Controllers
                             break;
                     }
 
-                    item.Quantity += (addQuantity * factor);
-                    item.Units = "oz";
+                    addQty = Math.Round((addQuantity * factor),2);
                 }
+
+                item.Quantity += addQty;
+                item.TotalCost += (Math.Round((decimal)addQty * (decimal)item.UnitCost, 2));
 
                 try
                 {
