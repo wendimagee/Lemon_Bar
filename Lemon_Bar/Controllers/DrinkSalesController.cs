@@ -184,10 +184,17 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure6.ToLower().Contains("shot") || drink.strMeasure6.ToLower().Contains("jigger"))
+                    else if (drink.strMeasure1.ToLower().Contains("shot") || drink.strMeasure1.ToLower().Contains("jigger"))
                     {
                         decimal? measurement = ConvertFromShot(drink.strMeasure1);
                         netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure1.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure1);
+                        netCost += item.UnitCost * (measurement * 100);
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
@@ -215,6 +222,20 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
+                    else if (drink.strMeasure2.ToLower().Contains("shot") || drink.strMeasure2.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure2.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure2);
+                        netCost += item.UnitCost * (measurement * 100);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
@@ -236,6 +257,20 @@ namespace Lemon_Bar.Controllers
                     {
                         decimal? measurement = ConvertFromGarnish(drink.strMeasure3);
                         netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("shot") || drink.strMeasure3.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure3);
+                        netCost += item.UnitCost * (measurement * 100);
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
@@ -263,6 +298,20 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
+                    else if (drink.strMeasure4.ToLower().Contains("shot") || drink.strMeasure4.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure4.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure4);
+                        netCost += item.UnitCost * (measurement * 100);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
                 {
@@ -287,6 +336,20 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
+                    else if (drink.strMeasure5.ToLower().Contains("shot") || drink.strMeasure5.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure5);
+                        netCost += item.UnitCost * (measurement * 100);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
                 {
@@ -308,6 +371,20 @@ namespace Lemon_Bar.Controllers
                     {
                         decimal? measurement = ConvertFromGarnish(drink.strMeasure6);
                         netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("shot") || drink.strMeasure6.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure6);
+                        netCost += item.UnitCost * (measurement * 100);
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
