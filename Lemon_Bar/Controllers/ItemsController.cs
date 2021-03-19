@@ -194,7 +194,7 @@ namespace Lemon_Bar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> RecipeList()
+        public IActionResult RecipeList()
         {
             //List<Item> inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
             //string com = "&&";
