@@ -133,7 +133,7 @@ namespace Lemon_Bar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
+        public async Task<IActionResult> Edit(int id, double addQuantity, string addUnits, [Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
         {
             if (id != item.Id)
             {
@@ -142,6 +142,32 @@ namespace Lemon_Bar.Controllers
 
             if (ModelState.IsValid)
             {
+                double factor = 1;
+                if (!item.Garnish)
+                {
+                    switch (addUnits)
+                    {
+                        case "Gallon":
+                            factor = 128;
+                            break;
+                        case "1/2Gallon":
+                            factor = 64;
+                            break;
+                        case "Liter":
+                            factor = 33.8;
+                            break;
+                        case "fifth":
+                            factor = 25.4;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    item.Quantity += (addQuantity * factor);
+                    item.Units = "oz";
+                }
+
                 try
                 {
                     _context.Update(item);
