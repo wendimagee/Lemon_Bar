@@ -67,6 +67,7 @@ namespace Lemon_Bar.Controllers
             Rootobject c = new Rootobject();
             Random r = new Random();
             c = cocktailDAL.GetMood(strCategory);
+            c = FilterRecipes(c);
             int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
             string iddy = c.drinks[rInt].idDrink;
@@ -117,6 +118,15 @@ namespace Lemon_Bar.Controllers
                 if (ingredients.Count != measurement.Count)
                 {
                     validDrink = false;
+                }
+
+                foreach (string m in measurement)
+                {
+                    if (m.Contains("part"))
+                    {
+                        validDrink = false;
+                        break;
+                    }
                 }
 
                 if (validDrink)
