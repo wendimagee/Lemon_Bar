@@ -52,23 +52,31 @@ namespace Lemon_Bar.Controllers
             DrinkSale drinkSale = new DrinkSale();
             //this is where we can take in cocktailDAL.drink and convert it to a DrinkSales object
             Rootobject d = cocktailDAL.GetIdDataString(id);
-
-            //Check to see if we have ingredients, store needed ingredients as list then reroute to Inventory Create
-
-
             Drink drink = d.drinks[0];
-            drinkSale.DrinkId = id.ToString();
-            drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            drinkSale.NetCost = GetNetCost(drink);
-            drinkSale.SalePrice = drinkSale.NetCost * 5;
-            if (ModelState.IsValid)
+            //Check to see if we have ingredients, store needed ingredients as list then reroute to Inventory Create
+            bool validDrink = MissingIng(drink);
+
+            if (validDrink)
             {
-                _context.Add(drinkSale);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                drinkSale.DrinkId = id.ToString();
+                drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                drinkSale.NetCost = GetNetCost(drink);
+                drinkSale.SalePrice = drinkSale.NetCost * 5;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(drinkSale);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
+                return RedirectToAction("Index");
             }
-            ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Create", "Items");
+            }
+
+
         }
 
         // GET: DrinkSales/Edit/5
@@ -550,69 +558,71 @@ namespace Lemon_Bar.Controllers
                 return measure1 * 1.5m;
             }
         }
-        
-        //public bool MissingIng(Drink drink)
-        //{
-        //    int index = 0;
+
+        public bool MissingIng(Drink drink)
+        {
+
+            List<string> ingredients = new List<string>();
+            if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+            if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+            if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+            if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+            if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+            if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+
+            List<string> measurement = new List<string>();
+            if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+            if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+            if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+            if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+            if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+            if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+            //if counts don't match do validation on whereever the list with the current drink is coming from
+
+            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            int count = 0;
+            List<string> temp = new List<string>();
 
 
+            foreach (string x in ingredients)
+            {
+                string tempName = x;
+                for (int i = 0; i < userInv.Count; i++)
+                {
+                    if (userInv[i].ItemName.Contains(x))
+                    {
+                        count++;
+                        break;
+                    }
+                    tempName = userInv[i].ItemName;
+                }
 
-        //    List<string> ingredients = new List<string>();
-        //    if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-        //    if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-        //    if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-        //    if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-        //    if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-        //    if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+                if(!tempName.Contains(x))
+                {
+                    temp.Add(x);
+                }
 
-        //    List<string> measurement = new List<string>();
-        //    if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-        //    if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-        //    if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-        //    if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-        //    if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-        //    if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+            }
 
-        //    //if counts don't match do validation on whereever the list with the current drink is coming from
+            if (count == ingredients.Count)
+            {
+                return true;
+            }
 
-        //    List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
-        //    int count = 0;
-        //    List<string> temp = new List<string>();
+            string missingString = "";
 
-
-        //    foreach (string x in ingredients)
-        //    {
-        //        for (int i = 0; i < userInv.Count; i++)
-        //        {
-        //            if (userInv[i].ItemName.Contains(x))
-        //            {
-        //                count++;
-        //                break;
-        //            }
-        //            else
-        //            {
-        //                temp.Add(x);
-        //            }
-        //        }
-        //    }
-
-        //    if (count == ingredients.Count)
-        //    {
-        //        validDrink = true;
-        //    }
+            foreach(string m in temp)
+            {
+                missingString += " " + m + ",";
+            }
+            missingString = missingString.Substring(0, missingString.Length - 1); 
 
 
-        //    if (validDrink)
-        //    {
+            TempData["Missing"] = missingString;
 
-        //        filtered.Add(drink);
-        //    }
-
-        //    index++;
-        //    returnList.drinks = filtered;
-            
-        //return returnList;
-        //}
+            return false;
+        }
 
     }
 
