@@ -133,7 +133,7 @@ namespace Lemon_Bar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, double addQuantity, string addUnits, [Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
+        public async Task<IActionResult> Edit(int id, double addTotalCost, double addQuantity, string addUnits, [Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
         {
             if (id != item.Id)
             {
@@ -169,7 +169,10 @@ namespace Lemon_Bar.Controllers
                 }
 
                 item.Quantity += addQty;
-                item.TotalCost += (Math.Round((decimal)addQty * (decimal)item.UnitCost, 2));
+                //item.TotalCost += (Math.Round((decimal)addQty * (decimal)item.UnitCost, 2));
+                item.TotalCost += (decimal)addTotalCost;
+                //should we make this an average instead?
+                item.UnitCost = Math.Round(((decimal)addTotalCost / (decimal)addQty), 5);
 
                 try
                 {

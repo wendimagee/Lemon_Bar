@@ -124,6 +124,7 @@ body {
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
+    cursor: pointer;
 }
 
     /*Bottom border and alternating colors per table row*/
