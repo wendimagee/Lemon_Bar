@@ -4,81 +4,93 @@
     ViewData["Title"] = "Edit";
     string url = $"https://www.thecocktaildb.com/images/ingredients/{Model.ItemName}-Medium.png";
 }
+<html>
+<body>
+    <style>
+        body {
+            background-image: url("@url");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: 40% 40%;
+        }
+    </style>
+    <h1>Add to Inventory</h1>
 
-<h1>Add to Inventory</h1>
+    <h4>Item Name: <b>@Model.ItemName</b></h4>
+    
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ItemName" /> <!--Added this here-->
+                <input type="hidden" asp-for="User" /> <!--Added this here-->
+                @*<div class="form-group">
+                        <label asp-for="ItemName" class="control-label"></label>
+                        <input type="hidden" asp-for="ItemName" class="form-control" />
+                        <span asp-validation-for="ItemName" class="text-danger"></span>
+                    </div>*@
+                <div>
 
-<h4>Item Name: <b>@Model.ItemName</b></h4>
-@*<img src="@url" class="floatRight" />*@
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <input type="hidden" asp-for="ItemName" /> <!--Added this here-->
-            <input type="hidden" asp-for="User" /> <!--Added this here-->
-            @*<div class="form-group">
-                    <label asp-for="ItemName" class="control-label"></label>
-                    <input type="hidden" asp-for="ItemName" class="form-control" />
-                    <span asp-validation-for="ItemName" class="text-danger"></span>
-                </div>*@
-            <div>
-
-            </div>
-            <div class="form-group">
-                <label asp-for="Quantity" class="control-label"></label>
-                <input asp-for="Quantity" class="form-control" hidden />
-                <input type="number" name="AddQuantity" class="form-control" min=".5"/>
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Units" class="control-label"></label>
-                <input asp-for="Units" class="form-control" hidden />
-                <select type="text" name="AddUnits" class="form-control">
-                    @if (Model.Garnish)
-                    {
-                        <option value="each">each</option>
-                    }
-                    else
-                    {
-                        <option value="fifth">fifth</option>
-                        <option value="Liter">Liter</option>
-                        <option value="1/2Gallon">1/2Gallon</option>
-                        <option value="Gallon">Gallon</option>
-                    }
-                </select>
-                <span asp-validation-for="Units" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalCost" class="control-label" hidden></label>
-                <input asp-for="TotalCost" class="form-control" hidden/>
-                <span asp-validation-for="TotalCost" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UnitCost" class="control-label" hidden></label>
-                <input asp-for="UnitCost" class="form-control" hidden/>
-                <span asp-validation-for="UnitCost" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label" hidden>
-                    <input class="form-check-input" asp-for="Garnish" hidden/> @Html.DisplayNameFor(model => model.Garnish)
-                </label>
-            </div>
-            @*<div class="form-group">
-                    <label asp-for="User" class="control-label"></label>
-                    <select asp-for="User" class="form-control" asp-items="ViewBag.User"></select>
-                    <span asp-validation-for="User" class="text-danger"></span>
-                </div>*@
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn1" />
-            </div>
-        </form>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TotalCost" class="control-label"></label>
+                    <input asp-for="TotalCost" class="form-control" hidden />
+                    <input type="number" name="AddTotalCost" class="form-control" min=".5" />
+                    <span asp-validation-for="TotalCost" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Quantity" class="control-label"></label>
+                    <input asp-for="Quantity" class="form-control" hidden />
+                    <input type="number" name="AddQuantity" class="form-control" min=".5" />
+                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Units" class="control-label"></label>
+                    <input asp-for="Units" class="form-control" hidden />
+                    <select type="text" name="AddUnits" class="form-control">
+                        @if (Model.Garnish)
+                        {
+                            <option value="each">each</option>
+                        }
+                        else
+                        {
+                            <option value="fifth">fifth</option>
+                            <option value="Liter">Liter</option>
+                            <option value="1/2Gallon">1/2Gallon</option>
+                            <option value="Gallon">Gallon</option>
+                        }
+                    </select>
+                    <span asp-validation-for="Units" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="UnitCost" class="control-label" hidden></label>
+                    <input asp-for="UnitCost" class="form-control" hidden />
+                    <span asp-validation-for="UnitCost" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label" hidden>
+                        <input class="form-check-input" asp-for="Garnish" hidden /> @Html.DisplayNameFor(model => model.Garnish)
+                    </label>
+                </div>
+                @*<div class="form-group">
+                        <label asp-for="User" class="control-label"></label>
+                        <select asp-for="User" class="form-control" asp-items="ViewBag.User"></select>
+                        <span asp-validation-for="User" class="text-danger"></span>
+                    </div>*@
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn1" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</body>
+</html>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
