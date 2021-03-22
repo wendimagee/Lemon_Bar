@@ -129,10 +129,10 @@ namespace Lemon_Bar.Controllers
                     }
                 }
 
-                if (drink.strAlcoholic.ToLower().Contains("non"))
-                {
-                    validDrink = false;
-                }
+                //if (drink.strAlcoholic.ToLower().Contains("non"))
+                //{
+                //    validDrink = false;
+                //}
 
                 if (validDrink)
                 {
