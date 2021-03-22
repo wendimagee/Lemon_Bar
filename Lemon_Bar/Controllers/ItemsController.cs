@@ -26,8 +26,6 @@ namespace Lemon_Bar.Controllers
         public async Task<IActionResult> Index()
         
         {
-            //var lemon_BarContext = _context.Items.Include(i => i.UserNavigation);
-
             return View(await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
         }
 
