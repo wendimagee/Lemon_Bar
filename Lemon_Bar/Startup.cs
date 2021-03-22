@@ -31,7 +31,7 @@ namespace Lemon_Bar
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<Lemon_BarContext>(options => options.UseSqlServer(Secret.connection));
-
+            //This is where entity connects the program to the SQL server
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Secret.connection));
 

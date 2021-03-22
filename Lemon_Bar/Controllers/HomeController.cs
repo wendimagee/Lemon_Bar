@@ -49,16 +49,20 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(int id)
         {
-            Rootobject c = new Rootobject();
+           Rootobject c = new Rootobject();
            try
             {
                 c = cocktailDAL.GetIdDataString(id);
+                if (id == 0)
+                {
+                    return RedirectToAction("error");
+                }
                 Drink drink = c.drinks[0];
                 return View(drink);
             }
             catch
             {
-                return NotFound();
+                return View("error");
             }  
         }
 
@@ -75,12 +79,16 @@ namespace Lemon_Bar.Controllers
             int rInt = r.Next(0, 10);
             //This gives us the id of cocktail at a random index on the list of category results
             int iddy = Int32.Parse(c.drinks[0].idDrink);
+            if(iddy == 0)
+            {
+                return RedirectToAction("error");
+            }
             Rootobject d = cocktailDAL.GetIdDataString(iddy);
             Drink drink = d.drinks[0];
 
             try
             {
-                 int id = Int32.Parse(drink.idDrink);
+                int id = Int32.Parse(drink.idDrink);
                 return RedirectToAction("DrinkDetails", id);
             }
             catch
@@ -94,6 +102,7 @@ namespace Lemon_Bar.Controllers
         {
             return View();
         }
+  
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -103,44 +112,44 @@ namespace Lemon_Bar.Controllers
 
         private Rootobject FilterRecipes(Rootobject Drink)
         {
-
             Rootobject returnList = new Rootobject();
             List<Drink> filtered = new List<Drink>();
             foreach (Drink drink in Drink.drinks)
             {
-                bool validDrink = true;
+                    bool validDrink = true;
 
 
-                List<string> ingredients = new List<string>();
-                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+                    List<string> ingredients = new List<string>();
+                    if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
 
-                List<string> measurement = new List<string>();
-                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+                    List<string> measurement = new List<string>();
+                    if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
 
-                //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
-                if (ingredients.Count != measurement.Count)
-                {
-                    validDrink = false;
-                }
+                    //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
+                    if (ingredients.Count != measurement.Count)
+                    {
+                        validDrink = false;
+                    }
 
-                if (validDrink)
-                {
+                    if (validDrink)
+                    {
 
-                    filtered.Add(drink);
-                }
+                        filtered.Add(drink);
+                    }
 
-                returnList.drinks = filtered;
+                    returnList.drinks = filtered;
             }
+            
             return returnList;
         }
 
