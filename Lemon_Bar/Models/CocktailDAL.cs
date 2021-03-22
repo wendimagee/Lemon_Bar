@@ -10,7 +10,27 @@ namespace Lemon_Bar.Models
 {
     public class CocktailDAL
     {
+        public string GetPopular()
+        {
+            //Searches by Name
+            string url = $"https://www.thecocktaildb.com/api/json/v2/{Secret.apikey}/popular.php";
 
+            HttpWebRequest request = WebRequest.CreateHttp(url);
+            HttpWebResponse response = null;
+
+            response = (HttpWebResponse)request.GetResponse();
+            StreamReader rd = new StreamReader(response.GetResponseStream());
+            string json = rd.ReadToEnd();
+
+            return json;
+        }
+
+        public Rootobject GetPopularString()
+        {
+            string json = GetPopular();
+            Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);
+            return r;
+        }
         public string GetData(string searchName)
         {
             //Searches by Name
@@ -33,7 +53,12 @@ namespace Lemon_Bar.Models
             return r;  
         }
 
-        public string GetIdData(int id)
+        /// <summary>
+        /// Searches the CocktailDB API for the inputed Drink ID. Then converts the API call to json using stream reader.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A string from the json given by the API</returns>
+        public string GetIdData(string id)
         {
             //Searches by ID
             string url = $"https://www.thecocktaildb.com/api/json/v2/1/lookup.php?i={id}";
@@ -48,7 +73,12 @@ namespace Lemon_Bar.Models
             return json;
         }
 
-        public Rootobject GetIdDataString(int id)
+        /// <summary>
+        /// Passes the search term to GetIdData to look up DrinkID then converts the string JSON to Rootobject model (Cocktail Class)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Returns a Rootobject, which is under the Cocktail class</returns>
+        public Rootobject GetIdDataString(string id)
         {
             string json = GetIdData(id);
             Rootobject r = JsonConvert.DeserializeObject<Rootobject>(json);

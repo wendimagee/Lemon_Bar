@@ -24,8 +24,7 @@ namespace Lemon_Bar.Controllers
         // GET: DrinkSales
         public async Task<IActionResult> Index()
         {
-            var lemon_BarContext = _context.DrinkSales.Include(d => d.UserNavigation);
-            return View(await lemon_BarContext.ToListAsync());
+            return View(await _context.DrinkSales.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).OrderByDescending(e => e.SaleDate).ToListAsync());
         }
 
         // GET: DrinkSales/Details/5
@@ -47,24 +46,36 @@ namespace Lemon_Bar.Controllers
             return View(drinkSale);
         }
 
-        public async Task<IActionResult> Create(int id)
+        public async Task<IActionResult> Create(string id)
         {
             DrinkSale drinkSale = new DrinkSale();
             //this is where we can take in cocktailDAL.drink and convert it to a DrinkSales object
             Rootobject d = cocktailDAL.GetIdDataString(id);
             Drink drink = d.drinks[0];
-            drinkSale.DrinkId = id.ToString();
-            drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            drinkSale.NetCost = GetNetCost(drink);
-            drinkSale.SalePrice = drinkSale.NetCost * 5;
-            if (ModelState.IsValid)
+            //Check to see if we have ingredients, store needed ingredients as list then reroute to Inventory Create
+            bool validDrink = MissingIng(drink);
+
+            if (validDrink)
             {
-                _context.Add(drinkSale);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                drinkSale.DrinkId = id.ToString();
+                drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                drinkSale.NetCost = GetNetCost(drink);
+                drinkSale.SalePrice = drinkSale.NetCost * 5;
+                if (ModelState.IsValid)
+                {
+                    _context.Add(drinkSale);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
+                return RedirectToAction("Index");
             }
-            ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
-            return RedirectToAction("Index");
+            else
+            {
+                return RedirectToAction("Create", "Items");
+            }
+
+
         }
 
         // GET: DrinkSales/Edit/5
@@ -184,9 +195,30 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure6.ToLower().Contains("shot") || drink.strMeasure6.ToLower().Contains("jigger"))
+                    else if (drink.strMeasure1.ToLower().Contains("shot") || drink.strMeasure1.ToLower().Contains("jigger"))
                     {
                         decimal? measurement = ConvertFromShot(drink.strMeasure1);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure1.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure1);
+                        netCost += item.UnitCost * (measurement * 10);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure1.ToLower().Contains("top")|| drink.strMeasure1.ToLower().Contains("fill"))
+                    {
+                        decimal? measurement = 2.0m;
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure1.ToLower().Contains("dash"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure1);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -215,6 +247,34 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
+                    else if (drink.strMeasure2.ToLower().Contains("shot") || drink.strMeasure2.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure2.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure2);
+                        netCost += item.UnitCost * (measurement * 10);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure2.ToLower().Contains("top") || drink.strMeasure2.ToLower().Contains("fill"))
+                    {
+                        decimal? measurement = 2.0m;
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure2.ToLower().Contains("dash"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
@@ -235,6 +295,34 @@ namespace Lemon_Bar.Controllers
                     else if (item.Garnish == true)
                     {
                         decimal? measurement = ConvertFromGarnish(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("shot") || drink.strMeasure3.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure3);
+                        netCost += item.UnitCost * (measurement * 10);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("Top") || drink.strMeasure3.ToLower().Contains("Fill"))
+                    {
+                        decimal? measurement = 2.0m;
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure3.ToLower().Contains("dash"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure3);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -263,6 +351,34 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
+                    else if (drink.strMeasure4.ToLower().Contains("shot") || drink.strMeasure4.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure4.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure4);
+                        netCost += item.UnitCost * (measurement * 10);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure4.ToLower().Contains("top") || drink.strMeasure4.ToLower().Contains("fill"))
+                    {
+                        decimal? measurement = 2.0m;
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure4.ToLower().Contains("dash"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
                 {
@@ -283,6 +399,34 @@ namespace Lemon_Bar.Controllers
                     else if (item.Garnish == true)
                     {
                         decimal? measurement = ConvertFromGarnish(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("shot") || drink.strMeasure5.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure5);
+                        netCost += item.UnitCost * (measurement * 10);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("top") || drink.strMeasure5.ToLower().Contains("fill"))
+                    {
+                        decimal? measurement = 2.0m;
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("dash"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure5);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -311,6 +455,34 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
+                    else if (drink.strMeasure6.ToLower().Contains("shot") || drink.strMeasure6.ToLower().Contains("jigger"))
+                    {
+                        decimal? measurement = ConvertFromShot(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("cl"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure6);
+                        netCost += item.UnitCost * (measurement * 10);
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("top") || drink.strMeasure6.ToLower().Contains("fill"))
+                    {
+                        decimal? measurement = 2.0m;
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("dash"))
+                    {
+                        decimal? measurement = ConvertFromMl(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
                 }
             }
             return netCost;
@@ -319,70 +491,36 @@ namespace Lemon_Bar.Controllers
         {
             decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
-            foreach (string measure in measures)
+
+            if (measures[0].Contains("/") && measures[0].Length > 2)
             {
-                if (measure.Contains("/"))
-                {
-                    if (measures[0].Length > 2)
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        return fraction;
-                    }
-                    else
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction);
-                        return measure1;
-                    }
-
-                }
-                else
-                {
-                    measure1 = decimal.Parse(measures[0]);
-                    return measure1;
-                }
+                string fractionFirst = measures[0];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                return fraction;
             }
-
-            return measure1;
+            else if (measures[1].Contains("/"))
+            {
+                string fractionFirst = measures[1];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                decimal notFraction = decimal.Parse(measures[0]);
+                measure1 = (fraction + notFraction);
+                return measure1;
+            }
+            else
+            {
+                measure1 = decimal.Parse(measures[0]);
+                return measure1;
+            }
         }
         public decimal? ConvertFromMl(string measurement)
         {
-            decimal measure1 = 0;
+            decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
-            foreach (string measure in measures)
-            {
-                if (measure.Contains("/"))
-                {
-                    if (measures[0].Length > 2)
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = (firstDigit / secondDigit) * 0.03m;
-                        return fraction;
-                    }
-                    else
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction) * 0.03m;
-                        return measure1;
-                    }
-                }
-
-                else
-                {
-                    measure1 = decimal.Parse(measures[0]) * 0.03m;
-                    return measure1;
-                }
-            }
-
+            measure1 = decimal.Parse(measures[0]) / 29.574m;
             return measure1;
         }
         public decimal? ConvertFromGarnish(string measurement)
@@ -398,6 +536,10 @@ namespace Lemon_Bar.Controllers
                     decimal fraction = firstDigit / secondDigit;
                     measure1 = (fraction + decimal.Parse(measures[0]));
                 }
+                else if (measure.ToLower().Contains("whole") || measure.ToLower().Contains("sprig"))
+                {
+                    measure1 = 1.0m;
+                }
                 else
                 {
                     measure1 = decimal.Parse(measures[0]);
@@ -408,38 +550,104 @@ namespace Lemon_Bar.Controllers
         }
         public decimal? ConvertFromShot(string measurement)
         {
-            decimal measure1 = 0;
+            decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
-            foreach (string measure in measures)
+
+            if (measures[0].Contains("/") && measures[0].Length > 2)
             {
-                if (measure.Contains("/"))
-                {
-                    if (measures[0].Length > 2)
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = (firstDigit / secondDigit) * 0.03m;
-                        return fraction;
-                    }
-                    else
-                    {
-                        decimal firstDigit = decimal.Parse(measure[0].ToString());
-                        decimal secondDigit = decimal.Parse(measure[2].ToString());
-                        decimal fraction = firstDigit / secondDigit;
-                        decimal notFraction = decimal.Parse(measures[0]);
-                        measure1 = (fraction + notFraction) * 1.5m;
-                        return measure1;
-                    }
-                }
-
-                else
-                {
-                    measure1 = decimal.Parse(measures[0]) * 1.5m;
-                    return measure1;
-                }
+                string fractionFirst = measures[0];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                return fraction * 1.5m;
             }
-
+            else if (measures[1].Contains("/"))
+            {
+                string fractionFirst = measures[1];
+                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                decimal fraction = firstDigit / secondDigit;
+                decimal notFraction = decimal.Parse(measures[0]);
+                measure1 = (fraction + notFraction);
+                return measure1 * 1.5m;
+            }
+            else
+            {
+                measure1 = decimal.Parse(measures[0]);
+                return measure1 * 1.5m;
+            }
+        }
+        public decimal? ConvertFromDash(string measurement)
+        {
+            decimal? measure1 = 0;
+            string[] measures = measurement.Split(" ");
+            measure1 = decimal.Parse(measures[0]) * 0.021m;
             return measure1;
         }
+        public bool MissingIng(Drink drink)
+        {
+
+            List<string> ingredients = new List<string>();
+            if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+            if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+            if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+            if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+            if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+            if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+
+            List<string> measurement = new List<string>();
+            if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+            if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+            if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+            if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+            if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+            if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+            //if counts don't match do validation on whereever the list with the current drink is coming from
+
+            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            int count = 0;
+            List<string> temp = new List<string>();
+
+
+            foreach (string x in ingredients)
+            {
+                string tempName = x;
+                for (int i = 0; i < userInv.Count; i++)
+                {
+                    if (userInv[i].ItemName.Contains(x))
+                    {
+                        count++;
+                        break;
+                    }
+                    tempName = userInv[i].ItemName;
+                }
+
+                if(!tempName.Contains(x))
+                {
+                    temp.Add(x);
+                }
+
+            }
+
+            if (count == ingredients.Count)
+            {
+                return true;
+            }
+
+            string missingString = "";
+
+            foreach(string m in temp)
+            {
+                missingString += " " + m + ",";
+            }
+            missingString = missingString.Substring(0, missingString.Length - 1);
+
+            TempData["Missing"] = missingString;
+
+            return false;
+        }
+
     }
+
 }

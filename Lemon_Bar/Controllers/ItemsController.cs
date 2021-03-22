@@ -24,10 +24,8 @@ namespace Lemon_Bar.Controllers
 
         // GET: Items
         public async Task<IActionResult> Index()
-        
         {
-            //var lemon_BarContext = _context.Items.Include(i => i.UserNavigation);
-
+            TempData.Remove("missing");
             return View(await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
         }
 
@@ -101,7 +99,7 @@ namespace Lemon_Bar.Controllers
                     item.Units = "each";
                 }
 
-                item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 2);
+                item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 5);
 
                 _context.Add(item);
                 await _context.SaveChangesAsync();
@@ -133,7 +131,7 @@ namespace Lemon_Bar.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
+        public async Task<IActionResult> Edit(int id, double addTotalCost, double addQuantity, string addUnits, [Bind("Id,ItemName,TotalCost,Quantity,UnitCost,Units,Garnish,User")] Item item)
         {
             if (id != item.Id)
             {
@@ -142,6 +140,38 @@ namespace Lemon_Bar.Controllers
 
             if (ModelState.IsValid)
             {
+                double addQty = addQuantity;
+                double factor = 1;
+                if (!item.Garnish)
+                {
+                    switch (addUnits)
+                    {
+                        case "Gallon":
+                            factor = 128;
+                            break;
+                        case "1/2Gallon":
+                            factor = 64;
+                            break;
+                        case "Liter":
+                            factor = 33.8;
+                            break;
+                        case "fifth":
+                            factor = 25.4;
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    addQty = Math.Round((addQuantity * factor),2);
+                }
+
+                item.Quantity += addQty;
+                //item.TotalCost += (Math.Round((decimal)addQty * (decimal)item.UnitCost, 2));
+                item.TotalCost += (decimal)addTotalCost;
+                //should we make this an average instead?
+                item.UnitCost = Math.Round(((decimal)addTotalCost / (decimal)addQty), 5);
+
                 try
                 {
                     _context.Update(item);
@@ -194,7 +224,7 @@ namespace Lemon_Bar.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> RecipeList()
+        public IActionResult RecipeList()
         {
             //List<Item> inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
             //string com = "&&";
@@ -210,7 +240,7 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-               recipeList =  cocktailDAL.GetDataString("old");
+               recipeList =  cocktailDAL.GetPopularString();
             }
             catch
             {
@@ -269,6 +299,7 @@ namespace Lemon_Bar.Controllers
 
             Rootobject returnList= new Rootobject();
             List<Drink> filtered = new List<Drink>();
+            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             foreach (Drink drink in Drink.drinks)
             {
                 bool validDrink = false;
@@ -295,7 +326,7 @@ namespace Lemon_Bar.Controllers
                     continue;
                 }
 
-                List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            
                 int count = 0;
                 
                 foreach (string x in ingredients)

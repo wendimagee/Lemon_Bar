@@ -1,4 +1,4 @@
-﻿using Lemon_Bar.Models;
+using Lemon_Bar.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -24,9 +24,8 @@ namespace Lemon_Bar.Controllers
         {
             Rootobject c = new Rootobject();
 
-            if (cocktail == null)
+            if (String.IsNullOrEmpty(cocktail))//Validation check
             {
-                TempData["error"] = "Please enter a valid entry";
                 return RedirectToAction("Index");
             }
             try
@@ -35,40 +34,34 @@ namespace Lemon_Bar.Controllers
             }
             catch (Exception e)
             {
-                TempData["error"] = "Please enter a valid entry";
+                TempData["error"] = e;
                 return RedirectToAction("Index");
             }
 
             Rootobject d = FilterRecipes(c);
 
-            TempData.Remove("moveerror");
             TempData.Remove("error");
 
             return View(d);
         }
 
-        public IActionResult DrinkDetails(int id)
+        public IActionResult DrinkDetails(string id)
         {
            Rootobject c = new Rootobject();
            try
             {
-                c = cocktailDAL.GetIdDataString(id);
-                if (id == 0)
-                {
-                    return RedirectToAction("error");
-                }
-                Drink drink = c.drinks[0];
-                return View(drink);
-            }
-            catch
-            {
-                return View("error");
-            }  
-        }
+                c = cocktailDAL.GetIdDataString(id);//Returns a list of drinks even though we are pulling the rootobject by ID
 
-        public IActionResult ShowMoodDrink(Drink drink)
-        {// take in and show rootobject
-                return View(drink);
+            }
+            catch(Exception e)
+            {
+               TempData["error"] = e;
+               return NotFound();
+            }
+
+            TempData.Remove("error");
+            Drink drink = c.drinks[0];//Grabs the single drink out of the array of drinks
+            return View(drink);
         }
 
         public IActionResult DrinkByMood(string strCategory)
@@ -76,25 +69,15 @@ namespace Lemon_Bar.Controllers
             Rootobject c = new Rootobject();
             Random r = new Random();
             c = cocktailDAL.GetMood(strCategory);
-            int rInt = r.Next(0, 10);
+            c = FilterRecipes(c);
+            int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
-            int iddy = Int32.Parse(c.drinks[0].idDrink);
-            if(iddy == 0)
-            {
-                return RedirectToAction("error");
-            }
+
+            string iddy = c.drinks[rInt].idDrink;
             Rootobject d = cocktailDAL.GetIdDataString(iddy);
             Drink drink = d.drinks[0];
 
-            try
-            {
-                int id = Int32.Parse(drink.idDrink);
-                return RedirectToAction("DrinkDetails", id);
-            }
-            catch
-            {
-                return RedirectToAction("ShowMoodDrink", drink);
-            }
+            return RedirectToAction("DrinkDetails", new {id = drink.idDrink });
 
 
         }
@@ -116,38 +99,55 @@ namespace Lemon_Bar.Controllers
             List<Drink> filtered = new List<Drink>();
             foreach (Drink drink in Drink.drinks)
             {
-                    bool validDrink = true;
 
 
-                    List<string> ingredients = new List<string>();
-                    if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+                bool validDrink = true;
 
-                    List<string> measurement = new List<string>();
-                    if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
 
-                    //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
-                    if (ingredients.Count != measurement.Count)
+                List<string> ingredients = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+
+                List<string> measurement = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+                //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
+                if (ingredients.Count != measurement.Count)
+                {
+                    validDrink = false;
+                }
+
+                foreach (string m in measurement)
+                {
+                    if (m.Contains("part"))
                     {
                         validDrink = false;
+                        break;
                     }
+                }
 
-                    if (validDrink)
-                    {
+                //if (drink.strAlcoholic.ToLower().Contains("non"))
+                //{
+                //    validDrink = false;
+                //}
 
-                        filtered.Add(drink);
-                    }
+                if (validDrink)
+                {
 
-                    returnList.drinks = filtered;
+                    filtered.Add(drink);
+                }
+
+                returnList.drinks = filtered;
+
             }
             
             return returnList;
