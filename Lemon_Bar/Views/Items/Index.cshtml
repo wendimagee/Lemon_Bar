@@ -1,16 +1,17 @@
 ﻿@model IEnumerable<Lemon_Bar.Models.Item>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inventory List";
 }
 
 <html>
 <body>
     <h1><b>Current Inventory List</b></h1>
 
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
+<p>
+    <a asp-action="Create">Add More Items</a>
+</p>
+
     @*<table class="table">*@
     <table class="styled-table" id="invTable">
         <thead>
