@@ -24,8 +24,7 @@ namespace Lemon_Bar.Controllers
         // GET: DrinkSales
         public async Task<IActionResult> Index()
         {
-            var lemon_BarContext = _context.DrinkSales.Include(d => d.UserNavigation);
-            return View(await lemon_BarContext.ToListAsync());
+            return View(await _context.DrinkSales.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).OrderByDescending(e => e.SaleDate).ToListAsync());
         }
 
         // GET: DrinkSales/Details/5
@@ -210,7 +209,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure1.ToLower().Contains("Top")|| drink.strMeasure1.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure1.ToLower().Contains("top")|| drink.strMeasure1.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -255,7 +254,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure2.ToLower().Contains("Top") || drink.strMeasure2.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure2.ToLower().Contains("top") || drink.strMeasure2.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -345,7 +344,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure4.ToLower().Contains("Top") || drink.strMeasure4.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure4.ToLower().Contains("top") || drink.strMeasure4.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -390,7 +389,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure5.ToLower().Contains("Top") || drink.strMeasure5.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure5.ToLower().Contains("top") || drink.strMeasure5.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -435,7 +434,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure6.ToLower().Contains("Top") || drink.strMeasure6.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure6.ToLower().Contains("top") || drink.strMeasure6.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -517,7 +516,7 @@ namespace Lemon_Bar.Controllers
                     decimal fraction = firstDigit / secondDigit;
                     measure1 = (fraction + decimal.Parse(measures[0]));
                 }
-                else if (measure.Contains("whole") || measure.Contains("sprig"))
+                else if (measure.ToLower().Contains("whole") || measure.ToLower().Contains("sprig"))
                 {
                     measure1 = 1.0m;
                 }
