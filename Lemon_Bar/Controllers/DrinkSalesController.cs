@@ -615,8 +615,7 @@ namespace Lemon_Bar.Controllers
             {
                 missingString += " " + m + ",";
             }
-            missingString = missingString.Substring(0, missingString.Length - 1); 
-
+            missingString = missingString.Substring(0, missingString.Length - 1);
 
             TempData["Missing"] = missingString;
 

@@ -24,8 +24,8 @@ namespace Lemon_Bar.Controllers
 
         // GET: Items
         public async Task<IActionResult> Index()
-        
         {
+            TempData.Remove("missing");
             return View(await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
         }
 
