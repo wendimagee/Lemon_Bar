@@ -31,6 +31,7 @@ namespace Lemon_Bar.Models
         public virtual DbSet<Configuration> Configurations { get; set; }
         public virtual DbSet<DrinkSale> DrinkSales { get; set; }
         public virtual DbSet<EnumType> EnumTypes { get; set; }
+        public virtual DbSet<IngredientType> IngredientTypes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Job> Jobs { get; set; }
         public virtual DbSet<MessageQueue> MessageQueues { get; set; }
@@ -53,6 +54,7 @@ namespace Lemon_Bar.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer(Secret.connection);
             }
         }
@@ -332,6 +334,33 @@ namespace Lemon_Bar.Models
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<IngredientType>(entity =>
+            {
+                entity.ToTable("IngredientType");
+
+                entity.Property(e => e.ApiingId)
+                    .HasMaxLength(10)
+                    .HasColumnName("APIIngId");
+
+                entity.Property(e => e.ApistrAbv)
+                    .HasMaxLength(5)
+                    .HasColumnName("APIStrABV");
+
+                entity.Property(e => e.ApistrAlcohol)
+                    .HasMaxLength(10)
+                    .HasColumnName("APIStrAlcohol");
+
+                entity.Property(e => e.ApistrIngredient)
+                    .HasMaxLength(30)
+                    .HasColumnName("APIStrIngredient");
+
+                entity.Property(e => e.ApistrType)
+                    .HasMaxLength(30)
+                    .HasColumnName("APIStrType");
+
+                entity.Property(e => e.IngCategory).HasMaxLength(10);
             });
 
             modelBuilder.Entity<Item>(entity =>
