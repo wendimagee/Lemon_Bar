@@ -3,6 +3,15 @@
     "mssql1": {
       "type": "mssql.local",
       "connectionId": "DefaultConnection"
+    },
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql2": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/wendiserver/databases/Lemon_Bar",
+      "type": "mssql.azure",
+      "connectionId": "\"Server=(localdb)\\\\mssqllocaldb;Database=aspnet-Lemon_Bar-2C6F5C51-2CC1-4D23-ACF0-94340E77ACC9;Trusted_Connection=True;MultipleActiveResultSets=true\"",
+      "secretStore": "LocalSecretsFile"
     }
   }
 }
