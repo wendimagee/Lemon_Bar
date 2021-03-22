@@ -226,16 +226,6 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult RecipeList()
         {
-            //List<Item> inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
-            //string com = "&&";
-            //string ing = "";
-            //foreach (Item item in inventoryList)
-            //{
-            //    string result = item.ItemName + com;
-            //    ing += result;
-            //}
-            //string searchString = ing.Substring(0, ing.Length-1);
-
             Rootobject recipeList = new Rootobject();
 
             try
@@ -246,7 +236,6 @@ namespace Lemon_Bar.Controllers
             {
                 return NotFound();
             }
-
 
             Rootobject filter = new Rootobject();
 
@@ -259,12 +248,10 @@ namespace Lemon_Bar.Controllers
                 return NotFound(e);
             }
 
-
             if(filter.drinks.Count < 1)
             {
                 return RedirectToAction("SearchByInventory");
             }
-
 
             return View(filter );
         }
@@ -280,14 +267,14 @@ namespace Lemon_Bar.Controllers
 
             Rootobject recipeList = new Rootobject();
 
-
             try
             {
                 recipeList = cocktailDAL.GetInventory(searchString);
             }
             catch
             {
-                return NotFound();
+                return View("error");
+              
             }
 
             return View(recipeList);
@@ -464,21 +451,21 @@ namespace Lemon_Bar.Controllers
 
 
             string searchString = $"{ingredient1.ItemName}";// + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
-
-           Rootobject recipeList = new Rootobject();
+            searchString = searchString.Replace(" ", "_");
+            Rootobject recipeList = new Rootobject();
 
             try
             {
                 recipeList = cocktailDAL.GetInventory(searchString);
+              
             }
             catch
             {
                 return NotFound();
             }
-
             return View(recipeList);
-
         }
-
+    
     }
+   ;
 }
