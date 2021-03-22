@@ -28,17 +28,14 @@
         <input type="text" name="cocktail" />
         <input type="submit" class="btn1" />
     </form>
-    @*<form align="center" asp-action="DrinkByMood" asp-controller="Home">
-            <label>Search for a cocktail by mood!</label>
-            <input type="text" name="strCategory" />
-            <input type="submit" class="btn1" />
-        </form>*@
+
     <br />
     @if (SignInManager.IsSignedIn(User))
     {
         <h4 align="center"> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
         <h4 align="center"> <a asp-action="GetMood" asp-controller="Home">Make a random drink based on your mood!</a> </h4>
         <h4 align="center"> <a asp-action="SurplusResults" asp-controller="Items"> Click here to see recipes based on your surplus inventory</a></h4>
+        <h4 align="center"> <a asp-action="RecipeList" asp-controller="Items"> Click here to see popular recipes you can make from your inventory</a></h4>
     }
     else
     {
