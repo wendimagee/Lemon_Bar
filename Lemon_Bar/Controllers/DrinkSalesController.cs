@@ -669,7 +669,6 @@ namespace Lemon_Bar.Controllers
 
             //if counts don't match do validation on whereever the list with the current drink is coming from
 
-            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             int count = 0;
             List<string> temp = new List<string>();
 
