@@ -218,10 +218,21 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure1.ToLower().Contains("dash"))
                     {
-                        decimal? measurement = ConvertFromMl(drink.strMeasure1);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
+                        string[] measures = drink.strMeasure1.Split(" ");
+                        if(measures.Length > 1)
+                        {
+                            decimal? measurement = ConvertFromDash(drink.strMeasure1);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            netCost += item.UnitCost * 0.021m;
+                            item.Quantity -= 0.021;
+                            _context.Items.Update(item);
+                        }
+
                     }
                 }
                 else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
@@ -270,10 +281,21 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure2.ToLower().Contains("dash"))
                     {
-                        decimal? measurement = ConvertFromMl(drink.strMeasure2);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
+                        string[] measures = drink.strMeasure2.Split(" ");
+                        if (measures.Length > 1)
+                        {
+                            decimal? measurement = ConvertFromDash(drink.strMeasure2);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            netCost += item.UnitCost * 0.021m;
+                            item.Quantity -= 0.021;
+                            _context.Items.Update(item);
+                        }
+
                     }
                 }
                 else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
@@ -322,10 +344,20 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure3.ToLower().Contains("dash"))
                     {
-                        decimal? measurement = ConvertFromMl(drink.strMeasure3);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
+                        string[] measures = drink.strMeasure3.Split(" ");
+                        if (measures.Length > 1)
+                        {
+                            decimal? measurement = ConvertFromDash(drink.strMeasure3);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            netCost += item.UnitCost * 0.021m;
+                            item.Quantity -= 0.021;
+                            _context.Items.Update(item);
+                        }
                     }
                 }
                 else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
@@ -374,10 +406,20 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure4.ToLower().Contains("dash"))
                     {
-                        decimal? measurement = ConvertFromMl(drink.strMeasure4);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
+                        string[] measures = drink.strMeasure4.Split(" ");
+                        if (measures.Length > 1)
+                        {
+                            decimal? measurement = ConvertFromDash(drink.strMeasure4);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            netCost += item.UnitCost * 0.021m;
+                            item.Quantity -= 0.021;
+                            _context.Items.Update(item);
+                        }
                     }
                 }
                 else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
@@ -426,10 +468,21 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure5.ToLower().Contains("dash"))
                     {
-                        decimal? measurement = ConvertFromMl(drink.strMeasure5);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
+                        string[] measures = drink.strMeasure5.Split(" ");
+                        if (measures.Length > 1)
+                        {
+                            decimal? measurement = ConvertFromDash(drink.strMeasure5);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            netCost += item.UnitCost * 0.021m;
+                            item.Quantity -= 0.021;
+                            _context.Items.Update(item);
+                        }
+
                     }
                 }
                 else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
@@ -478,10 +531,21 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure6.ToLower().Contains("dash"))
                     {
-                        decimal? measurement = ConvertFromMl(drink.strMeasure6);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
+                        string[] measures = drink.strMeasure6.Split(" ");
+                        if (measures.Length > 1)
+                        {
+                            decimal? measurement = ConvertFromDash(drink.strMeasure6);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            netCost += item.UnitCost * 0.021m;
+                            item.Quantity -= 0.021;
+                            _context.Items.Update(item);
+                        }
+
                     }
                 }
             }
