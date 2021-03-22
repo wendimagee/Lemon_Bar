@@ -1,4 +1,4 @@
-﻿using Lemon_Bar.Models;
+using Lemon_Bar.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -47,7 +47,7 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(string id)
         {
-            Rootobject c = new Rootobject();
+           Rootobject c = new Rootobject();
            try
             {
                 c = cocktailDAL.GetIdDataString(id);//Returns a list of drinks even though we are pulling the rootobject by ID
@@ -55,8 +55,8 @@ namespace Lemon_Bar.Controllers
             }
             catch(Exception e)
             {
-                TempData["error"] = e;
-                return NotFound();
+               TempData["error"] = e;
+               return NotFound();
             }
 
             TempData.Remove("error");
@@ -72,17 +72,20 @@ namespace Lemon_Bar.Controllers
             c = FilterRecipes(c);
             int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
+
             string iddy = c.drinks[rInt].idDrink;
             Rootobject d = cocktailDAL.GetIdDataString(iddy);
             Drink drink = d.drinks[0];
 
             return RedirectToAction("DrinkDetails", new {id = drink.idDrink });
 
+
         }
         public IActionResult GetMood()
         {
             return View();
         }
+  
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -92,11 +95,12 @@ namespace Lemon_Bar.Controllers
 
         private Rootobject FilterRecipes(Rootobject Drink)
         {
-
             Rootobject returnList = new Rootobject();
             List<Drink> filtered = new List<Drink>();
             foreach (Drink drink in Drink.drinks)
             {
+
+
                 bool validDrink = true;
 
 
@@ -143,7 +147,9 @@ namespace Lemon_Bar.Controllers
                 }
 
                 returnList.drinks = filtered;
+
             }
+            
             return returnList;
         }
 

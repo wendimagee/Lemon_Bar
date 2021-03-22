@@ -280,14 +280,14 @@ namespace Lemon_Bar.Controllers
 
             Rootobject recipeList = new Rootobject();
 
-
             try
             {
                 recipeList = cocktailDAL.GetInventory(searchString);
             }
             catch
             {
-                return NotFound();
+                return View("error");
+              
             }
 
             return View(recipeList);
@@ -464,21 +464,21 @@ namespace Lemon_Bar.Controllers
 
 
             string searchString = $"{ingredient1.ItemName}";// + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
-
-           Rootobject recipeList = new Rootobject();
+            searchString = searchString.Replace(" ", "_");
+            Rootobject recipeList = new Rootobject();
 
             try
             {
                 recipeList = cocktailDAL.GetInventory(searchString);
+              
             }
             catch
             {
                 return NotFound();
             }
-
             return View(recipeList);
-
         }
-
+    
     }
+   ;
 }
