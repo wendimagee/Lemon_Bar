@@ -53,6 +53,11 @@ namespace Lemon_Bar.Models
             return r;  
         }
 
+        /// <summary>
+        /// Searches the CocktailDB API for the inputed Drink ID. Then converts the API call to json using stream reader.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>A string from the json given by the API</returns>
         public string GetIdData(string id)
         {
             //Searches by ID
@@ -68,6 +73,11 @@ namespace Lemon_Bar.Models
             return json;
         }
 
+        /// <summary>
+        /// Passes the search term to GetIdData to look up DrinkID then converts the string JSON to Rootobject model (Cocktail Class)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Returns a Rootobject, which is under the Cocktail class</returns>
         public Rootobject GetIdDataString(string id)
         {
             string json = GetIdData(id);

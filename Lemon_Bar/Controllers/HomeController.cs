@@ -24,9 +24,8 @@ namespace Lemon_Bar.Controllers
         {
             Rootobject c = new Rootobject();
 
-            if (cocktail == null)
+            if (String.IsNullOrEmpty(cocktail))//Validation check
             {
-                TempData["error"] = "Please enter a valid entry";
                 return RedirectToAction("Index");
             }
             try
@@ -35,13 +34,12 @@ namespace Lemon_Bar.Controllers
             }
             catch (Exception e)
             {
-                TempData["error"] = "Please enter a valid entry";
+                TempData["error"] = e;
                 return RedirectToAction("Index");
             }
 
             Rootobject d = FilterRecipes(c);
 
-            TempData.Remove("moveerror");
             TempData.Remove("error");
 
             return View(d);
@@ -52,14 +50,18 @@ namespace Lemon_Bar.Controllers
             Rootobject c = new Rootobject();
            try
             {
-                c = cocktailDAL.GetIdDataString(id);
-                Drink drink = c.drinks[0];
-                return View(drink);
+                c = cocktailDAL.GetIdDataString(id);//Returns a list of drinks even though we are pulling the rootobject by ID
+
             }
-            catch
+            catch(Exception e)
             {
+                TempData["error"] = e;
                 return NotFound();
-            }  
+            }
+
+            TempData.Remove("error");
+            Drink drink = c.drinks[0];//Grabs the single drink out of the array of drinks
+            return View(drink);
         }
 
         public IActionResult DrinkByMood(string strCategory)
