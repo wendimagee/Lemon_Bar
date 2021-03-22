@@ -30,6 +30,10 @@ namespace Lemon_Bar.Controllers
             }
             try
             {
+                if ((cocktailDAL.GetDataString(cocktail)) == null)
+                {
+                    return View("error");
+                }
                 c = cocktailDAL.GetDataString(cocktail);
             }
             catch (Exception e)
@@ -39,6 +43,10 @@ namespace Lemon_Bar.Controllers
             }
 
             Rootobject d = FilterRecipes(c);
+            if(d == null)
+            {
+                return View("error");
+            }
 
             TempData.Remove("error");
 
@@ -51,12 +59,11 @@ namespace Lemon_Bar.Controllers
            try
             {
                 c = cocktailDAL.GetIdDataString(id);//Returns a list of drinks even though we are pulling the rootobject by ID
-
             }
             catch(Exception e)
             {
                TempData["error"] = e;
-               return NotFound();
+               return View("error");
             }
 
             TempData.Remove("error");
@@ -69,8 +76,10 @@ namespace Lemon_Bar.Controllers
             Rootobject c = new Rootobject();
             Random r = new Random();
             c = cocktailDAL.GetMood(strCategory);
-
             c = FilterRecipes(c);
+
+           // c = FilterRecipes(c); -- removed because FilterRecipes takes a rootobject
+
             int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
 
@@ -97,55 +106,56 @@ namespace Lemon_Bar.Controllers
         {
             Rootobject returnList = new Rootobject();
             List<Drink> filtered = new List<Drink>();
-            foreach (Drink drink in Drink.drinks)
+            if (filtered.Count != 0)
             {
-                bool validDrink = true;
-
-                List<string> ingredients = new List<string>();
-                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
-
-                List<string> measurement = new List<string>();
-                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
-
-                //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
-                if (ingredients.Count != measurement.Count)
+                foreach (Drink drink in Drink.drinks)
                 {
-                    validDrink = false;
-                }
+                    bool validDrink = true;
 
-                foreach (string m in measurement)
-                {
-                    if (m.Contains("part"))
+                    List<string> ingredients = new List<string>();
+                    if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+                    if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+
+                    List<string> measurement = new List<string>();
+                    if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+                    if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+
+                    //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
+                    if (ingredients.Count != measurement.Count)
                     {
                         validDrink = false;
-                        break;
                     }
+
+                    foreach (string m in measurement)
+                    {
+                        if (m.Contains("part"))
+                        {
+                            validDrink = false;
+                            break;
+                        }
+                    }
+
+                    //if (drink.strAlcoholic.ToLower().Contains("non"))
+                    //{
+                    //    validDrink = false;
+                    //}
+
+                    if (validDrink)
+                    {
+                        filtered.Add(drink);
+                    }
+
+                    returnList.drinks = filtered;
                 }
-
-                if (drink.strAlcoholic.ToLower().Contains("non"))
-                {
-                    validDrink = false;
-                }
-
-                if (validDrink)
-                {
-
-                    filtered.Add(drink);
-                }
-
-                returnList.drinks = filtered;
             }
-            
             return returnList;
         }
     }
