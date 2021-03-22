@@ -24,7 +24,7 @@ namespace Lemon_Bar.Controllers
         // GET: DrinkSales
         public async Task<IActionResult> Index()
         {
-            return View(await _context.DrinkSales.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
+            return View(await _context.DrinkSales.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).OrderByDescending(e => e.SaleDate).ToListAsync());
         }
 
         // GET: DrinkSales/Details/5
