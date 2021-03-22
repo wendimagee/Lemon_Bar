@@ -9,8 +9,8 @@ namespace Lemon_Bar.Models
     {
         public int Id { get; set; }
         public string DrinkId { get; set; }
-        public decimal NetCost { get; set; }
-        public decimal SalePrice { get; set; }
+        public decimal? NetCost { get; set; }
+        public decimal? SalePrice { get; set; }
         public DateTime? SaleDate { get; set; }
         public string User { get; set; }
 
