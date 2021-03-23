@@ -2,11 +2,21 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-    background-color: gold;
+  background-color: gold;
   white-space: normal;
   text-align: center;
   word-break: break-all;
-  font-family:'Segoe Script';
+  font-family:'Harlow Solid';
+  font-size:large;
+}
+
+.lemon-brand {
+    background-color: gold;
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    font-family: 'Harlow Solid';
+    font-size: xx-large;
 }
 
 .centery {

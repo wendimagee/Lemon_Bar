@@ -14,15 +14,19 @@
         }
     </style>
     <br />
-    <h2 align="center">Welcome to Lemon Bar!</h2>
+    <h2 class="lemon-brand" align="center">Lemon Bar</h2>
     <br />
-    <h3 align="center">Lemon Bar is here to help you keep track of your bar's inventory </h3>
+    <h3 align="center">Welcome to Lemon Bar, Cocktail Artisan!</h3>
+    <h3 align="center">This app is here to help you keep track of your bar's inventory </h3>
     <br />
     <h2 align="center">AND</h2>
     <br />
     <h3 align="center">Help you to pick new cocktails to serve based upon what you have in stock!</h3>
     <br />
+    <h2 align="center">AND</h2>
     <br />
+    <h3 align="center">Tell you how much that cocktail costs you to make, how much you should sell it for and keeps track of your sales!!</h3>
+    <br /><br />
     <form align="center" asp-action="SearchByName" asp-controller="Home">
         <label>Search for a cocktail by name!</label>
         <input type="text" name="cocktail" />
@@ -36,7 +40,7 @@
     <div class="btn1" align="center">
         <h4> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
     </div>
-    <br /> <br />
+    <br />  <br />
     <div class="btn1" align="center">
         <h4 align="center"> <a asp-action="GetMood" asp-controller="Home">Make a random drink based on your mood!</a> </h4>
     </div>
@@ -44,15 +48,15 @@
     <div class="btn1" align="center">
         <h4 align="center"> <a asp-action="SurplusResults" asp-controller="Items"> Click here to see recipes based on your surplus inventory</a></h4>
     </div>
-    <br /> <br />
+    <br />  <br />
     <div class="btn1" align="center">
         <h4 align="center"> <a asp-action="RecipeList" asp-controller="Items"> Click here to see popular recipes you can make from your inventory</a></h4>
-    </div>    
+    </div>
         }
         else
         {
-    <br /> <br />
-        <h4 align="center">If you would like to start tracking your inventory please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a> an account with us! </h4>
+    <br />  <br />
+    <h4 align="center">If you would like to start tracking your inventory please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a> an account with us! </h4>
         }
 </body>
 </html>
