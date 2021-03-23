@@ -6,22 +6,16 @@
 }
 <html>
 <body>
-    <style>
-        body {
-            background-image: url("@url");
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-position: 40% 40%;
-            background-size:auto;
-        }
-    </style>
     <h1>Add to Inventory</h1>
 
     <h4>Item Name: <b>@Model.ItemName</b></h4>
     
     <hr />
+    <div style="float:right; width:50%; padding:20px;">
+        <img src="@url" />
+    </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" style="float:left; width:50%;">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
