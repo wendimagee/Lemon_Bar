@@ -1,20 +1,35 @@
 ﻿@model Rootobject
 
+ <html>
+    <body>
+        <style>
+            body {
+                background-image: url(../LemonBar.jpg);
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+            }
+        </style>
+        <h4>@Model.drinks.Count Drinks Found</h4>
+        <br />
 
-@foreach (Drink d in Model.drinks)
+
+        @foreach (Drink d in Model.drinks)
 {
-    <h2>@d.strDrink</h2>
-    <img src="@d.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
-    <br />
-    <div>
-        <form asp-action="DrinkDetails" asp-controller="Home" asp-route-id="@d.idDrink">
-            <button class="btn1">
-                Learn More!
-            </button>
-        </form>
-        <button>
-            <a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@d.idDrink">Make This Drink!</a>
-        </button>
-    </div>
-    <hr />
-} 
+        <h2>@d.strDrink</h2>
+        <div class="container" style="background-color: paleturquoise">
+            <div class="image">
+                <img src="@d.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
+            </div>
+            <div style="padding:20px">
+                <form asp-action="DrinkDetails" asp-controller="Home" asp-route-id="@d.idDrink">
+                    <button class="btn1">
+                        Learn More!
+                    </button>
+                </form>
+            </div>
+        </div>
+        <hr />
+        }
+    </body>
+ </html>

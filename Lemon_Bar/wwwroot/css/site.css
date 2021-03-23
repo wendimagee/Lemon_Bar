@@ -2,10 +2,11 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 a.navbar-brand {
-    background-color: darkgray;
+    background-color: gold;
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  font-family:'Segoe Script';
 }
 
 .centery {
@@ -81,7 +82,7 @@ body {
 }
 
 .btn1 {
-    display: inline-block;
+    display: normal;
     cursor: pointer;
     text-align: center;
     outline: 1px;
@@ -93,7 +94,7 @@ body {
 }
 
     .btn1:hover {
-        background-color: darkgreen;
+        background-color: mediumpurple;
         color: white;
     }
 
@@ -150,7 +151,7 @@ body {
 .floatRight {
     float: right;
     margin-left: 20px;
-    flex-basis: 40%,
+    flex-basis: 50%,
 }
 
 .container {
@@ -162,6 +163,7 @@ body {
 
 .image {
     flex-basis: 40%
+    
 }
 
 .buttony {

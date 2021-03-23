@@ -32,14 +32,27 @@
     <br />
     @if (SignInManager.IsSignedIn(User))
     {
-        <h4 align="center"> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
+    <img class="float-right" src="~/basil+smash+bottle+copy.jpg" alt="Italian Trulli" />
+    <div class="btn1" align="center">
+        <h4> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
+    </div>
+    <br /> <br />
+    <div class="btn1" align="center">
         <h4 align="center"> <a asp-action="GetMood" asp-controller="Home">Make a random drink based on your mood!</a> </h4>
+    </div>
+    <br /><br />
+    <div class="btn1" align="center">
         <h4 align="center"> <a asp-action="SurplusResults" asp-controller="Items"> Click here to see recipes based on your surplus inventory</a></h4>
+    </div>
+    <br /> <br />
+    <div class="btn1" align="center">
         <h4 align="center"> <a asp-action="RecipeList" asp-controller="Items"> Click here to see popular recipes you can make from your inventory</a></h4>
-    }
-    else
-    {
+    </div>    
+        }
+        else
+        {
+    <br /> <br />
         <h4 align="center">If you would like to start tracking your inventory please <a asp-area="Identity" asp-page="/Account/Login">Login</a> or <a asp-area="Identity" asp-page="/Account/Register">Register</a> an account with us! </h4>
-    }
+        }
 </body>
 </html>

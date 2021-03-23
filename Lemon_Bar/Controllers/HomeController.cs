@@ -42,15 +42,9 @@ namespace Lemon_Bar.Controllers
                 return RedirectToAction("Index");
             }
 
-            Rootobject d = FilterRecipes(c);
-            if(d == null)
-            {
-                return View("error");
-            }
-
             TempData.Remove("error");
 
-            return View(d);
+            return View(c);
         }
 
         public IActionResult DrinkDetails(string id)
