@@ -51,10 +51,30 @@
             <iframe width="560" height="315" src=@URL frameborder="0" allowfullscreen></iframe>
         }
     }
-
+    @* The work to make this drop down menu drop "down" is nuts or else I would! *@
+    <form asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">
+        <label>Select quantity to make</label>
+        <select name="quantity">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+        </select>
+    </form>
     <button class="buttony">
         <a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">Make This Drink!</a>
     </button>
 
 </body>
 </html>
+
+
+
