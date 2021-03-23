@@ -30,11 +30,14 @@ namespace Lemon_Bar.Controllers
             }
             try
             {
-                if ((cocktailDAL.GetDataString(cocktail)) == null)
+                c = cocktailDAL.GetDataString(cocktail);
+
+                if (c.drinks == null)
                 {
                     return View("error");
                 }
-                c = cocktailDAL.GetDataString(cocktail);
+                
+                c = FilterRecipes(c);
             }
             catch (Exception e)
             {
@@ -100,8 +103,8 @@ namespace Lemon_Bar.Controllers
         {
             Rootobject returnList = new Rootobject();
             List<Drink> filtered = new List<Drink>();
-            if (filtered.Count != 0)
-            {
+            //if (filtered.Count != 0)
+            //{
                 foreach (Drink drink in Drink.drinks)
                 {
                     bool validDrink = true;
@@ -135,6 +138,11 @@ namespace Lemon_Bar.Controllers
                             validDrink = false;
                             break;
                         }
+                        else if (m.Contains("pint"))
+                        {
+                            validDrink = false;
+                            break;
+                        }
                     }
 
                     //if (drink.strAlcoholic.ToLower().Contains("non"))
@@ -148,7 +156,7 @@ namespace Lemon_Bar.Controllers
                     }
 
                     returnList.drinks = filtered;
-                }
+                //}
             }
             return returnList;
         }

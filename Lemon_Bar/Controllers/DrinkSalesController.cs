@@ -174,6 +174,26 @@ namespace Lemon_Bar.Controllers
             {
                 if (drink.strIngredient1.ToLower() == item.ItemName.ToLower())
                 {
+                    if (!drink.strMeasure1.Contains(" "))
+                    {
+                        string num = "";
+                        string unit = "";
+                        foreach (char letter in drink.strMeasure1)
+                        {
+                            if (Char.IsDigit(letter))
+                            {
+                                num += letter;
+                            }
+                            else
+                            {
+                                unit += letter;
+                            }
+                        }
+
+                        drink.strMeasure1 = num + " " + unit;
+
+                    }
+
                     if (drink.strMeasure1.ToLower().Contains("oz"))
                     {
                         decimal? measurement = ConvertFromOz(drink.strMeasure1);
@@ -209,7 +229,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure1.ToLower().Contains("top")|| drink.strMeasure1.ToLower().Contains("fill"))
+                    else if (drink.strMeasure1.ToLower().Contains("top") || drink.strMeasure1.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -219,7 +239,7 @@ namespace Lemon_Bar.Controllers
                     else if (drink.strMeasure1.ToLower().Contains("dash"))
                     {
                         string[] measures = drink.strMeasure1.Split(" ");
-                        if(measures.Length > 1)
+                        if (measures.Length > 1)
                         {
                             decimal? measurement = ConvertFromDash(drink.strMeasure1);
                             netCost += item.UnitCost * measurement;
@@ -234,9 +254,30 @@ namespace Lemon_Bar.Controllers
                         }
 
                     }
+
                 }
                 else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
                 {
+                    if (!drink.strMeasure2.Contains(" "))
+                    {
+                        string num = "";
+                        string unit = "";
+                        foreach (char letter in drink.strMeasure2)
+                        {
+                            if (Char.IsDigit(letter))
+                            {
+                                num += letter;
+                            }
+                            else
+                            {
+                                unit += letter;
+                            }
+                        }
+
+                        drink.strMeasure2 = num + " " + unit;
+
+                    }
+
                     if (drink.strMeasure2.ToLower().Contains("oz"))
                     {
                         decimal? measurement = ConvertFromOz(drink.strMeasure2);
@@ -300,6 +341,26 @@ namespace Lemon_Bar.Controllers
                 }
                 else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
+                    if (!drink.strMeasure3.Contains(" "))
+                    {
+                        string num = "";
+                        string unit = "";
+                        foreach (char letter in drink.strMeasure3)
+                        {
+                            if (Char.IsDigit(letter))
+                            {
+                                num += letter;
+                            }
+                            else
+                            {
+                                unit += letter;
+                            }
+                        }
+
+                        drink.strMeasure3 = num + " " + unit;
+
+                    }
+
                     if (drink.strMeasure3.ToLower().Contains("oz"))
                     {
                         decimal? measurement = ConvertFromOz(drink.strMeasure3);
@@ -362,6 +423,26 @@ namespace Lemon_Bar.Controllers
                 }
                 else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
                 {
+                    if (!drink.strMeasure4.Contains(" "))
+                    {
+                        string num = "";
+                        string unit = "";
+                        foreach (char letter in drink.strMeasure4)
+                        {
+                            if (Char.IsDigit(letter))
+                            {
+                                num += letter;
+                            }
+                            else
+                            {
+                                unit += letter;
+                            }
+                        }
+
+                        drink.strMeasure4 = num + " " + unit;
+
+                    }
+
                     if (drink.strMeasure4.ToLower().Contains("oz"))
                     {
                         decimal? measurement = ConvertFromOz(drink.strMeasure4);
@@ -424,6 +505,26 @@ namespace Lemon_Bar.Controllers
                 }
                 else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
                 {
+                    if (!drink.strMeasure5.Contains(" "))
+                    {
+                        string num = "";
+                        string unit = "";
+                        foreach (char letter in drink.strMeasure5)
+                        {
+                            if (Char.IsDigit(letter))
+                            {
+                                num += letter;
+                            }
+                            else
+                            {
+                                unit += letter;
+                            }
+                        }
+
+                        drink.strMeasure5 = num + " " + unit;
+
+                    }
+
                     if (drink.strMeasure5.ToLower().Contains("oz"))
                     {
                         decimal? measurement = ConvertFromOz(drink.strMeasure5);
@@ -487,6 +588,26 @@ namespace Lemon_Bar.Controllers
                 }
                 else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
                 {
+                    if (!drink.strMeasure6.Contains(" "))
+                    {
+                        string num = "";
+                        string unit = "";
+                        foreach (char letter in drink.strMeasure6)
+                        {
+                            if (Char.IsDigit(letter))
+                            {
+                                num += letter;
+                            }
+                            else
+                            {
+                                unit += letter;
+                            }
+                        }
+
+                        drink.strMeasure6 = num + " " + unit;
+
+                    }
+
                     if (drink.strMeasure6.ToLower().Contains("oz"))
                     {
                         decimal? measurement = ConvertFromOz(drink.strMeasure6);
