@@ -1,25 +1,29 @@
 ﻿@model Rootobject
 
-<h4>@Model.drinks.Count Drinks Found</h4>
-<br />
+<html>
+<body>
+    <h4>@Model.drinks.Count Drinks Found</h4>
+    <br />
 
 
-@foreach (Drink d in Model.drinks)
-{
-    <h2>@d.strDrink</h2>
-    <div class="container" style="background-color: paleturquoise">
-        <div class="image">
-            <img src="@d.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
+    @foreach (Drink d in Model.drinks)
+    {
+        <h2>@d.strDrink</h2>
+        <div class="container" style="background-color: paleturquoise">
+            <div class="image">
+                <img src="@d.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
+            </div>
+            @*<br />
+                <br />*@
+            <div style="padding:20px">
+                <form asp-action="DrinkDetails" asp-controller="Home" asp-route-id="@d.idDrink">
+                    <button class="btn1">
+                        Learn More!
+                    </button>
+                </form>
+            </div>
         </div>
-        @*<br />
-        <br />*@
-        <div style="padding:20px">
-            <form asp-action="DrinkDetails" asp-controller="Home" asp-route-id="@d.idDrink">
-                <button class="btn1">
-                    Learn More!
-                </button>
-            </form>
-        </div>
-    </div>
-    <hr />
-} 
+        <hr />
+    }
+</body>
+</html>

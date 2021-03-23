@@ -1,33 +1,37 @@
 ﻿@model List<Item>
+<html>
+<body>
+    <h1>Let's Make a Cocktail!</h1>
+    <br />
+    <h4>These drop down menus are pre-filled with ingredients you have added to your inventory</h4>
+    <h4>Choose 1-3 ingredients from your inventory to find cocktails your bar can make!</h4>
+    <p>If you want to search for less than 3 different items, simply enter the same ingredient 2-3 times</p>
 
-<h1>Let's Make a Cocktail!</h1>
-<br />
-<h4>These drop down menus are pre-filled with ingredients you have added to your inventory</h4>
-<h4>Choose 1-3 ingredients from your inventory to find cocktails your bar can make!</h4>
-<p>If you want to search for less than 3 different items, simply enter the same ingredient 2-3 times</p>
+    <form asp-action="SearchByInventoryResults" asp-controller="Items">
+        <select id="ingredient1" name="ingredient1">
+            @foreach (Item item in Model)
+            {
+                <option value="@item.ItemName">@item.ItemName</option>
+            }
 
-<form asp-action="SearchByInventoryResults" asp-controller="Items">
-    <select id="ingredient1" name="ingredient1">
-        @foreach (Item item in Model)
-        {
-            <option value="@item.ItemName">@item.ItemName</option>
-        }
+        </select>
+        <select id="ingredient2" name="ingredient2">
+            @foreach (Item item in Model)
+            {
+                <option value="@item.ItemName">@item.ItemName</option>
+            }
 
-    </select>
-    <select id="ingredient2" name="ingredient2">
-        @foreach (Item item in Model)
-        {
-            <option value="@item.ItemName">@item.ItemName</option>
-        }
+        </select>
+        <select id="ingredient3" name="ingredient3">
+            @foreach (Item item in Model)
+            {
+                <option value="@item.ItemName">@item.ItemName</option>
+            }
 
-    </select>
-    <select id="ingredient3" name="ingredient3">
-        @foreach (Item item in Model)
-        {
-            <option value="@item.ItemName">@item.ItemName</option>
-        }
+        </select>
+        <input type="submit" class="btn1" />
+    </form>
 
-    </select>
-    <input type="submit" class="btn1" />
-</form>
 
+</body>
+</html>
