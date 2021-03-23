@@ -72,7 +72,7 @@ namespace Lemon_Bar.Controllers
             }
             else
             {
-                return RedirectToAction("Create", "Items");
+                return RedirectToAction("Index", "Items");
             }
 
 
