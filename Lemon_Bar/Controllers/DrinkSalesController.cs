@@ -234,6 +234,20 @@ namespace Lemon_Bar.Controllers
                         }
 
                     }
+                    else if (drink.strMeasure1.ToLower().Contains("tsp"))
+                    {
+                        decimal? measurement = ConvertFromTsp(drink.strMeasure1);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else
+                    {
+                        decimal measure1 = decimal.Parse(drink.strMeasure1);
+                        netCost += item.UnitCost * measure1;
+                        item.Quantity -= (double)(measure1);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
                 {
@@ -297,6 +311,20 @@ namespace Lemon_Bar.Controllers
                         }
 
                     }
+                    else if (drink.strMeasure2.ToLower().Contains("tsp"))
+                    {
+                        decimal? measurement = ConvertFromTsp(drink.strMeasure2);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else
+                    {
+                        decimal measure1 = decimal.Parse(drink.strMeasure2);
+                        netCost += item.UnitCost * measure1;
+                        item.Quantity -= (double)(measure1);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                 {
@@ -359,6 +387,20 @@ namespace Lemon_Bar.Controllers
                             _context.Items.Update(item);
                         }
                     }
+                    else if (drink.strMeasure3.ToLower().Contains("tsp"))
+                    {
+                        decimal? measurement = ConvertFromTsp(drink.strMeasure3);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else
+                    {
+                        decimal measure1 = decimal.Parse(drink.strMeasure3);
+                        netCost += item.UnitCost * measure1;
+                        item.Quantity -= (double)(measure1);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
                 {
@@ -420,6 +462,20 @@ namespace Lemon_Bar.Controllers
                             item.Quantity -= 0.021;
                             _context.Items.Update(item);
                         }
+                    }
+                    else if (drink.strMeasure4.ToLower().Contains("tsp"))
+                    {
+                        decimal? measurement = ConvertFromTsp(drink.strMeasure4);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else
+                    {
+                        decimal measure1 = decimal.Parse(drink.strMeasure4);
+                        netCost += item.UnitCost * measure1;
+                        item.Quantity -= (double)(measure1);
+                        _context.Items.Update(item);
                     }
                 }
                 else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
@@ -484,6 +540,20 @@ namespace Lemon_Bar.Controllers
                         }
 
                     }
+                    else if (drink.strMeasure5.ToLower().Contains("tsp"))
+                    {
+                        decimal? measurement = ConvertFromTsp(drink.strMeasure5);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else
+                    {
+                        decimal measure1 = decimal.Parse(drink.strMeasure5);
+                        netCost += item.UnitCost * measure1;
+                        item.Quantity -= (double)(measure1);
+                        _context.Items.Update(item);
+                    }
                 }
                 else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
                 {
@@ -547,6 +617,20 @@ namespace Lemon_Bar.Controllers
                         }
 
                     }
+                    else if (drink.strMeasure6.ToLower().Contains("tsp"))
+                    {
+                        decimal? measurement = ConvertFromTsp(drink.strMeasure6);
+                        netCost += item.UnitCost * measurement;
+                        item.Quantity -= (double)(measurement);
+                        _context.Items.Update(item);
+                    }
+                    else
+                    {
+                        decimal measure1 = decimal.Parse(drink.strMeasure6);
+                        netCost += item.UnitCost * measure1;
+                        item.Quantity -= (double)(measure1);
+                        _context.Items.Update(item);
+                    }
                 }
             }
             return netCost;
@@ -593,12 +677,12 @@ namespace Lemon_Bar.Controllers
             string[] measures = measurement.Split(" ");
             foreach (string measure in measures)
             {
-                if (measure.Contains("/"))
+                if (measure.ToLower().Contains("/"))
                 {
                     decimal firstDigit = decimal.Parse(measure[0].ToString());
                     decimal secondDigit = decimal.Parse(measure[2].ToString());
-                    decimal fraction = firstDigit / secondDigit;
-                    measure1 = (fraction + decimal.Parse(measures[0]));
+                    measure1 = firstDigit / secondDigit;
+                    
                 }
                 else if (measure.ToLower().Contains("whole") || measure.ToLower().Contains("sprig"))
                 {
@@ -648,6 +732,15 @@ namespace Lemon_Bar.Controllers
             measure1 = decimal.Parse(measures[0]) * 0.021m;
             return measure1;
         }
+
+        public decimal? ConvertFromTsp(string measurement)
+        {
+            decimal? measure1 = 0;
+            string[] measures = measurement.Split(" ");
+            measure1 = decimal.Parse(measures[0]) / 6;
+            return measure1;
+        }
+
         public bool MissingIng(Drink drink)
         {
 
