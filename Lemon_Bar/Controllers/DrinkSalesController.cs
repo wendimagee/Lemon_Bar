@@ -240,7 +240,7 @@ namespace Lemon_Bar.Controllers
                         }
                         else if (drink.strMeasure1.ToLower().Contains("dash"))
                         {
-                            string[] measures = drink.strMeasure1.Split(" ");
+                            string[] measures = drink.strMeasure1.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                             if (measures.Length > 1)
                             {
                                 decimal? measurement = ConvertFromDash(drink.strMeasure1);
@@ -261,7 +261,7 @@ namespace Lemon_Bar.Controllers
                             if (drink.strMeasure1.ToLower().Contains("/"))
                             {
                                 decimal? measure1 = 0;
-                                string[] measures = drink.strMeasure1.Split(" ");
+                                string[] measures = drink.strMeasure1.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                                 if (measures[0].Contains("/"))
                                 {
@@ -305,10 +305,28 @@ namespace Lemon_Bar.Controllers
                         }
                         else
                         {
-                            decimal measure1 = decimal.Parse(drink.strMeasure1);
-                            netCost += item.UnitCost * measure1;
-                            item.Quantity -= (double)(measure1);
-                            _context.Items.Update(item);
+                            string num = "";
+                            foreach (char letter in drink.strMeasure1)
+                            {
+                                if (Char.IsDigit(letter))
+                                {
+                                    num += letter;
+                                }
+                            }
+
+                            if (String.IsNullOrEmpty(num))
+                            {
+                                netCost += item.UnitCost * 1.00m;
+                                item.Quantity -= 1.00;
+                                _context.Items.Update(item);
+                            }
+                            else
+                            {
+                                decimal measure1 = decimal.Parse(num);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
+                                _context.Items.Update(item);
+                            }
                         }
                     }
                 }
@@ -380,7 +398,7 @@ namespace Lemon_Bar.Controllers
                         }
                         else if (drink.strMeasure2.ToLower().Contains("dash"))
                         {
-                            string[] measures = drink.strMeasure2.Split(" ");
+                            string[] measures = drink.strMeasure2.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                             if (measures.Length > 1)
                             {
                                 decimal? measurement = ConvertFromDash(drink.strMeasure2);
@@ -400,7 +418,7 @@ namespace Lemon_Bar.Controllers
                             if (drink.strMeasure2.ToLower().Contains("/"))
                             {
                                 decimal? measure1 = 0;
-                                string[] measures = drink.strMeasure2.Split(" ");
+                                string[] measures = drink.strMeasure2.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                                 if (measures[0].Contains("/"))
                                 {
@@ -444,10 +462,28 @@ namespace Lemon_Bar.Controllers
                         }
                         else
                         {
-                            decimal measure1 = decimal.Parse(drink.strMeasure2);
-                            netCost += item.UnitCost * measure1;
-                            item.Quantity -= (double)(measure1);
-                            _context.Items.Update(item);
+                            string num = "";
+                            foreach (char letter in drink.strMeasure2)
+                            {
+                                if (Char.IsDigit(letter))
+                                {
+                                    num += letter;
+                                }
+                            }
+
+                            if (String.IsNullOrEmpty(num))
+                            {
+                                netCost += item.UnitCost * 1.00m;
+                                item.Quantity -= 1.00;
+                                _context.Items.Update(item);
+                            }
+                            else
+                            {
+                                decimal measure1 = decimal.Parse(num);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
+                                _context.Items.Update(item);
+                            }
                         }
                     }
                 }
@@ -519,7 +555,7 @@ namespace Lemon_Bar.Controllers
                         }
                         else if (drink.strMeasure3.ToLower().Contains("dash"))
                         {
-                            string[] measures = drink.strMeasure3.Split(" ");
+                            string[] measures = drink.strMeasure3.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                             if (measures.Length > 1)
                             {
                                 decimal? measurement = ConvertFromDash(drink.strMeasure3);
@@ -539,7 +575,7 @@ namespace Lemon_Bar.Controllers
                             if (drink.strMeasure3.ToLower().Contains("/"))
                             {
                                 decimal? measure1 = 0;
-                                string[] measures = drink.strMeasure3.Split(" ");
+                                string[] measures = drink.strMeasure3.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                                 if (measures[0].Contains("/"))
                                 {
@@ -583,10 +619,28 @@ namespace Lemon_Bar.Controllers
                         }
                         else
                         {
-                            decimal measure1 = decimal.Parse(drink.strMeasure3);
-                            netCost += item.UnitCost * measure1;
-                            item.Quantity -= (double)(measure1);
-                            _context.Items.Update(item);
+                            string num = "";
+                            foreach (char letter in drink.strMeasure3)
+                            {
+                                if (Char.IsDigit(letter))
+                                {
+                                    num += letter;
+                                }
+                            }
+
+                            if (String.IsNullOrEmpty(num))
+                            {
+                                netCost += item.UnitCost * 1.00m;
+                                item.Quantity -= 1.00;
+                                _context.Items.Update(item);
+                            }
+                            else
+                            {
+                                decimal measure1 = decimal.Parse(num);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
+                                _context.Items.Update(item);
+                            }
                         }
                     }
 
@@ -659,7 +713,7 @@ namespace Lemon_Bar.Controllers
                         }
                         else if (drink.strMeasure4.ToLower().Contains("dash"))
                         {
-                            string[] measures = drink.strMeasure4.Split(" ");
+                            string[] measures = drink.strMeasure4.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                             if (measures.Length > 1)
                             {
                                 decimal? measurement = ConvertFromDash(drink.strMeasure4);
@@ -679,7 +733,7 @@ namespace Lemon_Bar.Controllers
                             if (drink.strMeasure4.ToLower().Contains("/"))
                             {
                                 decimal? measure1 = 0;
-                                string[] measures = drink.strMeasure4.Split(" ");
+                                string[] measures = drink.strMeasure4.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                                 if (measures[0].Contains("/"))
                                 {
@@ -705,24 +759,42 @@ namespace Lemon_Bar.Controllers
                                     _context.Items.Update(item);
                                     return measure1;
                                 }
-                                else
-                                {
-                                    decimal? measurement = ConvertFromTsp(drink.strMeasure4);
-                                    netCost += item.UnitCost * measurement;
-                                    item.Quantity -= (double)(measurement);
-                                    _context.Items.Update(item);
-                                }
                             }
-                            else if (drink.strMeasure4.ToLower().Contains("tbsp"))
+                            else
                             {
-                                decimal? measurement = ConvertFromTbsp(drink.strMeasure4);
+                                decimal? measurement = ConvertFromTsp(drink.strMeasure4);
                                 netCost += item.UnitCost * measurement;
                                 item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
+                        }
+                        else if (drink.strMeasure4.ToLower().Contains("tbsp"))
+                        {
+                            decimal? measurement = ConvertFromTbsp(drink.strMeasure4);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else
+                        {
+                            string num = "";
+                            foreach (char letter in drink.strMeasure1)
+                            {
+                                if (Char.IsDigit(letter))
+                                {
+                                    num += letter;
+                                }
+                            }
+
+                            if (String.IsNullOrEmpty(num))
+                            {
+                                netCost += item.UnitCost * 1.00m;
+                                item.Quantity -= 1.00;
+                                _context.Items.Update(item);
+                            }
                             else
                             {
-                                decimal measure1 = decimal.Parse(drink.strMeasure4);
+                                decimal measure1 = decimal.Parse(num);
                                 netCost += item.UnitCost * measure1;
                                 item.Quantity -= (double)(measure1);
                                 _context.Items.Update(item);
@@ -799,7 +871,7 @@ namespace Lemon_Bar.Controllers
                         }
                         else if (drink.strMeasure5.ToLower().Contains("dash"))
                         {
-                            string[] measures = drink.strMeasure5.Split(" ");
+                            string[] measures = drink.strMeasure5.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                             if (measures.Length > 1)
                             {
                                 decimal? measurement = ConvertFromDash(drink.strMeasure5);
@@ -820,7 +892,7 @@ namespace Lemon_Bar.Controllers
                             if (drink.strMeasure5.ToLower().Contains("/"))
                             {
                                 decimal? measure1 = 0;
-                                string[] measures = drink.strMeasure5.Split(" ");
+                                string[] measures = drink.strMeasure5.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                                 if (measures[0].Contains("/"))
                                 {
@@ -864,10 +936,28 @@ namespace Lemon_Bar.Controllers
                         }
                         else
                         {
-                            decimal measure1 = decimal.Parse(drink.strMeasure5);
-                            netCost += item.UnitCost * measure1;
-                            item.Quantity -= (double)(measure1);
-                            _context.Items.Update(item);
+                            string num = "";
+                            foreach (char letter in drink.strMeasure5)
+                            {
+                                if (Char.IsDigit(letter))
+                                {
+                                    num += letter;
+                                }
+                            }
+
+                            if (String.IsNullOrEmpty(num))
+                            {
+                                netCost += item.UnitCost * 1.00m;
+                                item.Quantity -= 1.00;
+                                _context.Items.Update(item);
+                            }
+                            else
+                            {
+                                decimal measure1 = decimal.Parse(num);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
+                                _context.Items.Update(item);
+                            }
                         }
                     }
                 }
@@ -939,7 +1029,7 @@ namespace Lemon_Bar.Controllers
                         }
                         else if (drink.strMeasure6.ToLower().Contains("dash"))
                         {
-                            string[] measures = drink.strMeasure6.Split(" ");
+                            string[] measures = drink.strMeasure6.Split(" ", StringSplitOptions.RemoveEmptyEntries);
                             if (measures.Length > 1)
                             {
                                 decimal? measurement = ConvertFromDash(drink.strMeasure6);
@@ -960,7 +1050,7 @@ namespace Lemon_Bar.Controllers
                             if (drink.strMeasure6.ToLower().Contains("/"))
                             {
                                 decimal? measure1 = 0;
-                                string[] measures = drink.strMeasure6.Split(" ");
+                                string[] measures = drink.strMeasure6.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
                                 if (measures[0].Contains("/"))
                                 {
@@ -1004,10 +1094,28 @@ namespace Lemon_Bar.Controllers
                         }
                         else
                         {
-                            decimal measure1 = decimal.Parse(drink.strMeasure6);
-                            netCost += item.UnitCost * measure1;
-                            item.Quantity -= (double)(measure1);
-                            _context.Items.Update(item);
+                            string num = "";
+                            foreach (char letter in drink.strMeasure5)
+                            {
+                                if (Char.IsDigit(letter))
+                                {
+                                    num += letter;
+                                }
+                            }
+
+                            if (String.IsNullOrEmpty(num))
+                            {
+                                netCost += item.UnitCost * 1.00m;
+                                item.Quantity -= 1.00;
+                                _context.Items.Update(item);
+                            }
+                            else
+                            {
+                                decimal measure1 = decimal.Parse(num);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
+                                _context.Items.Update(item);
+                            }
                         }
                     }
                 }
@@ -1018,7 +1126,7 @@ namespace Lemon_Bar.Controllers
         public decimal? ConvertFromOz(string measurement)
         {
             decimal? measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             if (measures[0].Contains("/") && measures[0].Length > 2)
             {
@@ -1047,14 +1155,14 @@ namespace Lemon_Bar.Controllers
         public decimal? ConvertFromMl(string measurement)
         {
             decimal? measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             measure1 = decimal.Parse(measures[0]) / 29.574m;
             return measure1;
         }
         public decimal? ConvertFromGarnish(string measurement)
         {
             decimal measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             foreach (string measure in measures)
             {
                 if (measure.ToLower().Contains("/"))
@@ -1079,7 +1187,7 @@ namespace Lemon_Bar.Controllers
         public decimal? ConvertFromShot(string measurement)
         {
             decimal? measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
             if (measures[0].Contains("/") && measures[0].Length > 2)
             {
@@ -1108,7 +1216,7 @@ namespace Lemon_Bar.Controllers
         public decimal? ConvertFromDash(string measurement)
         {
             decimal? measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             measure1 = decimal.Parse(measures[0]) * 0.021m;
             return measure1;
         }
@@ -1116,14 +1224,14 @@ namespace Lemon_Bar.Controllers
         public decimal? ConvertFromTsp(string measurement)
         {
             decimal? measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             measure1 = decimal.Parse(measures[0]) / 6;
             return measure1;
         }
         public decimal? ConvertFromTbsp(string measurement)
         {
             decimal? measure1 = 0;
-            string[] measures = measurement.Split(" ");
+            string[] measures = measurement.Split(" ", StringSplitOptions.RemoveEmptyEntries);
             measure1 = decimal.Parse(measures[0]) / 2;
             return measure1;
         }
