@@ -198,8 +198,7 @@ body {
     }
 
 li {
-    float: left;
-    text-decoration: none;
+    text-decoration: dotted;
     padding: 5px;
-    list-style-type: none
+    list-style-type: circle;
 }
