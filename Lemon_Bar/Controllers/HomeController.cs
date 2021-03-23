@@ -70,7 +70,10 @@ namespace Lemon_Bar.Controllers
             Rootobject c = new Rootobject();
             Random r = new Random();
             c = cocktailDAL.GetMood(strCategory);
+            c = FilterRecipes(c);
+
            // c = FilterRecipes(c); -- removed because FilterRecipes takes a rootobject
+
             int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
 
@@ -79,9 +82,8 @@ namespace Lemon_Bar.Controllers
             Drink drink = d.drinks[0];
 
             return RedirectToAction("DrinkDetails", new {id = drink.idDrink });
-            
-
         }
+
         public IActionResult GetMood()
         {
             return View();
@@ -102,10 +104,7 @@ namespace Lemon_Bar.Controllers
             {
                 foreach (Drink drink in Drink.drinks)
                 {
-
-
                     bool validDrink = true;
-
 
                     List<string> ingredients = new List<string>();
                     if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
@@ -145,18 +144,13 @@ namespace Lemon_Bar.Controllers
 
                     if (validDrink)
                     {
-
                         filtered.Add(drink);
                     }
 
                     returnList.drinks = filtered;
-
                 }
-
             }
             return returnList;
-
         }
-
     }
 }

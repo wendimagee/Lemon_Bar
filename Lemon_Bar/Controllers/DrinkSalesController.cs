@@ -652,46 +652,54 @@ namespace Lemon_Bar.Controllers
         {
 
             List<string> ingredients = new List<string>();
-            if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-            if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-            if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-            if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-            if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-            if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+            if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6.ToLower()); }
 
             List<string> measurement = new List<string>();
-            if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-            if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-            if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-            if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-            if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-            if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+            if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5.ToLower()); }
+            if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6.ToLower()); }
 
             //if counts don't match do validation on whereever the list with the current drink is coming from
 
-            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
             int count = 0;
             List<string> temp = new List<string>();
 
-
-            foreach (string x in ingredients)
+            foreach (string ing in ingredients)
             {
-                string tempName = x;
-                for (int i = 0; i < userInv.Count; i++)
+                
+
+                if (_context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).Any(x => x.ItemName.ToLower().Contains(ing)))
                 {
-                    if (userInv[i].ItemName.Contains(x))
-                    {
-                        count++;
-                        break;
-                    }
-                    tempName = userInv[i].ItemName;
+                    count++;
+                }
+                else
+                {
+                    temp.Add(ing);
                 }
 
-                if(!tempName.Contains(x))
-                {
-                    temp.Add(x);
-                }
+                //for (int i = 0; i < userInv.Count; i++)
+                //{
+                //    if (userInv[i].ItemName.ToLower().Contains(x))
+                //    {
+                //        count++;
+                //        tempName = userInv[i].ItemName;
+                //        break;
+                //    }
+                //    tempName = userInv[i].ItemName;
+                //}
 
+                //if (!tempName.Contains(ing))
+                //{
+                //    temp.Add(ing);
+                //}
             }
 
             if (count == ingredients.Count)
