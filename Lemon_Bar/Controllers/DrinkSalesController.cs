@@ -796,6 +796,7 @@ namespace Lemon_Bar.Controllers
             if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4.ToLower()); }
             if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5.ToLower()); }
             if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6.ToLower()); }
+            if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
 
             List<string> measurement = new List<string>();
             if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1.ToLower()); }
@@ -804,6 +805,7 @@ namespace Lemon_Bar.Controllers
             if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4.ToLower()); }
             if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5.ToLower()); }
             if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6.ToLower()); }
+            if (drink.strMeasure7 != null) { measurement.Add(drink.strMeasure7.ToString()); }
 
             //if counts don't match do validation on whereever the list with the current drink is coming from
 
