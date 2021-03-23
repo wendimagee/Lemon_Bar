@@ -299,6 +299,7 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
                 if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
                 if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
 
                 List<string> measurement = new List<string>();
                 if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
@@ -307,6 +308,7 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
                 if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
                 if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+                if (drink.strMeasure7 != null) { measurement.Add(drink.strMeasure7.ToString()); }
 
                 if (ingredients.Count != measurement.Count)
                 {
