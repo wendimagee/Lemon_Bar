@@ -28,7 +28,7 @@
     <h3 align="center">Tell you how much that cocktail costs you to make, how much you should sell it for and keeps track of your sales!!</h3>
     <br /><br />
     <form align="center" asp-action="SearchByName" asp-controller="Home">
-        <label>Search for a cocktail by name!</label>
+        <h3><label>Search for a cocktail by name!</label></h3>
         <input type="text" name="cocktail" />
         <input type="submit" class="btn1" />
     </form>
@@ -36,20 +36,19 @@
     <br />
     @if (SignInManager.IsSignedIn(User))
     {
-    <img class="float-right" src="~/basil+smash+bottle+copy.jpg" alt="Italian Trulli" />
-    <div class="btn1" align="center">
+    <div class="btn1">
         <h4> <a asp-action="SearchByInventory" asp-controller="Items">Search for a cocktail using ingredients from your inventory!</a> </h4>
     </div>
     <br />  <br />
-    <div class="btn1" align="center">
+    <div class="btn1">
         <h4 align="center"> <a asp-action="GetMood" asp-controller="Home">Make a random drink based on your mood!</a> </h4>
     </div>
     <br /><br />
-    <div class="btn1" align="center">
+    <div class="btn1">
         <h4 align="center"> <a asp-action="SurplusResults" asp-controller="Items"> Click here to see recipes based on your surplus inventory</a></h4>
     </div>
     <br />  <br />
-    <div class="btn1" align="center">
+    <div class="btn1">
         <h4 align="center"> <a asp-action="RecipeList" asp-controller="Items"> Click here to see popular recipes you can make from your inventory</a></h4>
     </div>
         }
