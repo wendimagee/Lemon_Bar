@@ -256,275 +256,273 @@ namespace Lemon_Bar.Controllers
                             }
 
                         }
-                    }
-                    else if (drink.strMeasure1.ToLower().Contains("tsp"))
-                    {
-                        if (drink.strMeasure1.ToLower().Contains("/"))
+                        else if (drink.strMeasure1.ToLower().Contains("tsp"))
                         {
-                            decimal? measure1 = 0;
-                            string[] measures = drink.strMeasure6.Split(" ");
+                            if (drink.strMeasure1.ToLower().Contains("/"))
+                            {
+                                decimal? measure1 = 0;
+                                string[] measures = drink.strMeasure6.Split(" ");
 
-                            if (measures[0].Contains("/") && measures[0].Length > 2)
-                            {
-                                string fractionFirst = measures[0];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                return fraction;
+                                if (measures[0].Contains("/") && measures[0].Length > 2)
+                                {
+                                    string fractionFirst = measures[0];
+                                    decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                    decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                    decimal fraction = firstDigit / secondDigit;
+                                    return fraction;
+                                }
+                                else if (measures[1].Contains("/"))
+                                {
+                                    string fractionFirst = measures[1];
+                                    decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                    decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                    decimal fraction = firstDigit / secondDigit;
+                                    decimal notFraction = decimal.Parse(measures[0]);
+                                    measure1 = (fraction + notFraction);
+                                    return measure1;
+                                }
                             }
-                            else if (measures[1].Contains("/"))
+                            else
                             {
-                                string fractionFirst = measures[1];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                decimal notFraction = decimal.Parse(measures[0]);
-                                measure1 = (fraction + notFraction);
-                                return measure1;
+                                decimal? measurement = ConvertFromTsp(drink.strMeasure1);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
                             }
+                        }
+                        else if (drink.strMeasure1.ToLower().Contains("tbsp"))
+                        {
+                            decimal? measurement = ConvertFromTbsp(drink.strMeasure1);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
                         }
                         else
                         {
-                            decimal? measurement = ConvertFromTsp(drink.strMeasure1);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
+                            decimal measure1 = decimal.Parse(drink.strMeasure1);
+                            netCost += item.UnitCost * measure1;
+                            item.Quantity -= (double)(measure1);
                             _context.Items.Update(item);
                         }
                     }
-                    else if (drink.strMeasure1.ToLower().Contains("tbsp"))
+                    else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
                     {
-                        decimal? measurement = ConvertFromTbsp(drink.strMeasure1);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
-                    }
-                    else
-                    {
-                        decimal measure1 = decimal.Parse(drink.strMeasure1);
-                        netCost += item.UnitCost * measure1;
-                        item.Quantity -= (double)(measure1);
-                        _context.Items.Update(item);
-                    }
-                }
-                else if (drink.strIngredient2.ToLower() == item.ItemName.ToLower())
-                {
-                    if (drink.strMeasure2 != null)
-                    {
-                        if (!drink.strMeasure2.Contains(" "))
+                        if (drink.strMeasure2 != null)
                         {
-                            string num = "";
-                            string unit = "";
-                            foreach (char letter in drink.strMeasure2)
+                            if (!drink.strMeasure2.Contains(" "))
                             {
-                                if (Char.IsDigit(letter))
+                                string num = "";
+                                string unit = "";
+                                foreach (char letter in drink.strMeasure2)
                                 {
-                                    num += letter;
+                                    if (Char.IsDigit(letter))
+                                    {
+                                        num += letter;
+                                    }
+                                    else
+                                    {
+                                        unit += letter;
+                                    }
+                                }
+
+                                drink.strMeasure2 = num + " " + unit;
+
+                            }
+
+                            if (drink.strMeasure2.ToLower().Contains("oz"))
+                            {
+                                decimal? measurement = ConvertFromOz(drink.strMeasure2);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure2.ToLower().Contains("ml"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure2);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (item.Garnish == true)
+                            {
+                                decimal? measurement = ConvertFromGarnish(drink.strMeasure2);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure2.ToLower().Contains("shot") || drink.strMeasure2.ToLower().Contains("jigger"))
+                            {
+                                decimal? measurement = ConvertFromShot(drink.strMeasure2);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure2.ToLower().Contains("cl"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure2);
+                                netCost += item.UnitCost * (measurement * 10);
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure2.ToLower().Contains("top") || drink.strMeasure2.ToLower().Contains("fill"))
+                            {
+                                decimal? measurement = 2.0m;
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure2.ToLower().Contains("dash"))
+                            {
+                                string[] measures = drink.strMeasure2.Split(" ");
+                                if (measures.Length > 1)
+                                {
+                                    decimal? measurement = ConvertFromDash(drink.strMeasure2);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
                                 }
                                 else
                                 {
-                                    unit += letter;
+                                    netCost += item.UnitCost * 0.021m;
+                                    item.Quantity -= 0.021;
+                                    _context.Items.Update(item);
                                 }
                             }
-
-                            drink.strMeasure2 = num + " " + unit;
-
-                        }
-
-                        if (drink.strMeasure2.ToLower().Contains("oz"))
-                        {
-                            decimal? measurement = ConvertFromOz(drink.strMeasure2);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure2.ToLower().Contains("ml"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure2);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (item.Garnish == true)
-                        {
-                            decimal? measurement = ConvertFromGarnish(drink.strMeasure2);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure2.ToLower().Contains("shot") || drink.strMeasure2.ToLower().Contains("jigger"))
-                        {
-                            decimal? measurement = ConvertFromShot(drink.strMeasure2);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure2.ToLower().Contains("cl"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure2);
-                            netCost += item.UnitCost * (measurement * 10);
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure2.ToLower().Contains("top") || drink.strMeasure2.ToLower().Contains("fill"))
-                        {
-                            decimal? measurement = 2.0m;
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure2.ToLower().Contains("dash"))
-                        {
-                            string[] measures = drink.strMeasure2.Split(" ");
-                            if (measures.Length > 1)
+                            else if (drink.strMeasure2.ToLower().Contains("tsp"))
                             {
-                                decimal? measurement = ConvertFromDash(drink.strMeasure2);
+                                if (drink.strMeasure2.ToLower().Contains("/"))
+                                {
+                                    decimal? measure1 = 0;
+                                    string[] measures = drink.strMeasure6.Split(" ");
+
+                                    if (measures[0].Contains("/") && measures[0].Length > 2)
+                                    {
+                                        string fractionFirst = measures[0];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        return fraction;
+                                    }
+                                    else if (measures[1].Contains("/"))
+                                    {
+                                        string fractionFirst = measures[1];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        decimal notFraction = decimal.Parse(measures[0]);
+                                        measure1 = (fraction + notFraction);
+                                        return measure1;
+                                    }
+                                }
+                                else
+                                {
+                                    decimal? measurement = ConvertFromTsp(drink.strMeasure2);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                            }
+                            else if (drink.strMeasure2.ToLower().Contains("tbsp"))
+                            {
+                                decimal? measurement = ConvertFromTbsp(drink.strMeasure2);
                                 netCost += item.UnitCost * measurement;
                                 item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
                             else
                             {
-                                netCost += item.UnitCost * 0.021m;
-                                item.Quantity -= 0.021;
+                                decimal measure1 = decimal.Parse(drink.strMeasure2);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
                                 _context.Items.Update(item);
                             }
+                        }
 
-                        }
                     }
-                    else if (drink.strMeasure2.ToLower().Contains("tsp"))
+                    else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
                     {
-                        if (drink.strMeasure2.ToLower().Contains("/"))
+                        if (drink.strMeasure3 != null)
                         {
-                            decimal? measure1 = 0;
-                            string[] measures = drink.strMeasure6.Split(" ");
-
-                            if (measures[0].Contains("/") && measures[0].Length > 2)
+                            if (!drink.strMeasure3.Contains(" "))
                             {
-                                string fractionFirst = measures[0];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                return fraction;
-                            }
-                            else if (measures[1].Contains("/"))
-                            {
-                                string fractionFirst = measures[1];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                decimal notFraction = decimal.Parse(measures[0]);
-                                measure1 = (fraction + notFraction);
-                                return measure1;
-                            }
-                        }
-                        else
-                        {
-                            decimal? measurement = ConvertFromTsp(drink.strMeasure2);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                    }
-                    else if (drink.strMeasure2.ToLower().Contains("tbsp"))
-                    {
-                        decimal? measurement = ConvertFromTbsp(drink.strMeasure2);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
-                    }
-                    else
-                    {
-                        decimal measure1 = decimal.Parse(drink.strMeasure2);
-                        netCost += item.UnitCost * measure1;
-                        item.Quantity -= (double)(measure1);
-                        _context.Items.Update(item);
-                    }
-                }
-                else if (drink.strIngredient3 != null && drink.strIngredient3.ToLower() == item.ItemName.ToLower())
-                {
-                 if (drink.strMeasure3 != null)
-                    {
-                        if (!drink.strMeasure3.Contains(" "))
-                        {
-                            string num = "";
-                            string unit = "";
-                            foreach (char letter in drink.strMeasure3)
-                            {
-                                if (Char.IsDigit(letter))
+                                string num = "";
+                                string unit = "";
+                                foreach (char letter in drink.strMeasure3)
                                 {
-                                    num += letter;
+                                    if (Char.IsDigit(letter))
+                                    {
+                                        num += letter;
+                                    }
+                                    else
+                                    {
+                                        unit += letter;
+                                    }
                                 }
-                                else
-                                {
-                                    unit += letter;
-                                }
+
+                                drink.strMeasure3 = num + " " + unit;
+
                             }
 
-                            drink.strMeasure3 = num + " " + unit;
-
-                       }
-
-                        if (drink.strMeasure3.ToLower().Contains("oz"))
-                        {
-                            decimal? measurement = ConvertFromOz(drink.strMeasure3);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure3.ToLower().Contains("ml"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure3);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (item.Garnish == true)
-                        {
-                            decimal? measurement = ConvertFromGarnish(drink.strMeasure3);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure3.ToLower().Contains("shot") || drink.strMeasure3.ToLower().Contains("jigger"))
-                        {
-                            decimal? measurement = ConvertFromShot(drink.strMeasure3);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure3.ToLower().Contains("cl"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure3);
-                            netCost += item.UnitCost * (measurement * 10);
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure3.ToLower().Contains("top") || drink.strMeasure3.ToLower().Contains("fill"))
-                        {
-                            decimal? measurement = 2.0m;
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure3.ToLower().Contains("dash"))
-                        {
-                            string[] measures = drink.strMeasure3.Split(" ");
-                            if (measures.Length > 1)
+                            if (drink.strMeasure3.ToLower().Contains("oz"))
                             {
-                                decimal? measurement = ConvertFromDash(drink.strMeasure3);
+                                decimal? measurement = ConvertFromOz(drink.strMeasure3);
                                 netCost += item.UnitCost * measurement;
                                 item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
-                            else
+                            else if (drink.strMeasure3.ToLower().Contains("ml"))
                             {
-                                netCost += item.UnitCost * 0.021m;
-                                item.Quantity -= 0.021;
+                                decimal? measurement = ConvertFromMl(drink.strMeasure3);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
-                        }
-                    }
-                    else if (drink.strMeasure3.ToLower().Contains("tsp"))
+                            else if (item.Garnish == true)
+                            {
+                                decimal? measurement = ConvertFromGarnish(drink.strMeasure3);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure3.ToLower().Contains("shot") || drink.strMeasure3.ToLower().Contains("jigger"))
+                            {
+                                decimal? measurement = ConvertFromShot(drink.strMeasure3);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure3.ToLower().Contains("cl"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure3);
+                                netCost += item.UnitCost * (measurement * 10);
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure3.ToLower().Contains("top") || drink.strMeasure3.ToLower().Contains("fill"))
+                            {
+                                decimal? measurement = 2.0m;
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure3.ToLower().Contains("dash"))
+                            {
+                                string[] measures = drink.strMeasure3.Split(" ");
+                                if (measures.Length > 1)
+                                {
+                                    decimal? measurement = ConvertFromDash(drink.strMeasure3);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                                else
+                                {
+                                    netCost += item.UnitCost * 0.021m;
+                                    item.Quantity -= 0.021;
+                                    _context.Items.Update(item);
+                                }
+                            }
+                            else if (drink.strMeasure3.ToLower().Contains("tsp"))
                             {
                                 if (drink.strMeasure3.ToLower().Contains("/"))
                                 {
@@ -559,105 +557,106 @@ namespace Lemon_Bar.Controllers
                                 }
                             }
                             else if (drink.strMeasure3.ToLower().Contains("tbsp"))
-                    {
-                        decimal? measurement = ConvertFromTbsp(drink.strMeasure3);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
-                    }
-                    else
-                    {
-                        decimal measure1 = decimal.Parse(drink.strMeasure3);
-                        netCost += item.UnitCost * measure1;
-                        item.Quantity -= (double)(measure1);
-                        _context.Items.Update(item);
-                    }
-                }
-                else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
-                {
-                    if (drink.strMeasure4 != null)
-                    {
-                        if (!drink.strMeasure4.Contains(" "))
-                        {
-                            string num = "";
-                            string unit = "";
-                            foreach (char letter in drink.strMeasure4)
                             {
-                                if (Char.IsDigit(letter))
-                                {
-                                    num += letter;
-                                }
-                                else
-                                {
-                                    unit += letter;
-                                }
-                            }
-
-                            drink.strMeasure4 = num + " " + unit;
-
-                        }
-
-                        if (drink.strMeasure4.ToLower().Contains("oz"))
-                        {
-                            decimal? measurement = ConvertFromOz(drink.strMeasure4);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure4.ToLower().Contains("ml"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure4);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (item.Garnish == true)
-                        {
-                            decimal? measurement = ConvertFromGarnish(drink.strMeasure4);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure4.ToLower().Contains("shot") || drink.strMeasure4.ToLower().Contains("jigger"))
-                        {
-                            decimal? measurement = ConvertFromShot(drink.strMeasure4);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure4.ToLower().Contains("cl"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure4);
-                            netCost += item.UnitCost * (measurement * 10);
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure4.ToLower().Contains("top") || drink.strMeasure4.ToLower().Contains("fill"))
-                        {
-                            decimal? measurement = 2.0m;
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure4.ToLower().Contains("dash"))
-                        {
-                            string[] measures = drink.strMeasure4.Split(" ");
-                            if (measures.Length > 1)
-                            {
-                                decimal? measurement = ConvertFromDash(drink.strMeasure4);
+                                decimal? measurement = ConvertFromTbsp(drink.strMeasure3);
                                 netCost += item.UnitCost * measurement;
                                 item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
                             else
                             {
-                                netCost += item.UnitCost * 0.021m;
-                                item.Quantity -= 0.021;
+                                decimal measure1 = decimal.Parse(drink.strMeasure3);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
                                 _context.Items.Update(item);
                             }
                         }
+
                     }
-                    else if (drink.strMeasure4.ToLower().Contains("tsp"))
+                    else if (drink.strIngredient4 != null && drink.strIngredient4.ToLower() == item.ItemName.ToLower())
+                    {
+                        if (drink.strMeasure4 != null)
+                        {
+                            if (!drink.strMeasure4.Contains(" "))
+                            {
+                                string num = "";
+                                string unit = "";
+                                foreach (char letter in drink.strMeasure4)
+                                {
+                                    if (Char.IsDigit(letter))
+                                    {
+                                        num += letter;
+                                    }
+                                    else
+                                    {
+                                        unit += letter;
+                                    }
+                                }
+
+                                drink.strMeasure4 = num + " " + unit;
+
+                            }
+
+                            if (drink.strMeasure4.ToLower().Contains("oz"))
+                            {
+                                decimal? measurement = ConvertFromOz(drink.strMeasure4);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("ml"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure4);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (item.Garnish == true)
+                            {
+                                decimal? measurement = ConvertFromGarnish(drink.strMeasure4);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("shot") || drink.strMeasure4.ToLower().Contains("jigger"))
+                            {
+                                decimal? measurement = ConvertFromShot(drink.strMeasure4);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("cl"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure4);
+                                netCost += item.UnitCost * (measurement * 10);
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("top") || drink.strMeasure4.ToLower().Contains("fill"))
+                            {
+                                decimal? measurement = 2.0m;
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("dash"))
+                            {
+                                string[] measures = drink.strMeasure4.Split(" ");
+                                if (measures.Length > 1)
+                                {
+                                    decimal? measurement = ConvertFromDash(drink.strMeasure4);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                                else
+                                {
+                                    netCost += item.UnitCost * 0.021m;
+                                    item.Quantity -= 0.021;
+                                    _context.Items.Update(item);
+                                }
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("tsp"))
                             {
                                 if (drink.strMeasure4.ToLower().Contains("/"))
                                 {
@@ -692,288 +691,294 @@ namespace Lemon_Bar.Controllers
                                 }
                             }
                             else if (drink.strMeasure4.ToLower().Contains("tbsp"))
-                    {
-                        decimal? measurement = ConvertFromTbsp(drink.strMeasure4);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
-                    }
-                    else
-                    {
-                        decimal measure1 = decimal.Parse(drink.strMeasure4);
-                        netCost += item.UnitCost * measure1;
-                        item.Quantity -= (double)(measure1);
-                        _context.Items.Update(item);
-                    }
-                }
-                else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
-                {
-                    if (drink.strMeasure5 != null)
-                    {
-                        if (!drink.strMeasure5.Contains(" "))
-                        {
-                            string num = "";
-                            string unit = "";
-                            foreach (char letter in drink.strMeasure5)
                             {
-                                if (Char.IsDigit(letter))
-                                {
-                                    num += letter;
-                                }
-                                else
-                                {
-                                    unit += letter;
-                                }
-                            }
-
-                            drink.strMeasure5 = num + " " + unit;
-
-                        }
-
-                        if (drink.strMeasure5.ToLower().Contains("oz"))
-                        {
-                            decimal? measurement = ConvertFromOz(drink.strMeasure5);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure5.ToLower().Contains("ml"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure5);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (item.Garnish == true)
-                        {
-                            decimal? measurement = ConvertFromGarnish(drink.strMeasure5);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure5.ToLower().Contains("shot") || drink.strMeasure5.ToLower().Contains("jigger"))
-                        {
-                            decimal? measurement = ConvertFromShot(drink.strMeasure5);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure5.ToLower().Contains("cl"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure5);
-                            netCost += item.UnitCost * (measurement * 10);
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure5.ToLower().Contains("top") || drink.strMeasure5.ToLower().Contains("fill"))
-                        {
-                            decimal? measurement = 2.0m;
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure5.ToLower().Contains("dash"))
-                        {
-                            string[] measures = drink.strMeasure5.Split(" ");
-                            if (measures.Length > 1)
-                            {
-                                decimal? measurement = ConvertFromDash(drink.strMeasure5);
+                                decimal? measurement = ConvertFromTbsp(drink.strMeasure4);
                                 netCost += item.UnitCost * measurement;
                                 item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
                             else
                             {
-                                netCost += item.UnitCost * 0.021m;
-                                item.Quantity -= 0.021;
+                                decimal measure1 = decimal.Parse(drink.strMeasure4);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
                                 _context.Items.Update(item);
                             }
+                        }
 
-                        }
                     }
-                    else if (drink.strMeasure5.ToLower().Contains("tsp"))
+                    else if (drink.strIngredient5 != null && drink.strIngredient5.ToLower() == item.ItemName.ToLower())
                     {
-                        if (drink.strMeasure5.ToLower().Contains("/"))
+                        if (drink.strMeasure5 != null)
                         {
-                            decimal? measure1 = 0;
-                            string[] measures = drink.strMeasure5.Split(" ");
-
-                            if (measures[0].Contains("/") && measures[0].Length > 2)
+                            if (!drink.strMeasure5.Contains(" "))
                             {
-                                string fractionFirst = measures[0];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                return fraction;
-                            }
-                            else if (measures[1].Contains("/"))
-                            {
-                                string fractionFirst = measures[1];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                decimal notFraction = decimal.Parse(measures[0]);
-                                measure1 = (fraction + notFraction);
-                                return measure1;
-                            }
-                        }
-                        else
-                        {
-                            decimal? measurement = ConvertFromTsp(drink.strMeasure5);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                    }
-                    else if (drink.strMeasure5.ToLower().Contains("tbsp"))
-                    {
-                        decimal? measurement = ConvertFromTbsp(drink.strMeasure5);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
-                    }
-                    else
-                    {
-                        decimal measure1 = decimal.Parse(drink.strMeasure5);
-                        netCost += item.UnitCost * measure1;
-                        item.Quantity -= (double)(measure1);
-                        _context.Items.Update(item);
-                    }
-                }
-                else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
-                {
-                    if (drink.strMeasure6 != null)
-                    {
-                        if (!drink.strMeasure6.Contains(" "))
-                        {
-                            string num = "";
-                            string unit = "";
-                            foreach (char letter in drink.strMeasure6)
-                            {
-                                if (Char.IsDigit(letter))
+                                string num = "";
+                                string unit = "";
+                                foreach (char letter in drink.strMeasure5)
                                 {
-                                    num += letter;
+                                    if (Char.IsDigit(letter))
+                                    {
+                                        num += letter;
+                                    }
+                                    else
+                                    {
+                                        unit += letter;
+                                    }
+                                }
+
+                                drink.strMeasure5 = num + " " + unit;
+
+                            }
+
+                            if (drink.strMeasure5.ToLower().Contains("oz"))
+                            {
+                                decimal? measurement = ConvertFromOz(drink.strMeasure5);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure5.ToLower().Contains("ml"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure5);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (item.Garnish == true)
+                            {
+                                decimal? measurement = ConvertFromGarnish(drink.strMeasure5);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure5.ToLower().Contains("shot") || drink.strMeasure5.ToLower().Contains("jigger"))
+                            {
+                                decimal? measurement = ConvertFromShot(drink.strMeasure5);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure5.ToLower().Contains("cl"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure5);
+                                netCost += item.UnitCost * (measurement * 10);
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure5.ToLower().Contains("top") || drink.strMeasure5.ToLower().Contains("fill"))
+                            {
+                                decimal? measurement = 2.0m;
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure5.ToLower().Contains("dash"))
+                            {
+                                string[] measures = drink.strMeasure5.Split(" ");
+                                if (measures.Length > 1)
+                                {
+                                    decimal? measurement = ConvertFromDash(drink.strMeasure5);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
                                 }
                                 else
                                 {
-                                    unit += letter;
+                                    netCost += item.UnitCost * 0.021m;
+                                    item.Quantity -= 0.021;
+                                    _context.Items.Update(item);
+                                }
+
+                            }
+                            else if (drink.strMeasure5.ToLower().Contains("tsp"))
+                            {
+                                if (drink.strMeasure5.ToLower().Contains("/"))
+                                {
+                                    decimal? measure1 = 0;
+                                    string[] measures = drink.strMeasure5.Split(" ");
+
+                                    if (measures[0].Contains("/") && measures[0].Length > 2)
+                                    {
+                                        string fractionFirst = measures[0];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        return fraction;
+                                    }
+                                    else if (measures[1].Contains("/"))
+                                    {
+                                        string fractionFirst = measures[1];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        decimal notFraction = decimal.Parse(measures[0]);
+                                        measure1 = (fraction + notFraction);
+                                        return measure1;
+                                    }
+                                }
+                                else
+                                {
+                                    decimal? measurement = ConvertFromTsp(drink.strMeasure5);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
                                 }
                             }
-
-                            drink.strMeasure6 = num + " " + unit;
-
-                        }
-
-                        if (drink.strMeasure6.ToLower().Contains("oz"))
-                        {
-                            decimal? measurement = ConvertFromOz(drink.strMeasure6);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure6.ToLower().Contains("ml"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure6);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (item.Garnish == true)
-                        {
-                            decimal? measurement = ConvertFromGarnish(drink.strMeasure6);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure6.ToLower().Contains("shot") || drink.strMeasure6.ToLower().Contains("jigger"))
-                        {
-                            decimal? measurement = ConvertFromShot(drink.strMeasure6);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure6.ToLower().Contains("cl"))
-                        {
-                            decimal? measurement = ConvertFromMl(drink.strMeasure6);
-                            netCost += item.UnitCost * (measurement * 10);
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure6.ToLower().Contains("top") || drink.strMeasure6.ToLower().Contains("fill"))
-                        {
-                            decimal? measurement = 2.0m;
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                        else if (drink.strMeasure6.ToLower().Contains("dash"))
-                        {
-                            string[] measures = drink.strMeasure6.Split(" ");
-                            if (measures.Length > 1)
+                            else if (drink.strMeasure5.ToLower().Contains("tbsp"))
                             {
-                                decimal? measurement = ConvertFromDash(drink.strMeasure6);
+                                decimal? measurement = ConvertFromTbsp(drink.strMeasure5);
                                 netCost += item.UnitCost * measurement;
                                 item.Quantity -= (double)(measurement);
                                 _context.Items.Update(item);
                             }
                             else
                             {
-                                netCost += item.UnitCost * 0.021m;
-                                item.Quantity -= 0.021;
+                                decimal measure1 = decimal.Parse(drink.strMeasure5);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
                                 _context.Items.Update(item);
                             }
+                        }
+                    }
 
-                        }
-                    }
-                    else if (drink.strMeasure6.ToLower().Contains("tsp"))
+                    else if (drink.strIngredient6 != null && drink.strIngredient6.ToLower() == item.ItemName.ToLower())
                     {
-                        if (drink.strMeasure6.ToLower().Contains("/"))
+                        if (drink.strMeasure6 != null)
                         {
-                            decimal? measure1 = 0;
-                            string[] measures = drink.strMeasure6.Split(" ");
+                            if (!drink.strMeasure6.Contains(" "))
+                            {
+                                string num = "";
+                                string unit = "";
+                                foreach (char letter in drink.strMeasure6)
+                                {
+                                    if (Char.IsDigit(letter))
+                                    {
+                                        num += letter;
+                                    }
+                                    else
+                                    {
+                                        unit += letter;
+                                    }
+                                }
 
-                            if (measures[0].Contains("/") && measures[0].Length > 2)
-                            {
-                                string fractionFirst = measures[0];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                return fraction;
+                                drink.strMeasure6 = num + " " + unit;
+
                             }
-                            else if (measures[1].Contains("/"))
+
+                            if (drink.strMeasure6.ToLower().Contains("oz"))
                             {
-                                string fractionFirst = measures[1];
-                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
-                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
-                                decimal fraction = firstDigit / secondDigit;
-                                decimal notFraction = decimal.Parse(measures[0]);
-                                measure1 = (fraction + notFraction);
-                                return measure1;
+                                decimal? measurement = ConvertFromOz(drink.strMeasure6);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("ml"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure6);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (item.Garnish == true)
+                            {
+                                decimal? measurement = ConvertFromGarnish(drink.strMeasure6);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("shot") || drink.strMeasure6.ToLower().Contains("jigger"))
+                            {
+                                decimal? measurement = ConvertFromShot(drink.strMeasure6);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("cl"))
+                            {
+                                decimal? measurement = ConvertFromMl(drink.strMeasure6);
+                                netCost += item.UnitCost * (measurement * 10);
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("top") || drink.strMeasure6.ToLower().Contains("fill"))
+                            {
+                                decimal? measurement = 2.0m;
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("dash"))
+                            {
+                                string[] measures = drink.strMeasure6.Split(" ");
+                                if (measures.Length > 1)
+                                {
+                                    decimal? measurement = ConvertFromDash(drink.strMeasure6);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                                else
+                                {
+                                    netCost += item.UnitCost * 0.021m;
+                                    item.Quantity -= 0.021;
+                                    _context.Items.Update(item);
+                                }
+
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("tsp"))
+                            {
+                                if (drink.strMeasure6.ToLower().Contains("/"))
+                                {
+                                    decimal? measure1 = 0;
+                                    string[] measures = drink.strMeasure6.Split(" ");
+
+                                    if (measures[0].Contains("/") && measures[0].Length > 2)
+                                    {
+                                        string fractionFirst = measures[0];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        return fraction;
+                                    }
+                                    else if (measures[1].Contains("/"))
+                                    {
+                                        string fractionFirst = measures[1];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        decimal notFraction = decimal.Parse(measures[0]);
+                                        measure1 = (fraction + notFraction);
+                                        return measure1;
+                                    }
+                                }
+                                else
+                                {
+                                    decimal? measurement = ConvertFromTsp(drink.strMeasure6);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                            }
+                            else if (drink.strMeasure6.ToLower().Contains("tbsp"))
+                            {
+                                decimal? measurement = ConvertFromTbsp(drink.strMeasure6);
+                                netCost += item.UnitCost * measurement;
+                                item.Quantity -= (double)(measurement);
+                                _context.Items.Update(item);
+                            }
+                            else
+                            {
+                                decimal measure1 = decimal.Parse(drink.strMeasure6);
+                                netCost += item.UnitCost * measure1;
+                                item.Quantity -= (double)(measure1);
+                                _context.Items.Update(item);
                             }
                         }
-                        else
-                        {
-                            decimal? measurement = ConvertFromTsp(drink.strMeasure6);
-                            netCost += item.UnitCost * measurement;
-                            item.Quantity -= (double)(measurement);
-                            _context.Items.Update(item);
-                        }
-                    }
-                    else if (drink.strMeasure6.ToLower().Contains("tbsp"))
-                    {
-                        decimal? measurement = ConvertFromTbsp(drink.strMeasure6);
-                        netCost += item.UnitCost * measurement;
-                        item.Quantity -= (double)(measurement);
-                        _context.Items.Update(item);
-                    }
-                    else
-                    {
-                        decimal measure1 = decimal.Parse(drink.strMeasure6);
-                        netCost += item.UnitCost * measure1;
-                        item.Quantity -= (double)(measure1);
-                        _context.Items.Update(item);
+
                     }
                 }
+                return netCost;
             }
             return netCost;
         }
