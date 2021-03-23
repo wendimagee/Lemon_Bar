@@ -236,7 +236,41 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure1.ToLower().Contains("tsp"))
                     {
-                        decimal? measurement = ConvertFromTsp(drink.strMeasure1);
+                        if (drink.strMeasure1.ToLower().Contains("/"))
+                        {
+                            decimal? measure1 = 0;
+                            string[] measures = drink.strMeasure6.Split(" ");
+
+                            if (measures[0].Contains("/") && measures[0].Length > 2)
+                            {
+                                string fractionFirst = measures[0];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                return fraction;
+                            }
+                            else if (measures[1].Contains("/"))
+                            {
+                                string fractionFirst = measures[1];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                decimal notFraction = decimal.Parse(measures[0]);
+                                measure1 = (fraction + notFraction);
+                                return measure1;
+                            }
+                        }
+                        else
+                        {
+                            decimal? measurement = ConvertFromTsp(drink.strMeasure1);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                    }
+                    else if (drink.strMeasure1.ToLower().Contains("tbsp"))
+                    {
+                        decimal? measurement = ConvertFromTbsp(drink.strMeasure1);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -313,7 +347,41 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure2.ToLower().Contains("tsp"))
                     {
-                        decimal? measurement = ConvertFromTsp(drink.strMeasure2);
+                        if (drink.strMeasure2.ToLower().Contains("/"))
+                        {
+                            decimal? measure1 = 0;
+                            string[] measures = drink.strMeasure6.Split(" ");
+
+                            if (measures[0].Contains("/") && measures[0].Length > 2)
+                            {
+                                string fractionFirst = measures[0];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                return fraction;
+                            }
+                            else if (measures[1].Contains("/"))
+                            {
+                                string fractionFirst = measures[1];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                decimal notFraction = decimal.Parse(measures[0]);
+                                measure1 = (fraction + notFraction);
+                                return measure1;
+                            }
+                        }
+                        else
+                        {
+                            decimal? measurement = ConvertFromTsp(drink.strMeasure2);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                    }
+                    else if (drink.strMeasure2.ToLower().Contains("tbsp"))
+                    {
+                        decimal? measurement = ConvertFromTbsp(drink.strMeasure2);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -363,7 +431,7 @@ namespace Lemon_Bar.Controllers
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
                     }
-                    else if (drink.strMeasure3.ToLower().Contains("Top") || drink.strMeasure3.ToLower().Contains("Fill"))
+                    else if (drink.strMeasure3.ToLower().Contains("top") || drink.strMeasure3.ToLower().Contains("fill"))
                     {
                         decimal? measurement = 2.0m;
                         netCost += item.UnitCost * measurement;
@@ -388,8 +456,42 @@ namespace Lemon_Bar.Controllers
                         }
                     }
                     else if (drink.strMeasure3.ToLower().Contains("tsp"))
+                            {
+                                if (drink.strMeasure3.ToLower().Contains("/"))
+                                {
+                                    decimal? measure1 = 0;
+                                    string[] measures = drink.strMeasure3.Split(" ");
+
+                                    if (measures[0].Contains("/") && measures[0].Length > 2)
+                                    {
+                                        string fractionFirst = measures[0];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        return fraction;
+                                    }
+                                    else if (measures[1].Contains("/"))
+                                    {
+                                        string fractionFirst = measures[1];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        decimal notFraction = decimal.Parse(measures[0]);
+                                        measure1 = (fraction + notFraction);
+                                        return measure1;
+                                    }
+                                }
+                                else
+                                {
+                                    decimal? measurement = ConvertFromTsp(drink.strMeasure3);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                            }
+                            else if (drink.strMeasure3.ToLower().Contains("tbsp"))
                     {
-                        decimal? measurement = ConvertFromTsp(drink.strMeasure3);
+                        decimal? measurement = ConvertFromTbsp(drink.strMeasure3);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -464,8 +566,42 @@ namespace Lemon_Bar.Controllers
                         }
                     }
                     else if (drink.strMeasure4.ToLower().Contains("tsp"))
+                            {
+                                if (drink.strMeasure4.ToLower().Contains("/"))
+                                {
+                                    decimal? measure1 = 0;
+                                    string[] measures = drink.strMeasure4.Split(" ");
+
+                                    if (measures[0].Contains("/") && measures[0].Length > 2)
+                                    {
+                                        string fractionFirst = measures[0];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        return fraction;
+                                    }
+                                    else if (measures[1].Contains("/"))
+                                    {
+                                        string fractionFirst = measures[1];
+                                        decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                        decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                        decimal fraction = firstDigit / secondDigit;
+                                        decimal notFraction = decimal.Parse(measures[0]);
+                                        measure1 = (fraction + notFraction);
+                                        return measure1;
+                                    }
+                                }
+                                else
+                                {
+                                    decimal? measurement = ConvertFromTsp(drink.strMeasure4);
+                                    netCost += item.UnitCost * measurement;
+                                    item.Quantity -= (double)(measurement);
+                                    _context.Items.Update(item);
+                                }
+                            }
+                            else if (drink.strMeasure4.ToLower().Contains("tbsp"))
                     {
-                        decimal? measurement = ConvertFromTsp(drink.strMeasure4);
+                        decimal? measurement = ConvertFromTbsp(drink.strMeasure4);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -542,7 +678,41 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure5.ToLower().Contains("tsp"))
                     {
-                        decimal? measurement = ConvertFromTsp(drink.strMeasure5);
+                        if (drink.strMeasure5.ToLower().Contains("/"))
+                        {
+                            decimal? measure1 = 0;
+                            string[] measures = drink.strMeasure5.Split(" ");
+
+                            if (measures[0].Contains("/") && measures[0].Length > 2)
+                            {
+                                string fractionFirst = measures[0];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                return fraction;
+                            }
+                            else if (measures[1].Contains("/"))
+                            {
+                                string fractionFirst = measures[1];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                decimal notFraction = decimal.Parse(measures[0]);
+                                measure1 = (fraction + notFraction);
+                                return measure1;
+                            }
+                        }
+                        else
+                        {
+                            decimal? measurement = ConvertFromTsp(drink.strMeasure5);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                    }
+                    else if (drink.strMeasure5.ToLower().Contains("tbsp"))
+                    {
+                        decimal? measurement = ConvertFromTbsp(drink.strMeasure5);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -619,7 +789,41 @@ namespace Lemon_Bar.Controllers
                     }
                     else if (drink.strMeasure6.ToLower().Contains("tsp"))
                     {
-                        decimal? measurement = ConvertFromTsp(drink.strMeasure6);
+                        if (drink.strMeasure6.ToLower().Contains("/"))
+                        {
+                            decimal? measure1 = 0;
+                            string[] measures = drink.strMeasure6.Split(" ");
+
+                            if (measures[0].Contains("/") && measures[0].Length > 2)
+                            {
+                                string fractionFirst = measures[0];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                return fraction;
+                            }
+                            else if (measures[1].Contains("/"))
+                            {
+                                string fractionFirst = measures[1];
+                                decimal firstDigit = decimal.Parse(fractionFirst[0].ToString());
+                                decimal secondDigit = decimal.Parse(fractionFirst[2].ToString());
+                                decimal fraction = firstDigit / secondDigit;
+                                decimal notFraction = decimal.Parse(measures[0]);
+                                measure1 = (fraction + notFraction);
+                                return measure1;
+                            }
+                        }
+                        else
+                        {
+                            decimal? measurement = ConvertFromTsp(drink.strMeasure6);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                    }
+                    else if (drink.strMeasure6.ToLower().Contains("tbsp"))
+                    {
+                        decimal? measurement = ConvertFromTbsp(drink.strMeasure6);
                         netCost += item.UnitCost * measurement;
                         item.Quantity -= (double)(measurement);
                         _context.Items.Update(item);
@@ -738,6 +942,13 @@ namespace Lemon_Bar.Controllers
             decimal? measure1 = 0;
             string[] measures = measurement.Split(" ");
             measure1 = decimal.Parse(measures[0]) / 6;
+            return measure1;
+        }
+        public decimal? ConvertFromTbsp(string measurement)
+        {
+            decimal? measure1 = 0;
+            string[] measures = measurement.Split(" ");
+            measure1 = decimal.Parse(measures[0]) / 2;
             return measure1;
         }
 
