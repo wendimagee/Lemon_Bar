@@ -196,3 +196,10 @@ body {
         background-color: brown;
         color: white;
     }
+
+li {
+    float: left;
+    text-decoration: none;
+    padding: 5px;
+    list-style-type: none
+}

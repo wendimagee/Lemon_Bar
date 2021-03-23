@@ -8,9 +8,9 @@
 <body>
     <h1><b>Current Inventory List</b></h1>
 
-<p>
-    <a asp-action="Create">Add More Items</a>
-</p>
+        <ul >
+        <li > <a asp-action="Create" asp-route-type="Mixers"> Add Mixers</a > </li > <li > <a asp-action="Create" asp-route-type="Garnish"> Add Garnish</a > </li >
+        </ul >
 
     @*<table class="table">*@
     <table class="styled-table" id="invTable">
@@ -67,7 +67,7 @@
                         </td>*@
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Add More</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
                         <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>

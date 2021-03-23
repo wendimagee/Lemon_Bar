@@ -49,11 +49,14 @@ namespace Lemon_Bar.Controllers
         }
 
         // GET: Items/Create
-        public IActionResult Create()
+        public IActionResult Create(string type)
         {
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
+            TempData["IngredType"] = type;
+            List<IngredientType> ingredientType = _context.IngredientTypes.Where(x => x.IngCategory == type).ToList();
             List<Item> userItems = _context.Items.Where(u => u.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
-            List<Ingredient> ingredients = _ingredient.GetAllIngredients().Where(x => !userItems.Any(y => y.ItemName == x.strIngredient1)).ToList();
+            List<Ingredient> ingredients = _ingredient.GetAllIngredients().Where(x => !userItems.Any(y => y.ItemName == x.strIngredient1) && ingredientType.Any(z => z.ApistrIngredient == x.strIngredient1)).ToList();
+            
             //ViewBag.Ingredients = new SelectList(_ingredient.GetAllIngredients(), "strIngredient1", "strIngredient1");
             ViewBag.Ingredients = new SelectList(ingredients, "strIngredient1", "strIngredient1");
             return View();
@@ -70,7 +73,10 @@ namespace Lemon_Bar.Controllers
             if (ModelState.IsValid)
             {
                 double factor = 1;
-                if(!item.Garnish)
+                if (item.Units == "each")
+                {
+                    item.Garnish = true;
+                } else
                 {
                     switch (item.Units)
                     {
@@ -86,17 +92,13 @@ namespace Lemon_Bar.Controllers
                         case "fifth":
                             factor = 25.4;
                             break;
-                        
+
                         default:
                             break;
                     }
 
                     item.Quantity *= factor;
                     item.Units = "oz";
-                }
-                else
-                {
-                    item.Units = "each";
                 }
 
                 item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 5);
