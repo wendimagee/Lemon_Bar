@@ -25,13 +25,14 @@ namespace Lemon_Bar.Controllers
         // GET: Items
         public async Task<IActionResult> Index()
         {
-            TempData.Remove("missing");
+
             return View(await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
         }
 
         // GET: Items/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            TempData.Remove("missing");
             if (id == null)
             {
                 return NotFound();
@@ -51,6 +52,7 @@ namespace Lemon_Bar.Controllers
         // GET: Items/Create
         public IActionResult Create(string type)
         {
+            TempData.Remove("missing");
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             TempData["IngredType"] = type;
             List<IngredientType> ingredientType = _context.IngredientTypes.Where(x => x.IngCategory == type).ToList();
