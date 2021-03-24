@@ -79,11 +79,18 @@ namespace Lemon_Bar.Controllers
             TempData.Remove("LowQty");
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             TempData["IngredType"] = type;
+
+            //Build a list of all possible ingredients matching the selected type
             List<IngredientType> ingredientType = _context.IngredientTypes.Where(x => x.IngCategory == type).ToList();
+            
+            //Build a list of all inventory items specific to the current logged in user
             List<Item> userItems = _context.Items.Where(u => u.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            
+            //Build a list of ingredients that are a comparison of selected type combined with current user
+            //Meaning this list will be of the selected type which are not in logged in user's current inventory
             List<Ingredient> ingredients = _ingredient.GetAllIngredients().Where(x => !userItems.Any(y => y.ItemName == x.strIngredient1) && ingredientType.Any(z => z.ApistrIngredient == x.strIngredient1)).ToList();
             
-            //ViewBag.Ingredients = new SelectList(_ingredient.GetAllIngredients(), "strIngredient1", "strIngredient1");
+            //Send the ingredients list as a dropdown selector to the view via ViewBag
             ViewBag.Ingredients = new SelectList(ingredients, "strIngredient1", "strIngredient1");
             return View();
         }
@@ -98,6 +105,8 @@ namespace Lemon_Bar.Controllers
             item.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if (ModelState.IsValid)
             {
+                //Prepare for Unit and Quantity updates to force storing info relative to ounces if ingredient
+                //is not a Garnish
                 double factor = 1;
                 if (item.Units == "each")
                 {
@@ -123,10 +132,12 @@ namespace Lemon_Bar.Controllers
                             break;
                     }
 
+                    //Finalize updates for non-Garnish ingredients
                     item.Quantity *= factor;
                     item.Units = "oz";
                 }
 
+                //Calculate and store Unit Cost in table based on Total Cost and Quantity entries from the user
                 item.UnitCost = Math.Round((decimal)(item.TotalCost / (decimal)item.Quantity), 5);
 
                 _context.Add(item);
@@ -168,6 +179,8 @@ namespace Lemon_Bar.Controllers
 
             if (ModelState.IsValid)
             {
+                //Prepare updates to force storing Quantity relative to ounces if ingredient
+                //is not a Garnish
                 double addQty = addQuantity;
                 double factor = 1;
                 if (!item.Garnish)
@@ -194,8 +207,9 @@ namespace Lemon_Bar.Controllers
                     addQty = Math.Round((addQuantity * factor),2);
                 }
 
+                //Update inventory quantity 
                 item.Quantity += addQty;
-                //item.TotalCost += (Math.Round((decimal)addQty * (decimal)item.UnitCost, 2));
+                
                 item.TotalCost += (decimal)addTotalCost;
                 //should we make this an average instead?
                 item.UnitCost = Math.Round(((decimal)addTotalCost / (decimal)addQty), 5);
