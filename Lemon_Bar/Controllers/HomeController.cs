@@ -16,6 +16,9 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult Index()
         {
+            TempData.Remove("Low");
+            TempData.Remove("partial");
+            TempData.Remove("partialAlt");
 
             return View();
         }
@@ -52,7 +55,10 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(string id)
         {
-           Rootobject c = new Rootobject();
+            TempData.Remove("Low");
+            TempData.Remove("partial");
+            TempData.Remove("partialAlt");
+            Rootobject c = new Rootobject();
            try
             {
                 c = cocktailDAL.GetIdDataString(id);//Returns a list of drinks even though we are pulling the rootobject by ID
@@ -153,9 +159,9 @@ namespace Lemon_Bar.Controllers
                 }
 
                 if (validDrink)
-                    {
-                        filtered.Add(drink);
-                    }
+                {
+                    filtered.Add(drink);
+                }
 
                     returnList.drinks = filtered;
 

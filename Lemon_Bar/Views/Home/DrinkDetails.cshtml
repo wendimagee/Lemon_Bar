@@ -52,26 +52,28 @@
     }
 }
 @* The work to make this drop down menu drop "down" is nuts or else I would! *@
-<form asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">
+<form asp-action="Create" asp-controller="DrinkSales" >
     <label>Select quantity to make</label>
     <select name="quantity">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
+        <option  value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
+        <option value=9>9</option>
+        <option value=10>10</option>
+        <option value=15>15</option>
+        <option value=20>20</option>
     </select>
+    <input type="hidden" name="id" value="@Model.idDrink" />
+    <input type="submit" value="Make This Drink!" />
 </form>
-<button class="buttony">
+@*<button class="buttony">
     <a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">Make This Drink!</a>
-</button>
+</button>*@
 
 
 

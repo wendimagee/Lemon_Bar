@@ -13,6 +13,12 @@
         {
             <h4 style="color: red"><strong> Please Add: @TempData.Peek("missing") </strong></h4>
         }
+        <hr />
+        if (TempData.Peek("LowQty") != null)
+        {
+            <h4 style="color: red"><strong>@TempData.Peek("LowQty")</strong></h4>
+        }
+        
     }
 
     <ul>

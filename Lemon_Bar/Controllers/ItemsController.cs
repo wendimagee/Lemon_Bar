@@ -25,6 +25,27 @@ namespace Lemon_Bar.Controllers
         // GET: Items
         public async Task<IActionResult> Index()
         {
+            TempData.Remove("Low");
+            TempData.Remove("partial");
+            TempData.Remove("partialAlt");
+            TempData.Remove("LowQty");
+            if (_context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).Any(x => x.Quantity < 10))
+            {
+                List<string> low = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value &&
+                x.Quantity < 10).Select(x => x.ItemName).ToList();
+                string inggies = "";
+                foreach (string item in low)
+                {
+                    inggies += " " + item + ",";
+                }
+
+                if(inggies.Length > 1)
+                {
+                    inggies = inggies.Substring(0, inggies.Length - 1);
+                    string lowQty = "You are running low on" + inggies + "," + " please add more!";
+                    TempData["LowQty"] = lowQty;
+                }
+            }
 
             return View(await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync());
         }
@@ -33,6 +54,8 @@ namespace Lemon_Bar.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             TempData.Remove("missing");
+            TempData.Remove("LowQty");
+
             if (id == null)
             {
                 return NotFound();
@@ -53,6 +76,7 @@ namespace Lemon_Bar.Controllers
         public IActionResult Create(string type)
         {
             TempData.Remove("missing");
+            TempData.Remove("LowQty");
             ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             TempData["IngredType"] = type;
             List<IngredientType> ingredientType = _context.IngredientTypes.Where(x => x.IngCategory == type).ToList();

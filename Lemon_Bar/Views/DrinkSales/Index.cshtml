@@ -7,6 +7,23 @@
 <body>
     <h1>Drink Sales</h1>
 
+    @{
+        if (TempData.Peek("partial") != null)
+        {
+            <h4 style="color: red"><strong>Could only make @TempData.Peek("partial") number of drinks</strong></h4>
+        }
+
+        if (TempData.Peek("partialAlt") != null)
+        {
+            <h4 style="color: red"><strong>Could not make @TempData.Peek("partialAlt") drinks</strong></h4>
+        }
+
+        if (TempData.Peek("Low") != null)
+        {
+            <h4 style="color: red"><strong>@TempData.Peek("Low")</strong></h4>
+        }
+    }
+
     <table class="table">
         <thead>
             <tr>
