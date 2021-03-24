@@ -32,14 +32,14 @@
                 <div class="form-group">
                     <label asp-for="TotalCost" class="control-label"></label>
                     <input asp-for="TotalCost" class="form-control" hidden />
-                    <input type="number" name="AddTotalCost" class="form-control" min=".5" />
-                    <span asp-validation-for="TotalCost" class="text-danger"></span>
+                    <input type="number" name="AddTotalCost" class="form-control" min=".5"/>
+                    @*<span asp-validation-for="TotalCost" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <label asp-for="Quantity" class="control-label"></label>
                     <input asp-for="Quantity" class="form-control" hidden />
                     <input type="number" name="AddQuantity" class="form-control" min=".5" />
-                    <span asp-validation-for="Quantity" class="text-danger"></span>
+                    @*<span asp-validation-for="Quantity" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <label asp-for="Units" class="control-label"></label>
@@ -57,12 +57,12 @@
                             <option value="Gallon">Gallon</option>
                         }
                     </select>
-                    <span asp-validation-for="Units" class="text-danger"></span>
+                    @*<span asp-validation-for="Units" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <label asp-for="UnitCost" class="control-label" hidden></label>
                     <input asp-for="UnitCost" class="form-control" hidden />
-                    <span asp-validation-for="UnitCost" class="text-danger"></span>
+                    @*<span asp-validation-for="UnitCost" class="text-danger"></span>*@
                 </div>
                 <div class="form-group form-check">
                     <label class="form-check-label" hidden>

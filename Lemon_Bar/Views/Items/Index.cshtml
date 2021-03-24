@@ -51,6 +51,9 @@
         <tbody>
             @foreach (var item in Model)
             {
+                 
+                    double newQuantity = Math.Round(item.Quantity, 2);
+                
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.ItemName)
@@ -59,7 +62,7 @@
                         @Html.DisplayFor(modelItem => item.TotalCost)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                        @newQuantity
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.UnitCost)
