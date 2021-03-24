@@ -111,29 +111,38 @@ namespace Lemon_Bar.Controllers
             List<Drink> filtered = new List<Drink>();
             //if (filtered.Count != 0)
             //{
-                foreach (Drink drink in Drink.drinks)
-                {
-                    bool validDrink = true;
+            foreach (Drink drink in Drink.drinks)
+            {
+                bool validDrink = true;
 
-                    List<string> ingredients = new List<string>();
-                    if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-                    if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
-                    if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+                List<string> ingredients = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
+                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
+                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
+                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
+                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
+                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+                if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
+                if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
 
                 List<string> measurement = new List<string>();
-                    if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-                    if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
-                    if (drink.strMeasure7 != null) { measurement.Add(drink.strMeasure7.ToString()); }
+                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
+                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
+                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
+                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
+                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
+                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
+                if (drink.strMeasure7 != null) { measurement.Add(drink.strMeasure7.ToString()); }
+                if (drink.strMeasure8 != null) { measurement.Add(drink.strMeasure8.ToString()); }
+                if (drink.strMeasure9 != null) { measurement.Add(drink.strMeasure9.ToString()); }
 
-                //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
+                if (ingredients.Count > 6 || measurement.Count > 6)
+                {
+                    validDrink = false;
+                }
+
+            //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
                 if (ingredients.Count != measurement.Count)
                 {
                     validDrink = false;
@@ -153,6 +162,14 @@ namespace Lemon_Bar.Controllers
                     }
                 }
 
+                if (!String.IsNullOrEmpty(drink.strCategory))
+                {
+                    if (drink.strCategory.ToLower().Contains("punch"))
+                    {
+                        validDrink = false;
+                    }
+                }
+
                 if (!String.IsNullOrEmpty(drink.strAlcoholic))
                 {
                     if (drink.strAlcoholic.ToLower().Contains("non"))
@@ -167,7 +184,7 @@ namespace Lemon_Bar.Controllers
                     filtered.Add(drink);
                 }
 
-                    returnList.drinks = filtered;
+                returnList.drinks = filtered;
 
             }
             return returnList;

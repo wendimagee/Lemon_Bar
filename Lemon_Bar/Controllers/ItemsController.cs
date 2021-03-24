@@ -324,24 +324,24 @@ namespace Lemon_Bar.Controllers
 
         private Rootobject FilterRecipes(Rootobject Drink)
         {
-            int index = 0;
-
-            Rootobject returnList= new Rootobject();
+            Rootobject returnList = new Rootobject();
             List<Drink> filtered = new List<Drink>();
-            List<Item> userInv = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToList();
+            //if (filtered.Count != 0)
+            //{
             foreach (Drink drink in Drink.drinks)
             {
-                bool validDrink = false;
+                bool validDrink = true;
 
-
-                List<string> ingredients= new List<string>();
-                if(!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
+                List<string> ingredients = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
                 if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
                 if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
                 if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
                 if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
                 if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
                 if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+                if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
+                if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
 
                 List<string> measurement = new List<string>();
                 if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
@@ -351,41 +351,58 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
                 if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
                 if (drink.strMeasure7 != null) { measurement.Add(drink.strMeasure7.ToString()); }
+                if (drink.strMeasure8 != null) { measurement.Add(drink.strMeasure8.ToString()); }
+                if (drink.strMeasure9 != null) { measurement.Add(drink.strMeasure9.ToString()); }
 
-                if (ingredients.Count != measurement.Count)
+                if(ingredients.Count > 6 || measurement.Count > 6)
                 {
-                    continue;
+                    validDrink = false;
                 }
 
-            
-                int count = 0;
-                
-                foreach (string x in ingredients)
+                //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
+                if (ingredients.Count != measurement.Count)
                 {
-                    for (int i = 0; i < userInv.Count; i++)
+                    validDrink = false;
+                }
+
+                foreach (string m in measurement)
+                {
+                    if (m.Contains("part"))
                     {
-                        if (userInv[i].ItemName.Contains(x))
-                        {
-                            count++;
-                            break;
-                        }
+                        validDrink = false;
+                        break;
+                    }
+                    else if (m.Contains("pint"))
+                    {
+                        validDrink = false;
+                        break;
                     }
                 }
 
-                if(count == ingredients.Count)
+                if (!String.IsNullOrEmpty(drink.strCategory))
                 {
-                    validDrink = true;
+                    if (drink.strCategory.ToLower().Contains("punch"))
+                    {
+                        validDrink = false;
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(drink.strAlcoholic))
+                {
+                    if (drink.strAlcoholic.ToLower().Contains("non"))
+                    {
+                        validDrink = false;
+                    }
                 }
 
 
                 if (validDrink)
                 {
-
                     filtered.Add(drink);
                 }
 
-                index++;
                 returnList.drinks = filtered;
+
             }
             return returnList;
         }
@@ -485,7 +502,7 @@ namespace Lemon_Bar.Controllers
         public async Task<IActionResult> SurplusResults()
         {
             List<Item> inventoryList = new List<Item>();
-            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).ToListAsync();
+            inventoryList = await _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value && x.Garnish == false).ToListAsync();
 
             List<Item> ordered = inventoryList.OrderByDescending(x => x.Quantity).ToList();
 
