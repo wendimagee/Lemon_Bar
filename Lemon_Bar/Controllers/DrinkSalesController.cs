@@ -303,6 +303,13 @@ namespace Lemon_Bar.Controllers
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
                         }
+                        else if (drink.strMeasure1.ToLower().Contains("splash"))
+                        {
+                            decimal? measurement = 0.5m;
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
                         else
                         {
                             string num = "";
@@ -456,6 +463,13 @@ namespace Lemon_Bar.Controllers
                         else if (drink.strMeasure2.ToLower().Contains("tbsp"))
                         {
                             decimal? measurement = ConvertFromTbsp(drink.strMeasure2);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else if (drink.strMeasure2.ToLower().Contains("splash"))
+                        {
+                            decimal? measurement = 0.5m;
                             netCost += item.UnitCost * measurement;
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
@@ -617,6 +631,13 @@ namespace Lemon_Bar.Controllers
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
                         }
+                        else if (drink.strMeasure3.ToLower().Contains("splash"))
+                        {
+                            decimal? measurement = 0.5m;
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
                         else
                         {
                             string num = "";
@@ -771,6 +792,13 @@ namespace Lemon_Bar.Controllers
                         else if (drink.strMeasure4.ToLower().Contains("tbsp"))
                         {
                             decimal? measurement = ConvertFromTbsp(drink.strMeasure4);
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
+                        else if (drink.strMeasure4.ToLower().Contains("splash"))
+                        {
+                            decimal? measurement = 0.5m;
                             netCost += item.UnitCost * measurement;
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
@@ -934,6 +962,13 @@ namespace Lemon_Bar.Controllers
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
                         }
+                        else if (drink.strMeasure5.ToLower().Contains("splash"))
+                        {
+                            decimal? measurement = 0.5m;
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
                         else
                         {
                             string num = "";
@@ -1092,6 +1127,13 @@ namespace Lemon_Bar.Controllers
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
                         }
+                        else if (drink.strMeasure6.ToLower().Contains("splash"))
+                        {
+                            decimal? measurement = 0.5m;
+                            netCost += item.UnitCost * measurement;
+                            item.Quantity -= (double)(measurement);
+                            _context.Items.Update(item);
+                        }
                         else
                         {
                             string num = "";
@@ -1220,7 +1262,6 @@ namespace Lemon_Bar.Controllers
             measure1 = decimal.Parse(measures[0]) * 0.021m;
             return measure1;
         }
-
         public decimal? ConvertFromTsp(string measurement)
         {
             decimal? measure1 = 0;
