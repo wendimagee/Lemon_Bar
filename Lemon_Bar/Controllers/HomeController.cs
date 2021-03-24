@@ -16,6 +16,9 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult Index()
         {
+            TempData.Remove("Low");
+            TempData.Remove("partial");
+            TempData.Remove("partialAlt");
 
             return View();
         }
@@ -52,7 +55,10 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(string id)
         {
-           Rootobject c = new Rootobject();
+            TempData.Remove("Low");
+            TempData.Remove("partial");
+            TempData.Remove("partialAlt");
+            Rootobject c = new Rootobject();
            try
             {
                 c = cocktailDAL.GetIdDataString(id);//Returns a list of drinks even though we are pulling the rootobject by ID
@@ -129,36 +135,36 @@ namespace Lemon_Bar.Controllers
 
                 //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
                 if (ingredients.Count != measurement.Count)
+                {
+                    validDrink = false;
+                }
+
+                foreach (string m in measurement)
+                {
+                    if (m.Contains("part"))
                     {
                         validDrink = false;
+                        break;
                     }
-
-                    foreach (string m in measurement)
+                    else if (m.Contains("pint"))
                     {
-                        if (m.Contains("part"))
-                        {
-                            validDrink = false;
-                            break;
-                        }
-                        else if (m.Contains("pint"))
-                        {
-                            validDrink = false;
-                            break;
-                        }
+                        validDrink = false;
+                        break;
                     }
+                }
 
-                    //if (drink.strAlcoholic.ToLower().Contains("non"))
-                    //{
-                    //    validDrink = false;
-                    //}
+                if (drink.strAlcoholic.ToLower().Contains("non"))
+                {
+                    validDrink = false;
+                }
 
-                    if (validDrink)
-                    {
-                        filtered.Add(drink);
-                    }
+                if (validDrink)
+                {
+                    filtered.Add(drink);
+                }
 
                     returnList.drinks = filtered;
-                //}
+
             }
             return returnList;
         }

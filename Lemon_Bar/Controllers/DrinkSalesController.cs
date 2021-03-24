@@ -46,7 +46,7 @@ namespace Lemon_Bar.Controllers
             return View(drinkSale);
         }
 
-        public async Task<IActionResult> Create(string id)
+        public async Task<IActionResult> Create(string id, int quantity)
         {
             DrinkSale drinkSale = new DrinkSale();
             //this is where we can take in cocktailDAL.drink and convert it to a DrinkSales object
@@ -54,19 +54,86 @@ namespace Lemon_Bar.Controllers
             Drink drink = d.drinks[0];
             //Check to see if we have ingredients, store needed ingredients as list then reroute to Inventory Create
             bool validDrink = MissingIng(drink);
+            TempData.Remove("Low");
+            TempData.Remove("partial");
+            TempData.Remove("partialAlt");
 
             if (validDrink)
             {
-                drinkSale.DrinkId = id.ToString();
-                drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                drinkSale.NetCost = GetNetCost(drink);
-                drinkSale.SalePrice = drinkSale.NetCost * 5;
-                if (ModelState.IsValid)
+                List<string> ingredients = new List<string>();
+                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1.ToLower()); }
+                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2.ToLower()); }
+                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3.ToLower()); }
+                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4.ToLower()); }
+                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5.ToLower()); }
+                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6.ToLower()); }
+                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
+
+                List<DrinkSale> sales = new List<DrinkSale>();
+                for (int i = 0; i < quantity; i++)
                 {
-                    _context.Add(drinkSale);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    if (_context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value && ingredients.Contains(x.ItemName)).Any(x => x.Quantity < 10))
+                    {
+                        List<string> low = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value &&
+                        ingredients.Contains(x.ItemName) && x.Quantity < 10).Select(x => x.ItemName).ToList();
+
+                        string inggies = "";
+
+                        foreach (string item in low)
+                        {
+                            inggies += " " + item + ",";
+                        }
+
+                        inggies = inggies.Substring(0, inggies.Length - 1);
+                        string lowQty = "You are running low on" + inggies + "," + " please add more!";
+                        TempData["Low"] = lowQty;
+                        if(i == 0)
+                        {
+                            TempData["partialAlt"] = "any";
+                        }
+                        else
+                        {
+                            TempData["partial"] = i.ToString();
+                        }
+                        break;
+
+                    }
+                    else
+                    {
+                        drinkSale = new DrinkSale();
+                        drinkSale.DrinkId = id.ToString();
+                        drinkSale.User = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                        drinkSale.NetCost = GetNetCost(drink);
+                        drinkSale.SalePrice = drinkSale.NetCost * 5;
+
+                        if (ModelState.IsValid)
+                        {
+                            //sales.Add(new DrinkSale
+                            //{
+                            //    DrinkId = drinkSale.DrinkId,
+                            //    NetCost = drinkSale.NetCost,
+                            //    SalePrice = drinkSale.SalePrice,
+                            //    SaleDate = drinkSale.SaleDate,
+                            //    User = User.FindFirst(ClaimTypes.NameIdentifier).Value
+                            //});
+                            _context.DrinkSales.Add(drinkSale);
+                            _context.SaveChanges();
+                        }
+                        else
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                    }
+
                 }
+
+                //if(sales.Count > 0)
+                //{
+                //    _context.DrinkSales.AddRange(sales);
+                //    await _context.SaveChangesAsync();
+                //}
+
+
                 ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
                 return RedirectToAction("Index");
             }
@@ -77,6 +144,7 @@ namespace Lemon_Bar.Controllers
 
 
         }
+
 
         // GET: DrinkSales/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -202,6 +270,7 @@ namespace Lemon_Bar.Controllers
                             netCost += item.UnitCost * measurement;
                             item.Quantity -= (double)(measurement);
                             _context.Items.Update(item);
+
                         }
                         else if (drink.strMeasure1.ToLower().Contains("ml"))
                         {
@@ -1315,22 +1384,6 @@ namespace Lemon_Bar.Controllers
                 {
                     temp.Add(ing);
                 }
-
-                //for (int i = 0; i < userInv.Count; i++)
-                //{
-                //    if (userInv[i].ItemName.ToLower().Contains(x))
-                //    {
-                //        count++;
-                //        tempName = userInv[i].ItemName;
-                //        break;
-                //    }
-                //    tempName = userInv[i].ItemName;
-                //}
-
-                //if (!tempName.Contains(ing))
-                //{
-                //    temp.Add(ing);
-                //}
             }
 
             if (count == ingredients.Count)
