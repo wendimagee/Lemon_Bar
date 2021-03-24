@@ -153,10 +153,14 @@ namespace Lemon_Bar.Controllers
                     }
                 }
 
-                if (drink.strAlcoholic.ToLower().Contains("non"))
+                if (!String.IsNullOrEmpty(drink.strAlcoholic))
                 {
-                    validDrink = false;
+                    if (drink.strAlcoholic.ToLower().Contains("non"))
+                    {
+                        validDrink = false;
+                    }
                 }
+
 
                 if (validDrink)
                 {

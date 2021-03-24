@@ -69,7 +69,6 @@ namespace Lemon_Bar.Controllers
                 if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6.ToLower()); }
                 if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
 
-                List<DrinkSale> sales = new List<DrinkSale>();
                 for (int i = 0; i < quantity; i++)
                 {
                     if (_context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value && ingredients.Contains(x.ItemName)).Any(x => x.Quantity < 10))
@@ -108,14 +107,6 @@ namespace Lemon_Bar.Controllers
 
                         if (ModelState.IsValid)
                         {
-                            //sales.Add(new DrinkSale
-                            //{
-                            //    DrinkId = drinkSale.DrinkId,
-                            //    NetCost = drinkSale.NetCost,
-                            //    SalePrice = drinkSale.SalePrice,
-                            //    SaleDate = drinkSale.SaleDate,
-                            //    User = User.FindFirst(ClaimTypes.NameIdentifier).Value
-                            //});
                             _context.DrinkSales.Add(drinkSale);
                             _context.SaveChanges();
                         }
@@ -126,13 +117,6 @@ namespace Lemon_Bar.Controllers
                     }
 
                 }
-
-                //if(sales.Count > 0)
-                //{
-                //    _context.DrinkSales.AddRange(sales);
-                //    await _context.SaveChangesAsync();
-                //}
-
 
                 ViewData["User"] = new SelectList(_context.AspNetUsers, "Id", "Id", drinkSale.User);
                 return RedirectToAction("Index");

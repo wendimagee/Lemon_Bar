@@ -1,9 +1,10 @@
 ﻿@model Rootobject
 
+<h4>Popular Drinks you can make from your current Inventory!</h4>
 
 @foreach (Drink d in Model.drinks)
 {
-    <h2>@d.strDrink</h2>
+    <p>@d.strDrink</p>
     <img src="@d.strDrinkThumb" class="center" style="height: 150px; width: auto;" />
     <br />
     <div>
