@@ -129,36 +129,36 @@ namespace Lemon_Bar.Controllers
 
                 //Add more conditions to test cases by inserting [validDrink = false;] to your condition, like below
                 if (ingredients.Count != measurement.Count)
+                {
+                    validDrink = false;
+                }
+
+                foreach (string m in measurement)
+                {
+                    if (m.Contains("part"))
                     {
                         validDrink = false;
+                        break;
                     }
-
-                    foreach (string m in measurement)
+                    else if (m.Contains("pint"))
                     {
-                        if (m.Contains("part"))
-                        {
-                            validDrink = false;
-                            break;
-                        }
-                        else if (m.Contains("pint"))
-                        {
-                            validDrink = false;
-                            break;
-                        }
+                        validDrink = false;
+                        break;
                     }
+                }
 
-                    //if (drink.strAlcoholic.ToLower().Contains("non"))
-                    //{
-                    //    validDrink = false;
-                    //}
+                if (drink.strAlcoholic.ToLower().Contains("non"))
+                {
+                    validDrink = false;
+                }
 
-                    if (validDrink)
+                if (validDrink)
                     {
                         filtered.Add(drink);
                     }
 
                     returnList.drinks = filtered;
-                //}
+
             }
             return returnList;
         }
