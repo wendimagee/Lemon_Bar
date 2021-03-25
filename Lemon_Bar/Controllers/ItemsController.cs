@@ -313,7 +313,7 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-                recipeList = cocktailDAL.GetInventory(searchString);
+                recipeList = FilterRecipes(cocktailDAL.GetInventory(searchString));
             }
             catch
             {
@@ -328,36 +328,44 @@ namespace Lemon_Bar.Controllers
         {
             Rootobject returnList = new Rootobject();
             List<Drink> filtered = new List<Drink>();
-            //if (filtered.Count != 0)
-            //{
+
             foreach (Drink drink in Drink.drinks)
             {
+                Drink drinky = new Drink();
+                drinky = drink;
                 bool validDrink = true;
+                if (String.IsNullOrEmpty(Drink.drinks[0].strIngredient2))
+                {
+                    Rootobject temp = new Rootobject();
+                    temp = cocktailDAL.GetIdDataString(drink.idDrink);
 
-                //creates a list of the ingredients and measurements for each drink, so they can be filtered for the drinks that can be handled by the current system
+                    drinky = temp.drinks[0];
+                }
+
+
                 List<string> ingredients = new List<string>();
-                if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
-                if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
-                if (!String.IsNullOrEmpty(drink.strIngredient3)) { ingredients.Add(drink.strIngredient3); }
-                if (!String.IsNullOrEmpty(drink.strIngredient4)) { ingredients.Add(drink.strIngredient4); }
-                if (!String.IsNullOrEmpty(drink.strIngredient5)) { ingredients.Add(drink.strIngredient5); }
-                if (!String.IsNullOrEmpty(drink.strIngredient6)) { ingredients.Add(drink.strIngredient6); }
-                if (drink.strIngredient7 != null) { ingredients.Add(drink.strIngredient7.ToString()); }
-                if (drink.strIngredient8 != null) { ingredients.Add(drink.strIngredient8.ToString()); }
-                if (drink.strIngredient9 != null) { ingredients.Add(drink.strIngredient9.ToString()); }
+                if (!String.IsNullOrEmpty(drinky.strIngredient1)) { ingredients.Add(drinky.strIngredient1); }
+                if (!String.IsNullOrEmpty(drinky.strIngredient2)) { ingredients.Add(drinky.strIngredient2); }
+                if (!String.IsNullOrEmpty(drinky.strIngredient3)) { ingredients.Add(drinky.strIngredient3); }
+                if (!String.IsNullOrEmpty(drinky.strIngredient4)) { ingredients.Add(drinky.strIngredient4); }
+                if (!String.IsNullOrEmpty(drinky.strIngredient5)) { ingredients.Add(drinky.strIngredient5); }
+                if (!String.IsNullOrEmpty(drinky.strIngredient6)) { ingredients.Add(drinky.strIngredient6); }
+                if (drinky.strIngredient7 != null) { if (!String.IsNullOrEmpty(drinky.strIngredient7.ToString())) { ingredients.Add(drinky.strIngredient7.ToString()); } }
+                if (drinky.strIngredient8 != null) { if (!String.IsNullOrEmpty(drinky.strIngredient8.ToString())) { ingredients.Add(drinky.strIngredient8.ToString()); } }
+                if (drinky.strIngredient9 != null) { if (!String.IsNullOrEmpty(drinky.strIngredient9.ToString())) { ingredients.Add(drinky.strIngredient9.ToString()); } }
 
                 List<string> measurement = new List<string>();
-                if (!String.IsNullOrEmpty(drink.strMeasure1)) { measurement.Add(drink.strMeasure1); }
-                if (!String.IsNullOrEmpty(drink.strMeasure2)) { measurement.Add(drink.strMeasure2); }
-                if (!String.IsNullOrEmpty(drink.strMeasure3)) { measurement.Add(drink.strMeasure3); }
-                if (!String.IsNullOrEmpty(drink.strMeasure4)) { measurement.Add(drink.strMeasure4); }
-                if (!String.IsNullOrEmpty(drink.strMeasure5)) { measurement.Add(drink.strMeasure5); }
-                if (!String.IsNullOrEmpty(drink.strMeasure6)) { measurement.Add(drink.strMeasure6); }
-                if (drink.strMeasure7 != null) { measurement.Add(drink.strMeasure7.ToString()); }
-                if (drink.strMeasure8 != null) { measurement.Add(drink.strMeasure8.ToString()); }
-                if (drink.strMeasure9 != null) { measurement.Add(drink.strMeasure9.ToString()); }
+                if (!String.IsNullOrEmpty(drinky.strMeasure1)) { measurement.Add(drinky.strMeasure1); }
+                if (!String.IsNullOrEmpty(drinky.strMeasure2)) { measurement.Add(drinky.strMeasure2); }
+                if (!String.IsNullOrEmpty(drinky.strMeasure3)) { measurement.Add(drinky.strMeasure3); }
+                if (!String.IsNullOrEmpty(drinky.strMeasure4)) { measurement.Add(drinky.strMeasure4); }
+                if (!String.IsNullOrEmpty(drinky.strMeasure5)) { measurement.Add(drinky.strMeasure5); }
+                if (!String.IsNullOrEmpty(drinky.strMeasure6)) { measurement.Add(drinky.strMeasure6); }
+                if (drinky.strMeasure7 != null) { if (!String.IsNullOrEmpty(drinky.strMeasure7.ToString())) { measurement.Add(drinky.strMeasure7.ToString()); } }
+                if (drinky.strMeasure8 != null) { if (!String.IsNullOrEmpty(drinky.strMeasure8.ToString())) { measurement.Add(drinky.strMeasure8.ToString()); } }
+                if (drinky.strMeasure9 != null) { if (!String.IsNullOrEmpty(drinky.strMeasure9.ToString())) { measurement.Add(drinky.strMeasure9.ToString()); } }
 
-                if(ingredients.Count > 6 || measurement.Count > 6 || measurement.Count == 0)
+                if (ingredients.Count > 6 || measurement.Count > 6 || measurement.Count == 0)
                 {
                     validDrink = false;
                 }
@@ -382,17 +390,17 @@ namespace Lemon_Bar.Controllers
                     }
                 }
 
-                if (!String.IsNullOrEmpty(drink.strCategory))
+                if (!String.IsNullOrEmpty(drinky.strCategory))
                 {
-                    if (drink.strCategory.ToLower().Contains("punch"))
+                    if (drinky.strCategory.ToLower().Contains("punch"))
                     {
                         validDrink = false;
                     }
                 }
 
-                if (!String.IsNullOrEmpty(drink.strAlcoholic))
+                if (!String.IsNullOrEmpty(drinky.strAlcoholic))
                 {
-                    if (drink.strAlcoholic.ToLower().Contains("non"))
+                    if (drinky.strAlcoholic.ToLower().Contains("non"))
                     {
                         validDrink = false;
                     }
@@ -401,7 +409,7 @@ namespace Lemon_Bar.Controllers
 
                 if (validDrink)
                 {
-                    filtered.Add(drink);
+                    filtered.Add(drinky);
                 }
 
                 returnList.drinks = filtered;
@@ -425,7 +433,7 @@ namespace Lemon_Bar.Controllers
 
         //        output[0] = num1 + " " + fraction;
 
-                
+
         //        if (sent.Length > 3)
         //        {
         //            for (int i = 2; i < sent.Length; i++)
@@ -521,15 +529,13 @@ namespace Lemon_Bar.Controllers
 
             try
             {
-                recipeList = cocktailDAL.GetInventory(searchString);
+                recipeList = FilterRecipes(cocktailDAL.GetInventory(searchString));
               
             }
             catch
             {
                 return NotFound();
             }
-
-            recipeList = FilterRecipes(recipeList);
 
             return View(recipeList);
         }
