@@ -55,6 +55,7 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(string id)
         {
+            TempData.Remove("missing");
             TempData.Remove("Low");
             TempData.Remove("partial");
             TempData.Remove("partialAlt");
@@ -137,7 +138,7 @@ namespace Lemon_Bar.Controllers
                 if (drink.strMeasure8 != null) { measurement.Add(drink.strMeasure8.ToString()); }
                 if (drink.strMeasure9 != null) { measurement.Add(drink.strMeasure9.ToString()); }
 
-                if (ingredients.Count > 6 || measurement.Count > 6)
+                if (ingredients.Count > 6 || measurement.Count > 6 || measurement.Count == 0)
                 {
                     validDrink = false;
                 }
@@ -150,12 +151,12 @@ namespace Lemon_Bar.Controllers
 
                 foreach (string m in measurement)
                 {
-                    if (m.Contains("part"))
+                    if (m.ToLower().Contains("part"))
                     {
                         validDrink = false;
                         break;
                     }
-                    else if (m.Contains("pint"))
+                    else if (m.ToLower().Contains("pint"))
                     {
                         validDrink = false;
                         break;

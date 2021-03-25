@@ -29,6 +29,8 @@ namespace Lemon_Bar.Controllers
             TempData.Remove("partial");
             TempData.Remove("partialAlt");
             TempData.Remove("LowQty");
+            
+            //Searches the user's inventory to find any low quantity items then creates a string to store in TempData to display on the page
             if (_context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value).Any(x => x.Quantity < 10))
             {
                 List<string> low = _context.Items.Where(x => x.User == User.FindFirst(ClaimTypes.NameIdentifier).Value &&
@@ -332,6 +334,7 @@ namespace Lemon_Bar.Controllers
             {
                 bool validDrink = true;
 
+                //creates a list of the ingredients and measurements for each drink, so they can be filtered for the drinks that can be handled by the current system
                 List<string> ingredients = new List<string>();
                 if (!String.IsNullOrEmpty(drink.strIngredient1)) { ingredients.Add(drink.strIngredient1); }
                 if (!String.IsNullOrEmpty(drink.strIngredient2)) { ingredients.Add(drink.strIngredient2); }
@@ -354,7 +357,7 @@ namespace Lemon_Bar.Controllers
                 if (drink.strMeasure8 != null) { measurement.Add(drink.strMeasure8.ToString()); }
                 if (drink.strMeasure9 != null) { measurement.Add(drink.strMeasure9.ToString()); }
 
-                if(ingredients.Count > 6 || measurement.Count > 6)
+                if(ingredients.Count > 6 || measurement.Count > 6 || measurement.Count == 0)
                 {
                     validDrink = false;
                 }
@@ -367,12 +370,12 @@ namespace Lemon_Bar.Controllers
 
                 foreach (string m in measurement)
                 {
-                    if (m.Contains("part"))
+                    if (m.ToLower().Contains("part"))
                     {
                         validDrink = false;
                         break;
                     }
-                    else if (m.Contains("pint"))
+                    else if (m.ToLower().Contains("pint"))
                     {
                         validDrink = false;
                         break;
@@ -407,93 +410,94 @@ namespace Lemon_Bar.Controllers
             return returnList;
         }
 
+        //Left over from before NetCost method in drink sales
 
-        public List<string> GrabUnits(string measure)
-        {
-            List<string> output = new List<string>();
-            string unit = "";
+        //public List<string> GrabUnits(string measure)
+        //{
+        //    List<string> output = new List<string>();
+        //    string unit = "";
 
-            if (measure.Contains("/"))
-            {
-                string[] sent = measure.Split(" ");
-                string num1 = sent[0];
-                string fraction = sent[1];
+        //    if (measure.Contains("/"))
+        //    {
+        //        string[] sent = measure.Split(" ");
+        //        string num1 = sent[0];
+        //        string fraction = sent[1];
 
-                output[0] = num1 + " " + fraction;
+        //        output[0] = num1 + " " + fraction;
 
                 
-                if (sent.Length > 3)
-                {
-                    for (int i = 2; i < sent.Length; i++)
-                    {
-                        unit += sent[i];
-                    }
-                }
-                else
-                {
-                    unit = sent[2];
-                }
+        //        if (sent.Length > 3)
+        //        {
+        //            for (int i = 2; i < sent.Length; i++)
+        //            {
+        //                unit += sent[i];
+        //            }
+        //        }
+        //        else
+        //        {
+        //            unit = sent[2];
+        //        }
 
-                output[1] = unit;
-                return output;
-            }
+        //        output[1] = unit;
+        //        return output;
+        //    }
 
-            if (measure.Contains("."))
-            {
+        //    if (measure.Contains("."))
+        //    {
 
-            }
-
-
-            char[] numsChar = measure.Where(Char.IsDigit).ToArray();
-            string nums = numsChar.ToString();
-
-            string[] sentence = measure.Split(" ");
-
-            List<string> nonNum = sentence.Where(t => SqlFunctions.IsNumeric(t) == 0).ToList();
-
-            unit = nonNum[0];
-
-            if(nonNum.Count > 1)
-            {
-                for (int i = 1; i < nonNum.Count; i++)
-                {
-                    unit += " " + nonNum[i];
-                }
-            }
+        //    }
 
 
-            output[0] = nums;
-            output[1] = unit;
+        //    char[] numsChar = measure.Where(Char.IsDigit).ToArray();
+        //    string nums = numsChar.ToString();
 
-            return output;
-        }
+        //    string[] sentence = measure.Split(" ");
 
-        public double FractionConverter(string fraction)
-        {
-            double integer = 0;
-            double fracNum = 0;
-            if (fraction.Length > 3)
-            {
-                integer = double.Parse(fraction.Substring(0));
-                string frac = fraction.Substring(2);
-                string nom = frac.Substring(0);
-                string denom = frac.Last().ToString();
-                double nomNum = double.Parse(nom);
-                double denomNum = double.Parse(denom);
-            }
-            else
-            {
-                string nom = fraction.Substring(0);
-                string denom = fraction.Last().ToString();
-                double nomNum = double.Parse(nom);
-                double denomNum = double.Parse(denom);
-                fracNum = nomNum / denomNum;
-            }
+        //    List<string> nonNum = sentence.Where(t => SqlFunctions.IsNumeric(t) == 0).ToList();
 
-            double output = integer + fracNum;
-            return output;
+        //    unit = nonNum[0];
 
-        }
+        //    if(nonNum.Count > 1)
+        //    {
+        //        for (int i = 1; i < nonNum.Count; i++)
+        //        {
+        //            unit += " " + nonNum[i];
+        //        }
+        //    }
+
+
+        //    output[0] = nums;
+        //    output[1] = unit;
+
+        //    return output;
+        //}
+
+        //public double FractionConverter(string fraction)
+        //{
+        //    double integer = 0;
+        //    double fracNum = 0;
+        //    if (fraction.Length > 3)
+        //    {
+        //        integer = double.Parse(fraction.Substring(0));
+        //        string frac = fraction.Substring(2);
+        //        string nom = frac.Substring(0);
+        //        string denom = frac.Last().ToString();
+        //        double nomNum = double.Parse(nom);
+        //        double denomNum = double.Parse(denom);
+        //    }
+        //    else
+        //    {
+        //        string nom = fraction.Substring(0);
+        //        string denom = fraction.Last().ToString();
+        //        double nomNum = double.Parse(nom);
+        //        double denomNum = double.Parse(denom);
+        //        fracNum = nomNum / denomNum;
+        //    }
+
+        //    double output = integer + fracNum;
+        //    return output;
+
+        //}
         private bool ItemExists(int id)
         {
             return _context.Items.Any(e => e.Id == id);
@@ -524,6 +528,9 @@ namespace Lemon_Bar.Controllers
             {
                 return NotFound();
             }
+
+            recipeList = FilterRecipes(recipeList);
+
             return View(recipeList);
         }
     
