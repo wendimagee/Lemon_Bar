@@ -1,6 +1,8 @@
 ﻿@model Rootobject
 
 <h4>Popular Drinks you can make from your current Inventory!</h4>
+<h4>@Model.drinks.Count Drinks Found</h4>
+<br />
 
 @foreach (Drink d in Model.drinks)
 {

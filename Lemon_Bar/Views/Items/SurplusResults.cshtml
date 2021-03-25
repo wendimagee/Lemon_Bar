@@ -1,7 +1,7 @@
 ﻿
 @model Rootobject
-@*<h4>@Model.drinks.Count drinks containing @Item.ItemName Found</h4>
-    <br />*@
+<h4>@Model.drinks.Count drinks containing @TempData.Peek("surplus") Found</h4>
+    <br />
 
 @foreach (Drink r in Model.drinks)
 {

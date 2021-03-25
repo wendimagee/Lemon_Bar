@@ -8,9 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
 using System.Security.Claims;
 using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lemon_Bar.Controllers
-{
+{   [Authorize]
     public class DrinkSalesController : Controller
     {
         private readonly Lemon_BarContext _context;
@@ -58,6 +59,7 @@ namespace Lemon_Bar.Controllers
             TempData.Remove("Low");
             TempData.Remove("partial");
             TempData.Remove("partialAlt");
+            TempData.Remove("surplus");
 
             if (validDrink)
             {
