@@ -23,10 +23,6 @@
     if (!String.IsNullOrEmpty(Model.strMeasure6)) { mea.Add(Model.strMeasure6); } else { mea.Add("Fill with"); }
     if (Model.strMeasure7 != null) { mea.Add(Model.strMeasure7.ToString()); } else { mea.Add("Fill with"); }
 
-
-
-
-
 }
 
 <h3>Ingredients:</h3>
@@ -42,15 +38,18 @@
 
 <p>@Model.strInstructions</p>
 
-<img src="@Model.strDrinkThumb" alt="@Model.strImageAttribution" style="height: 250px; width: auto; border: double;" />
+<img src="@Model.strDrinkThumb" alt="@Model.strImageAttribution" style="height: 315px; width: auto; border: double;" />
 
 @{string url = @Model.strVideo;
     if (url != null)
     {
         string URL = url.Replace("watch?v=", "embed/");
-        <iframe width="560" height="315" src=@URL frameborder="0" allowfullscreen></iframe>
+        <iframe width="560" height="315" src=@URL frameborder="0" allowfullscreen align="right"></iframe>
     }
 }
+
+<br />
+<br />
 @* The work to make this drop down menu drop "down" is nuts or else I would! *@
 <form asp-action="Create" asp-controller="DrinkSales" >
     <label>Select quantity to make</label>
