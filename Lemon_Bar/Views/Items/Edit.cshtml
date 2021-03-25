@@ -32,14 +32,14 @@
                 <div class="form-group">
                     <label asp-for="TotalCost" class="control-label"></label>
                     <input asp-for="TotalCost" class="form-control" hidden />
-                    <input type="number" name="AddTotalCost" class="form-control" min=".5" />
+                    <input type="number" name="AddTotalCost" class="form-control" min=".5" required/>
                     <span class="field-validation-valid text-danger" data-valmsg-for="AddTotalCost" data-valmsg-replace="true"></span>
                     @*<span asp-validation-for="TotalCost" class="text-danger"></span>*@
                 </div>
                 <div class="form-group">
                     <label asp-for="Quantity" class="control-label"></label>
                     <input asp-for="Quantity" class="form-control" hidden />
-                    <input type="number" name="AddQuantity" class="form-control" min=".5" />
+                    <input type="number" name="AddQuantity" class="form-control" min=".5" required/>
                     <span class="field-validation-valid text-danger" data-valmsg-for="AddQuantity" data-valmsg-replace="true"></span>
                     @*<span asp-validation-for="Quantity" class="text-danger"></span>*@
                 </div>
