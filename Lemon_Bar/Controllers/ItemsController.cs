@@ -8,9 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Lemon_Bar.Models;
 using System.Security.Claims;
 using System.Data.Entity.SqlServer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Lemon_Bar.Controllers
-{
+{   [Authorize]
     public class ItemsController : Controller
     {
         private readonly Lemon_BarContext _context;
@@ -521,7 +522,7 @@ namespace Lemon_Bar.Controllers
             Item ingredient1 = ordered[0];
             //Item ingredient2 = ordered[1];
             //Item ingredient3 = ordered[2];
-
+            TempData["surplus"] = ingredient1.ItemName;
 
             string searchString = $"{ingredient1.ItemName}";// + "," + $"{ingredient2.ItemName}" + "," + $"{ingredient3.ItemName}";
             searchString = searchString.Replace(" ", "_");

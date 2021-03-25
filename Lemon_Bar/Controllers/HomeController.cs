@@ -19,6 +19,7 @@ namespace Lemon_Bar.Controllers
             TempData.Remove("Low");
             TempData.Remove("partial");
             TempData.Remove("partialAlt");
+            TempData.Remove("surplus");
 
             return View();
         }
@@ -55,6 +56,7 @@ namespace Lemon_Bar.Controllers
 
         public IActionResult DrinkDetails(string id)
         {
+            TempData.Remove("surplus");
             TempData.Remove("missing");
             TempData.Remove("Low");
             TempData.Remove("partial");
@@ -80,9 +82,11 @@ namespace Lemon_Bar.Controllers
             Rootobject c = new Rootobject();
             Random r = new Random();
             c = cocktailDAL.GetMood(strCategory);
-            c = FilterRecipes(c);
+            if(strCategory != "Cocoa")
+            {
+                c = FilterRecipes(c);
+            }
 
-           // c = FilterRecipes(c); -- removed because FilterRecipes takes a rootobject
 
             int rInt = r.Next(0, c.drinks.Count);
             //This gives us the id of cocktail at a random index on the list of category results
