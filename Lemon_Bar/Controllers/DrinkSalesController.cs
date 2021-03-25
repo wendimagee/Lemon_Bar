@@ -30,6 +30,7 @@ namespace Lemon_Bar.Controllers
         // GET: DrinkSales/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            TempData.Remove("missing");
             if (id == null)
             {
                 return NotFound();
@@ -46,7 +47,7 @@ namespace Lemon_Bar.Controllers
             return View(drinkSale);
         }
 
-        public async Task<IActionResult> Create(string id, int quantity)
+        public IActionResult Create(string id, int quantity)
         {
             DrinkSale drinkSale = new DrinkSale();
             //this is where we can take in cocktailDAL.drink and convert it to a DrinkSales object

@@ -10,7 +10,7 @@
     if (!String.IsNullOrEmpty(Model.strIngredient4)) { ing.Add(Model.strIngredient4); }
     if (!String.IsNullOrEmpty(Model.strIngredient5)) { ing.Add(Model.strIngredient5); }
     if (!String.IsNullOrEmpty(Model.strIngredient6)) { ing.Add(Model.strIngredient6); }
-    if (Model.strIngredient7 != null) { ing.Add(Model.strIngredient7.ToString()); }
+    if (Model.strIngredient7 != null) { if (!String.IsNullOrEmpty(Model.strIngredient7.ToString())) { ing.Add(Model.strIngredient7.ToString()); } }
 
 }
 
@@ -21,8 +21,7 @@
     if (!String.IsNullOrEmpty(Model.strMeasure4)) { mea.Add(Model.strMeasure4); } else { mea.Add("Fill with"); }
     if (!String.IsNullOrEmpty(Model.strMeasure5)) { mea.Add(Model.strMeasure5); } else { mea.Add("Fill with"); }
     if (!String.IsNullOrEmpty(Model.strMeasure6)) { mea.Add(Model.strMeasure6); } else { mea.Add("Fill with"); }
-    if (Model.strMeasure7 != null) { mea.Add(Model.strMeasure7.ToString()); } else { mea.Add("Fill with"); }
-
+    if (Model.strMeasure7 != null) { if (!String.IsNullOrEmpty(Model.strMeasure7.ToString())) { ing.Add(Model.strMeasure7.ToString()); } }
 
 
 
@@ -51,7 +50,7 @@
         <iframe width="560" height="315" src=@URL frameborder="0" allowfullscreen></iframe>
     }
 }
-@* The work to make this drop down menu drop "down" is nuts or else I would! *@
+
 <form asp-action="Create" asp-controller="DrinkSales" >
     <label>Select quantity to make</label>
     <select name="quantity">
@@ -69,11 +68,9 @@
         <option value=20>20</option>
     </select>
     <input type="hidden" name="id" value="@Model.idDrink" />
-    <input type="submit" value="Make This Drink!" />
+    <input type="submit" value="Make This Drink!" class="btn1" />
 </form>
-@*<button class="buttony">
-    <a asp-action="Create" asp-controller="DrinkSales" asp-route-id="@Model.idDrink">Make This Drink!</a>
-</button>*@
+
 
 
 
